@@ -1,0 +1,29 @@
+{
+    "name": "m6web/statsd-bundle",
+    "description" : "bundle permettant d'utiliser Statsd",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "keywords": ["symfony", "bundle", "statsd"],
+    "authors": [
+        {
+            "name": "Olivier Mansour",
+            "email": "olivier.mansour@m6.fr"
+        }
+    ],
+    "config": {
+        "vendor-dir": "vendor"
+    },
+    "minimum-stability" : "dev",
+    "require": {
+        "php": ">=5.4.0",
+        "symfony/property-access" : ">=2.2"
+    },
+    "require-dev": {
+        "atoum/atoum": "master-dev",
+        "symfony/event-dispatcher": ">=2.1",
+        "symfony/symfony": "2.2.2"
+    },
+	"autoload": {
+        "psr-0": { "": "src/" }
+    }
+}

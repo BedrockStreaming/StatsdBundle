@@ -1,0 +1,7 @@
+# Configuration file for Coke, "Enjoy sniffing your code" : https://github.com/M6Web/Coke
+ 
+# Standard used by PHP CodeSniffer (required)
+standard=Symfony2
+        
+# White list of files and directories (optional)
+src/
