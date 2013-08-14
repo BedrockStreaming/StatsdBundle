@@ -40,7 +40,7 @@ class Configuration implements ConfigurationInterface
                                     ->ifTrue(function($v) {
                                         return substr($v, 0, 6) != 'udp://';
                                     })
-                                    ->thenInvalid("Le paramètres address des serveurs statsd doit commencer par 'udp://'")
+                                    ->thenInvalid("adress parameter should begin with 'udp://'")
                                 ->end()
                             ->end()
                             ->scalarNode('port')->isRequired()->end()
