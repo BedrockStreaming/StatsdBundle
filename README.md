@@ -1,4 +1,4 @@
-# Statds #
+# StatsdBundle #
 
 ## utilisation de statsd
 
