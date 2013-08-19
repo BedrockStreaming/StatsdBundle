@@ -14,7 +14,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class M6StatsdExtension extends Extension
+class M6WebStatsdExtension extends Extension
 {
     /**
      * {@inheritDoc}
