@@ -85,4 +85,17 @@ class M6WebStatsdExtension extends Extension
 
         return $serviceId;
     }
+
+    /**
+     * select an alias for the extension
+     *
+     * trick allowing bypassing the Bundle::getContainerExtension check on getAlias
+     * not very clean, to investigate
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return 'm6_statsd';
+    }
 }
