@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "87eb4c7321c5085d99d99bd391b02c8e",
+    "hash": "0ffa3e6799a3027dc0c0e90cb02d698e",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -218,12 +218,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "9c6b8615a988117dec83bdbb0fad80afef23eab8"
+                "reference": "f28a39065d455b6df1c989ea6590e971a1f0256d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/9c6b8615a988117dec83bdbb0fad80afef23eab8",
-                "reference": "9c6b8615a988117dec83bdbb0fad80afef23eab8",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/f28a39065d455b6df1c989ea6590e971a1f0256d",
+                "reference": "f28a39065d455b6df1c989ea6590e971a1f0256d",
                 "shasum": ""
             },
             "require": {
@@ -284,7 +284,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2013-07-30 05:35:10"
+            "time": "2013-08-17 18:48:00"
         },
         {
             "name": "doctrine/inflector",
@@ -605,12 +605,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/atoum/atoum.git",
-                "reference": "e360d7161be5af126215fa8d2fe529bfeabda1f1"
+                "reference": "89ff5d4d62cc51520247749cf4b3a9d82e07ec77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atoum/atoum/zipball/e360d7161be5af126215fa8d2fe529bfeabda1f1",
-                "reference": "e360d7161be5af126215fa8d2fe529bfeabda1f1",
+                "url": "https://api.github.com/repos/atoum/atoum/zipball/89ff5d4d62cc51520247749cf4b3a9d82e07ec77",
+                "reference": "89ff5d4d62cc51520247749cf4b3a9d82e07ec77",
                 "shasum": ""
             },
             "require": {
@@ -671,7 +671,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2013-08-14 10:46:17"
+            "time": "2013-08-16 11:37:39"
         }
     ],
     "aliases": [

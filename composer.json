@@ -12,6 +12,11 @@
         {
             "name": "Vincent Bouzeran",
             "email": "vincent.bouzeran@elao.com"
+        },
+        {
+            "name": "M6Web",
+            "email": "opensource@m6web.fr",
+            "homepage": "http://tech.m6web.fr/"
         }
     ],
     "config": {
