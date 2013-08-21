@@ -1,8 +1,8 @@
 # StatsdBundle #
 
-## utilisation de statsd
+## Utilisation de statsd
 
-### configuration
+### Configuration
 
 Il faut configurer l'extension m6_statsd en lui spécifiant la liste des serveurs utilisés, ainsi que la liste des clients.
 Exemple:
@@ -19,7 +19,7 @@ Exemple:
                     eventName:
                         node:   statsd.node.<token>
 
-### utilisation
+### Utilisation
 
 Le client par défaut est appelé de cette façon:
 
@@ -32,7 +32,7 @@ Les autres clients sont appelés de cette façon:
                 ->increment('service.test')
                 ->timing('service.letempscdelargent', 0.2);
 
-### Listener d'envoie
+### Listener d'envoi
 
 Par défaut, la méthode send() des clients est appélé à la fin du traitement d'une requête (évènement Kernel.terminate)
 
@@ -46,14 +46,14 @@ Par exemple, en spécifiant la configuration suivante:
             forum.read:
                 node:       minutefacile.forum.read
 
-Lorsque l'évènement forum.read est déclenché au niveau de l'event dispatcher de Symfony, notre client statsd le capture et appelle statsd en incrémentant
+Lorsque l'évènement forum.read est déclenché au niveau de l'event dispatcher de Symfony, notre client statsd le capture et appel statsd en incrémentant
 le noeud correspondant "minutefacile.forum.read".
 
 Pour déclencher l'évènement sous Symfony, il suffit dans un controller de réaliser par exemple:
 
     $this->get('event_dispatcher')->dispatch('forum.read', new Event());
 
-Il est également possible de gérer des tokens au sein de format des nodes statsd utilisés. La résolution finale du nom sera faite à partir des méthodes de l'objet Event reçu.
+Il est également possible de gérer des tokens au sein du format des nodes statsd utilisés. La résolution finale du nom sera faite à partir des méthodes de l'objet Event reçu.
 Par exemple:
 
     clients:
@@ -64,38 +64,38 @@ Par exemple:
 Dans l'exemple ci-dessus, le token <command> sera remplacé par la valeur de retour à la méthode getCommand() ou la valeur de la propriété $command de l'objet Event reçu.
 
 
-## usage du composant brut ##
+## Usage du composant brut ##
 
     use \M6Web\Component\Statsd;
     $statsd = new Statsd\Client(
         array(
-            'serv1' => array('adress' => 'udp://200.22.143.1', 'port' => '8125'),
-            'serv2' => array('adress' => 'udp://200.22.143.2', 'port' => '8126'))
+            'serv1' => array('adress' => 'udp://xx.xx.xx.xx', 'port' => 'xx'),
+            'serv2' => array('adress' => 'udp://xx.xx.xx.xx', 'port' => 'xx'))
     );
     $statsd->increment('service.coucougraphite');
-    // on peut passer un sample rate aussi
+    // on peut aussi passer un sample rate
     $statsd->decrement('service.coucougraphite')->increment('service.test')->timing('service.letempscdelargent', 0.2);
     // ..
     $statsd->send();
 
-## usage du service ##
+## Usage du service ##
 
-### paramétrage ###
+### Paramétrage ###
 
-ds app/config/parameters.yml
+Dans app/config/parameters.yml
 
-### lancement des tests unitaire ###
+### Lancement des tests unitaire ###
 
     ./vendor/bin/atoum -d tests
 
-### utilisation ###
+### Utilisation ###
 
-ds un controlleur
+Dans un controlleur
 
     $this->get('statsd')->increment('service.test');
 
-le send est appelé tout seul dans a l'event kernel.terminate via la classe M6Web\Bundle\StatsdBundle\Statsd\Listener.php
+Le send est appelé tout seul dans l'event kernel.terminate via la classe M6Web\Bundle\StatsdBundle\Statsd\Listener.php
 
-## todo ##
-* sampler le stats directement ds les appels
-* doc en anglais
+## Todo ##
+* sampler les stats directement dans les appels
+* documentation à traduire en anglais
