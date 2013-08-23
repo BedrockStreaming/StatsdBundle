@@ -10,8 +10,7 @@ use M6Web\Component\Statsd\Client as BaseClient;
  */
 class Client extends BaseClient
 {
-    protected $listenedEvents;
-
+    protected $listenedEvents = array();
 
     /**
      * getter for listenedEvents
@@ -38,7 +37,6 @@ class Client extends BaseClient
      */
     public function handleEvent($event)
     {
-
         $name = $event->getName();
         if (!isset($this->listenedEvents[$name])) {
             return;
@@ -46,23 +44,27 @@ class Client extends BaseClient
 
         $config = $this->listenedEvents[$name];
 
-        // increment
-        if (isset($config['increment'])) {
-            $incr = $config['increment'];
-            $incr = self::replaceInNodeFormMethod($event, $incr);
-            $this->increment($incr);
-        }
-
-        // timing
-        if (isset($config['timing'])) {
-            // l'event a t'il une méthode getTimer ?
-            if (!method_exists($event, 'getTiming')) {
-                throw new Exception("The event class ".get_class($event)." must have a getTiming method in order to mesure timer");
-            }
-            if ($event->getTiming() > 0) {
-                $timer = $config['timing'];
-                $timer = self::replaceInNodeFormMethod($event, $timer);
-                $this->timing($timer, $event->getTiming());
+        foreach ($config as $conf => $dynamicNode) {
+            // increment
+            if ('increment' === $conf) {
+                $this->increment(self::replaceInNodeFormMethod($event, $dynamicNode));
+            // $conf beginning with timing
+            // you can use now timingMemory, for exemple, if your event has a getMemory method
+            } elseif (preg_match('/^timing([0-9A-Za-z]*)$/', $conf, $matches)) {
+                if (!$matches[1]) {
+                    $method = 'getTiming';
+                } else {
+                    $method = 'get'.ucfirst(strtolower($matches[1]));
+                }
+                if (!method_exists($event, $method)) {
+                    throw new Exception("The event class ".get_class($event)." must have a ".$method." method in order to mesure timer");
+                }
+                $timing = call_user_func(array($event,$method));
+                if ($timing > 0) {
+                    $this->timing(self::replaceInNodeFormMethod($event, $dynamicNode), $timing);
+                }
+            } else {
+                throw new Exception("configuration : ".$conf." not handled by the StatsdBundle");
             }
         }
     }

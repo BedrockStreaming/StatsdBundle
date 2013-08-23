@@ -22,7 +22,7 @@ class Client extends atoum\test
         $this->mockGenerator->orphanize('__construct');
         $this->mockGenerator->orphanize('increment');
         $this->mockGenerator->orphanize('timing');
-        $client = new \mock\M6\Bundle\StatsdBundle\Client\Client();
+        $client = new \mock\M6Web\Bundle\StatsdBundle\Client\Client();
 
         return $client;
     }
@@ -87,6 +87,46 @@ class Client extends atoum\test
 
             $client->handleEvent($event);
         });
+    }
+
+    /**
+     * test handleEvent method with timing event
+     */
+    public function testHandleEventWithValidEventTiming()
+    {
+        $client = $this->getMockedClient();
+
+        $client->addEventToListen('test', array(
+            'timing' => 'stats.<name>'
+        ));
+
+        $event = new Event();
+        $event->setName('test');
+
+        $client->addEventToListen('test', array(
+            'timing' => 'stats.<name>'
+        ));
+
+        $this->if($client->handleEvent($event))
+            ->then
+            ->mock($client)
+                ->call('timing')
+                    ->once()
+                    ->withArguments('stats.test');
+
+        $client = $this->getMockedClient();
+
+        $client->addEventToListen('test', array(
+            'timingMemory' => 'stats.raoul'
+        ));
+
+        $this->if($client->handleEvent($event))
+            ->then
+            ->mock($client)
+                ->call('timing')
+                    ->once()
+                    ->withArguments('stats.raoul');
+
     }
 
 }
