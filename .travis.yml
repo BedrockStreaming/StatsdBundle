@@ -8,4 +8,4 @@ before_script:
   - php composer.phar install --dev
 
 script:
-  - vendor/bin/atoum -d tests
+  - vendor/bin/atoum -d tests -d src/M6Web/Bundle/StatsdBundle/Tests
