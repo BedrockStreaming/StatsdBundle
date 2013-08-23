@@ -10,7 +10,17 @@ use M6Web\Component\Statsd\Client as BaseClient;
  */
 class Client extends BaseClient
 {
-    private $listenedEvents;
+    protected $listenedEvents;
+
+
+    /**
+     * getter for listenedEvents
+     * @return array
+     */
+    public function getListenedEvents()
+    {
+        return $this->listenedEvents;
+    }
 
     /**
      * Add an event to listen
