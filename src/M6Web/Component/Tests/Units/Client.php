@@ -1,8 +1,7 @@
 <?php
 namespace M6Web\Component\Statsd\tests\units;
 
-require_once __DIR__.'/../vendor/autoload.php';
-require_once __DIR__.'/../src/M6Web/Component/Statsd/Client.php';
+require_once __DIR__.'/../../../../../vendor/autoload.php';
 
 use
     \M6Web\Component\Statsd,
@@ -37,8 +36,8 @@ class Client extends atoum\test
             ->exception( function () {
                 new Statsd\Client(
                     array(
-                        'serv1' => array('adress' => 'udp://199.22.143.12'),
-                        'serv2' => array('port' => 8125, 'adress' => 'udp://199.22.143.12')
+                        'serv1' => array('adress' => 'udp://200.22.143.12'),
+                        'serv2' => array('port' => 8125, 'adress' => 'udp://200.22.143.12')
                     )
                 );
             })
@@ -46,7 +45,7 @@ class Client extends atoum\test
             ->exception( function () {
                 new Statsd\Client(
                     array(
-                        'serv1' => array('port' => 8125, 'adress' => 'http://199.22.143.12')
+                        'serv1' => array('port' => 8125, 'adress' => 'http://200.22.143.12')
                     )
                 );
             })
@@ -61,8 +60,8 @@ class Client extends atoum\test
     {
 
         return array(
-            'serv1' => array('adress' => 'udp://199.22.143.xxx', 'port' => '8125'),
-            'serv2' => array('adress' => 'udp://199.22.143.xxx', 'port' => '8126'),
+            'serv1' => array('adress' => 'udp://200.22.143.xxx', 'port' => '8125'),
+            'serv2' => array('adress' => 'udp://200.22.143.xxx', 'port' => '8126'),
         );
     }
 
