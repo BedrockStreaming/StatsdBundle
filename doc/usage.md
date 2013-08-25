@@ -46,10 +46,7 @@ $this->get('m6_statsd')->send();
 
 ## Bind on events
 
-We don't really like coupling our business code to monitoring stuff. We prefer launch events with significant informations, listen to them, and send our monitoring stuffs in the listeners. The good news is that StastdBundle are doing it for you.
-
-Au niveau de chaque client, on peut configurer les évènements que celui-ci écoute afin de les transformer en increment statsd.
-Par exemple, en spécifiant la configuration suivante:
+We don't really like mixing our business code with monitoring stuff. We prefer launch events with significant informations, listen to them, and send our monitoring stuffs in the listeners. The good news is that StastdBundle are doing it for you.
 
 At each client level, you can specify events listened in order to build statsd increment or timing based on them.
 For example, with the following configuration :
