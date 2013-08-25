@@ -3,7 +3,7 @@
     "description" : "bundle permettant d'utiliser Statsd",
     "type": "symfony-bundle",
     "license": "MIT",
-    "keywords": ["symfony", "bundle", "statsd"],
+    "keywords": ["symfony", "bundle", "statsd", "m6web"],
     "authors": [
         {
             "name": "Olivier Mansour",
@@ -29,8 +29,8 @@
     },
     "require-dev": {
         "atoum/atoum": "master-dev",
-        "symfony/event-dispatcher": ">=2.1",
-        "symfony/symfony": "2.2.2"
+        "symfony/event-dispatcher": "@stable",
+        "symfony/symfony": "@stable"
     },
 	"autoload": {
         "psr-0": { "": "src/" }
