@@ -7,21 +7,21 @@ You have to configure the m6_statsd extension with the list of all the servers t
 
 ```json
 m6_statsd:
-servers:
-    default:
-        address: 'udp://localhost'
-        port:     1234
-    serv1:
-        address: 'udp://lolcaThost'
-        port:     1235
-    serv2:
-        address: 'udp://lolcaThost'
-        port:     1236
-    clients:
+    servers:
         default:
-            servers:   ["default"]        # the 'default' client will use only the default server
-        swag:
-            servers:   ["serv1", "serv2"] # the 'swag' client will use serv1 OR serv2 to send the datas
+            address: 'udp://localhost'
+            port:     1234
+        serv1:
+            address: 'udp://lolcaThost'
+            port:     1235
+        serv2:
+            address: 'udp://lolcaThost'
+            port:     1236
+        clients:
+            default:
+                servers:   ["default"]        # the 'default' client will use only the default server
+            swag:
+                servers:   ["serv1", "serv2"] # the 'swag' client will use serv1 OR serv2 to send the datas
 ```
 
 **Attention !** If you dispatch your command on several server, you have to re-assemble in order to aggregate it to graphite.
