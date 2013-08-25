@@ -44,7 +44,7 @@ Par exemple, en spécifiant la configuration suivante:
     clients:
         events:
             forum.read:
-                node:       minutefacile.forum.read
+                increment:       minutefacile.forum.read
 
 Lorsque l'évènement forum.read est déclenché au niveau de l'event dispatcher de Symfony, notre client statsd le capture et appel statsd en incrémentant
 le noeud correspondant "minutefacile.forum.read".
@@ -59,7 +59,7 @@ Par exemple:
     clients:
         events:
             redis.command:
-                node:       minutefacile.redis.<command>
+                increment:       minutefacile.redis.<command>
 
 Dans l'exemple ci-dessus, le token <command> sera remplacé par la valeur de retour à la méthode getCommand() ou la valeur de la propriété $command de l'objet Event reçu.
 
