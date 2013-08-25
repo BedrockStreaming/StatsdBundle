@@ -1,4 +1,4 @@
-# StatsdBundle #
+# StatsdBundle [![Build Status](https://travis-ci.org/M6Web/StatsdBundle.png?branch=master)](https://travis-ci.org/M6Web/StatsdBundle)
 
 ## Utilisation de statsd
 
