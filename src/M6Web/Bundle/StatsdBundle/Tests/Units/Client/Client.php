@@ -145,7 +145,7 @@ class Client extends atoum\test
         $event->setName('test');
 
         $client->addEventToListen('test', array(
-            'custom-timing' => array('node' => 'stats.<name>', 'method' => 'getMemory')
+            'custom_timing' => array('node' => 'stats.<name>', 'method' => 'getMemory')
         ));
 
         $this->if($client->handleEvent($event))
