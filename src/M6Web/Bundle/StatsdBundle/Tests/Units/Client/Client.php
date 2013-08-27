@@ -87,6 +87,20 @@ class Client extends atoum\test
 
             $client->handleEvent($event);
         });
+
+        $client = $this->getMockedClient();
+
+        $client->addEventToListen('test', array(
+            'timingMemory' => 'stats.raoul'
+        ));
+
+        $this->exception( function() use ($client) {
+            $event = new \Symfony\Component\EventDispatcher\Event();
+            $event->setName('test');
+
+            $client->handleEvent($event);
+        });
+
     }
 
     /**
@@ -112,12 +126,26 @@ class Client extends atoum\test
             ->mock($client)
                 ->call('timing')
                     ->once()
-                    ->withArguments('stats.test');
+                    ->withArguments('stats.test', 101);
 
-        $client = $this->getMockedClient();
+    }
+
+    /**
+     * test handleEvent method with custom timing event
+     */
+    public function testHandleEventWithValidCustomEventTiming()
+    {
+         $client = $this->getMockedClient();
 
         $client->addEventToListen('test', array(
-            'timingMemory' => 'stats.raoul'
+            'timing' => 'stats.<name>'
+        ));
+
+        $event = new Event();
+        $event->setName('test');
+
+        $client->addEventToListen('test', array(
+            'custom-timing' => array('node' => 'stats.<name>', 'method' => 'getMemory')
         ));
 
         $this->if($client->handleEvent($event))
@@ -125,8 +153,7 @@ class Client extends atoum\test
             ->mock($client)
                 ->call('timing')
                     ->once()
-                    ->withArguments('stats.raoul');
-
+                    ->withArguments('stats.test', 102);
     }
 
 }

@@ -21,11 +21,11 @@ class Event
 
     public function getTiming()
     {
-        return 100;
+        return 101;
     }
 
     public function getMemory()
     {
-        return 100;
+        return 102;
     }
 }

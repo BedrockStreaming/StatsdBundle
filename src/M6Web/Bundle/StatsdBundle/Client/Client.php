@@ -44,28 +44,39 @@ class Client extends BaseClient
 
         $config = $this->listenedEvents[$name];
 
-        foreach ($config as $conf => $dynamicNode) {
+        foreach ($config as $conf => $confValue) {
             // increment
             if ('increment' === $conf) {
-                $this->increment(self::replaceInNodeFormMethod($event, $dynamicNode));
-            // $conf beginning with timing
-            // you can use now timingMemory, for exemple, if your event has a getMemory method
-            } elseif (preg_match('/^timing([0-9A-Za-z]*)$/', $conf, $matches)) {
-                if (!$matches[1]) {
-                    $method = 'getTiming';
-                } else {
-                    $method = 'get'.ucfirst(strtolower($matches[1]));
-                }
-                if (!method_exists($event, $method)) {
-                    throw new Exception("The event class ".get_class($event)." must have a ".$method." method in order to mesure timer");
-                }
-                $timing = call_user_func(array($event,$method));
-                if ($timing > 0) {
-                    $this->timing(self::replaceInNodeFormMethod($event, $dynamicNode), $timing);
-                }
+                $this->increment(self::replaceInNodeFormMethod($event, $confValue));
+            } elseif ('timing' === $conf) {
+                $this->addTiming($event, 'getTiming', self::replaceInNodeFormMethod($event, $confValue));
+            } elseif (('custom-timing' === $conf) and is_array($confValue)) {
+                $this->addTiming($event, $confValue['method'], self::replaceInNodeFormMethod($event, $confValue['node']));
             } else {
-                throw new Exception("configuration : ".$conf." not handled by the StatsdBundle");
+                throw new Exception("configuration : ".$conf." not handled by the StatsdBundle or its value is in a wrong format.");
             }
+        }
+    }
+
+
+    /**
+     * factorisation of the timing method
+     * find the value timed
+     *
+     * @param object $event        Event
+     * @param string $timingMethod method callable in the event
+     * @param string $node         node
+     *
+     * @return void
+     */
+    private function addTiming($event, $timingMethod, $node)
+    {
+        if (!method_exists($event, $timingMethod)) {
+            throw new Exception("The event class ".get_class($event)." must have a ".$timingMethod." method in order to mesure timer");
+        }
+        $timing = call_user_func(array($event,$timingMethod));
+        if ($timing > 0) {
+            $this->timing($node, $timing);
         }
     }
 
