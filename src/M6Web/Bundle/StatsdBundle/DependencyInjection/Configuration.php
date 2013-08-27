@@ -67,7 +67,7 @@ class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('increment')->end()
                                         ->scalarNode('timing')->end()
-                                        ->arrayNode('custom-timing')
+                                        ->arrayNode('custom_timing')
                                             ->children()
                                                 ->scalarNode('node')->end()
                                                 ->scalarNode('method')->end()
