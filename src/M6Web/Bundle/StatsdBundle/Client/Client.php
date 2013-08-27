@@ -50,7 +50,7 @@ class Client extends BaseClient
                 $this->increment(self::replaceInNodeFormMethod($event, $confValue));
             } elseif ('timing' === $conf) {
                 $this->addTiming($event, 'getTiming', self::replaceInNodeFormMethod($event, $confValue));
-            } elseif (('custom-timing' === $conf) and is_array($confValue)) {
+            } elseif (('custom_timing' === $conf) and is_array($confValue)) {
                 $this->addTiming($event, $confValue['method'], self::replaceInNodeFormMethod($event, $confValue['node']));
             } else {
                 throw new Exception("configuration : ".$conf." not handled by the StatsdBundle or its value is in a wrong format.");
