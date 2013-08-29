@@ -24,7 +24,7 @@ m6_statsd:
                 servers:   ["serv1", "serv2"] # the 'swag' client will use serv1 OR serv2 to send the datas
 ```
 
-**Attention !** If you dispatch your command on several server, you have to re-assemble in order to aggregate it to graphite.
+**Warning !** If you dispatch your command on several server, you have to re-assemble in order to aggregate it to graphite.
 
 ## Basic usage
 
@@ -46,6 +46,8 @@ $this->get('m6_statsd')->send();
 
 ## Bind on events
 
+### Increments
+
 We don't really like mixing our business code with monitoring stuff. We prefer launch events with significant informations, listen to them, and send our monitoring stuffs in the listeners. The good news is that StastdBundle are doing it for you.
 
 At each client level, you can specify events listened in order to build statsd increment or timing based on them.
@@ -66,15 +68,61 @@ $this->get('event_dispatcher')->dispatch('forum.read', new Symfony\Component\Eve
 ```
 
 It's also possible to create tokens in the Symfony configuration, allowing you to pass custom value in the node.
-The resolution of the token will be based on the method or propertie of the event given.
+The resolution of the token will be based on a method or a propertie of the event given.
 
 
+```yaml
+clients:
+    events:
+        forum.read:
+            increment : mysite.forum.<name>.read
+```
 
+The event dispatched must have a getName method implemented or a $name public propertie.
 
+### Timers
+
+```yaml
+clients:
+    events:
+        action.longaction:
+            timing : timer.mysite.action
+```
+
+In this case, we will add a timer on timer.mysite.action node (of course you can still use this notation : `timer.<site>.action`). The timer value will be the output of the `getTiming` method of the event.
+
+```yaml
+clients:
+    events:
+        action.longaction:
+            custom_timing : { node : timer.mysite.action, method : getRaoul }
+```
+
+The `custom_timing` allow you to set a custom method to collect the timer (here `getRaoul`).
+
+*You can add multiple timing and increments under an event*
+
+```yaml
+clients:
+    events:
+        action.longaction:
+            custom_timing : { node : timer.mysite.action, method : getRaoul }
+            timing : timer.mysite.action
+            timing : timer.mysite.action2
+            increment : mysite.forum.<name>.read
+            increment : mysite.forum.<name>.read2
+            # ...
+```
 
 ## Collect basics metrics on your Symfony application
 
-TODO
+Comparing to others bundle related to statsd, we choose not to implement the collection of those metrics natively in the bundle. But please find some hints to do it on your own.
+
+Basics metrics can be http code, memory consumption, execution time. Thoses metrics can be collected when the `kernel.terminate` event.
+
+@ m6web we extend the HttpKernel. In this class we can easily add a value to store, when the constructor is called, the current timestamp.
+
+TODO : exemple => gist
 
 
 ## Using the component only
