@@ -24,7 +24,9 @@ m6_statsd:
                 servers:   ["serv1", "serv2"] # the 'swag' client will use serv1 OR serv2 to send the datas
 ```
 
+
 **Warning !** If you dispatch your command on several server, you have to re-assemble in order to aggregate it to graphite.
+
 
 ## Basic usage
 
@@ -68,6 +70,7 @@ $this->get('event_dispatcher')->dispatch('forum.read', new Symfony\Component\Eve
 ```
 
 It's also possible to create tokens in the Symfony configuration, allowing you to pass custom value in the node.
+
 The resolution of the token will be based on a method or a propertie of the event given.
 
 
@@ -123,6 +126,7 @@ Basics metrics can be http code, memory consumption, execution time. Thoses metr
 @ m6web we extend the HttpKernel. In this class we can easily add a value to store, when the constructor is called, the current timestamp.
 
 TODO : exemple => gist
+
 
 
 ## Using the component only
