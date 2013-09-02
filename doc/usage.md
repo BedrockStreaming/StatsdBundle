@@ -103,7 +103,7 @@ clients:
 
 The `custom_timing` allow you to set a custom method to collect the timer (here `getRaoul`).
 
-*You can add multiple timing and increments under an event*
+**You can add multiple timing and increments under an event**
 
 ```yaml
 clients:
