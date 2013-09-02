@@ -146,3 +146,5 @@ $statsd->decrement('service.coucougraphite')->increment('service.test')->timing(
 // ..
 $statsd->send();
 ```
+
+[TOC](toc.md)

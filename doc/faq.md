@@ -21,3 +21,6 @@ powered by [Atoum](http://docs.atoum.org/)
 $ php composer.phar install --dev
 $ ./vendor/bin/atoum -d src/M6Web/Component/Tests -d src/M6Web/Bundle/StatsdBundle/Tests
 ```
+
+
+[TOC](toc.md)
