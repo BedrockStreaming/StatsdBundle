@@ -119,14 +119,23 @@ clients:
 
 ## Collect basics metrics on your Symfony application
 
-Comparing to others bundle related to statsd, we choose not to implement the collection of those metrics natively in the bundle. But please find some hints to do it on your own.
+Comparing to others bundle related to statsd, we choose not to implement the collect of those metrics natively in the bundle. But please find below some hints to do it on your own.
 
 Basics metrics can be http code, memory consumption, execution time. Thoses metrics can be collected when the `kernel.terminate` event.
 
-@ m6web we extend the HttpKernel. In this class we can easily add a value to store, when the constructor is called, the current timestamp.
+At m6web we extend the HttpKernel. In this class we can easily add a value to store, when the constructor is called, the current timestamp.
 
-TODO : exemple => gist
+[example](https://gist.github.com/omansour/6412271#file-m6kernel-php)
 
+You can custom an event to return the amount of memory consumed :
+
+[example](https://gist.github.com/omansour/6412271#file-kernelterminateevent-php)
+
+And so on ...
+
+## DATA collector
+
+TODO
 
 
 ## Using the component only
