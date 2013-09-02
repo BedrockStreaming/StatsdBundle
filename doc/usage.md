@@ -25,7 +25,7 @@ m6_statsd:
 ```
 
 
-**Warning !** If you dispatch your command on several server, you have to re-assemble in order to aggregate it to graphite.
+**Warning !** If you dispatch your command on several server, you have to re-assemble in order to aggregate it into graphite.
 
 
 ## Basic usage
