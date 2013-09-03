@@ -3,4 +3,4 @@
  * [about](about.md)
  * [installation] (installation.md)
  * [usage] (usage.md)
- * faq
+ * [faq](faq.md)
