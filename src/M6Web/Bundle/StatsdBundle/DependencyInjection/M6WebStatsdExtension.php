@@ -58,7 +58,7 @@ class M6WebStatsdExtension extends Extension
             } else {
                 $serverConfig = $servers[$serverAlias];
                 $usedServers[] = array(
-                    'adress' => $serverConfig['address'],
+                    'address' => $serverConfig['address'],
                     'port'   => $serverConfig['port']
                 );
             }

@@ -146,8 +146,8 @@ TODO
 use \M6Web\Component\Statsd;
 $statsd = new Statsd\Client(
     array(
-        'serv1' => array('adress' => 'udp://xx.xx.xx.xx', 'port' => 'xx'),
-        'serv2' => array('adress' => 'udp://xx.xx.xx.xx', 'port' => 'xx'))
+        'serv1' => array('address' => 'udp://xx.xx.xx.xx', 'port' => 'xx'),
+        'serv2' => array('address' => 'udp://xx.xx.xx.xx', 'port' => 'xx'))
 );
 $statsd->increment('service.coucougraphite');
 // we can also pass a sampling rate, default value is 1

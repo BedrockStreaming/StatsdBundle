@@ -44,7 +44,6 @@ class Client
      */
     public function __construct(array $servers)
     {
-        //$this->
         $this->init($servers);
     }
 
@@ -61,11 +60,16 @@ class Client
         }
         // check server
         foreach ($servers as $serName => $server) {
-            if (!isset($server['adress']) or !isset($server['port'])) {
-                throw new Exception($serName." : no adress or port in the configuration ?!");
+            // backward compatibility
+            if (!isset($server['address']) && isset($server['adress'])) {
+                $server['address'] = $server['adress'];
             }
-            if (strpos($server['adress'], 'udp://') !== 0) {
-                throw new Exception($serName." : adress should begin with udp:// ?!");
+
+            if (!isset($server['address']) or !isset($server['port'])) {
+                throw new Exception($serName." : no address or port in the configuration ?!");
+            }
+            if (strpos($server['address'], 'udp://') !== 0) {
+                throw new Exception($serName." : address should begin with udp:// ?!");
             }
             // TODO : check du format d'adresse ?
         }
@@ -124,7 +128,7 @@ class Client
 
     /**
      * trouve un serveur en fonction de la clé
-     * retour un array ('adress', 'port')
+     * retour un array ('address', 'port')
      *
      * @param string $stats service.m6replay.raoul
      *
@@ -218,7 +222,9 @@ class Client
         }
         // pour chaque server
         foreach ($sampledData as $server => $data) {
-            $dataLength = max(1, round(count($data) / 30)); // Divide string for max 1472 octects packet sended to statsD dram (28 for headers out-in)
+            // Divide string for max 1472 octects packet sended to statsD dram (28 for headers out-in)
+            $dataLength = max(1, round(count($data) / 30));
+
             for ($i = 0; $i < $dataLength; $i++) {
                 $datas = array_slice($data, $i * 30, 30);
                 $this->writeDatas($server, $datas);
@@ -244,7 +250,7 @@ class Client
             throw new Exception($server." undefined in the configuration");
         }
         $s = $this->getServers()[$server];
-        $fp = fsockopen($s['adress'], $s['port']);
+        $fp = fsockopen($s['address'], $s['port']);
         if ($fp !== false) {
             foreach ($datas as $value) {
                 // write packets
