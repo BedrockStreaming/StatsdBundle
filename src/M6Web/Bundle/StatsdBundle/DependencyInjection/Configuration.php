@@ -8,7 +8,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 /**
  * This is the class that validates and merges configuration from your app/config files
  *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
+ * To learn more see
+ * {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
  */
 class Configuration implements ConfigurationInterface
 {
@@ -37,10 +38,12 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('address')
                                 ->isRequired()
                                 ->validate()
-                                    ->ifTrue(function($v) {
-                                        return substr($v, 0, 6) != 'udp://';
-                                    })
-                                    ->thenInvalid("adress parameter should begin with 'udp://'")
+                                    ->ifTrue(
+                                        function ($v) {
+                                            return substr($v, 0, 6) != 'udp://';
+                                        }
+                                    )
+                                    ->thenInvalid("address parameter should begin with 'udp://'")
                                 ->end()
                             ->end()
                             ->scalarNode('port')->isRequired()->end()

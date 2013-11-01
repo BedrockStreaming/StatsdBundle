@@ -29,8 +29,17 @@ class M6WebStatsdExtension extends Extension
         $serviceId = 'm6.data_collector.statsd';
         $definition = new Definition('M6Web\Bundle\StatsdBundle\DataCollector\StatsdDataCollector');
         $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
-        $definition->addTag('data_collector', array('template' => 'M6WebStatsdBundle:Collector:statsd', 'id' => 'statsd'));
-        $definition->addTag('kernel.event_listener', array('event' => 'kernel.response', 'method' => 'onKernelResponse'));
+        $definition->addTag(
+            'data_collector',
+            array(
+                'template' => 'M6WebStatsdBundle:Collector:statsd',
+                'id' => 'statsd'
+            )
+        );
+        $definition->addTag(
+            'kernel.event_listener',
+            array('event' => 'kernel.response', 'method' => 'onKernelResponse')
+        );
 
         foreach ($clients as $alias => $config) {
             $serviceName = $this->loadClient($container, $alias, $config, $servers);
@@ -54,11 +63,14 @@ class M6WebStatsdExtension extends Extension
         $events      = $config['events'];
         foreach ($config['servers'] as $serverAlias) {
             if (!isset($servers[$serverAlias])) {
-                throw new InvalidConfigurationException("M6WebStatsd client $alias used server $serverAlias which is not defined in the servers section");
+                $message = 'M6WebStatsd client ' . $alias .
+                    ' used server ' . $serverAlias .
+                    ' which is not defined in the servers section';
+                throw new InvalidConfigurationException($message);
             } else {
                 $serverConfig = $servers[$serverAlias];
                 $usedServers[] = array(
-                    'adress' => $serverConfig['address'],
+                    'address' => $serverConfig['address'],
                     'port'   => $serverConfig['port']
                 );
             }
@@ -80,7 +92,10 @@ class M6WebStatsdExtension extends Extension
         $serviceListenerId = $serviceId.'.listener';
         $definition = new Definition('M6Web\Bundle\StatsdBundle\Statsd\Listener');
         $definition->addArgument(new Reference($serviceId));
-        $definition->addTag('kernel.event_listener', array('event' => 'kernel.terminate', 'method' => 'onKernelTerminate', 'priority' => -100));
+        $definition->addTag(
+            'kernel.event_listener',
+            array('event' => 'kernel.terminate', 'method' => 'onKernelTerminate', 'priority' => -100)
+        );
         $container->setDefinition($serviceListenerId, $definition);
 
         return $serviceId;
