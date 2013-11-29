@@ -22,10 +22,12 @@ m6_statsd:
                 servers:   ["default"]        # the 'default' client will use only the default server
             swag:
                 servers:   ["serv1", "serv2"] # the 'swag' client will use serv1 OR serv2 to send the datas
+            mighty:
+                servers: ['all'] # use all servers configured
 ```
 
 
-**Warning !** If you dispatch your command on several server, you have to re-assemble in order to aggregate it into graphite.
+You have to use the same graphite server behind statsd instance in order to see your stats.
 
 
 ## Basic usage
