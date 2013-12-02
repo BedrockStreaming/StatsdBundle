@@ -61,18 +61,29 @@ class M6WebStatsdExtension extends Extension
     {
         $usedServers = array();
         $events      = $config['events'];
-        foreach ($config['servers'] as $serverAlias) {
-            if (!isset($servers[$serverAlias])) {
-                $message = 'M6WebStatsd client ' . $alias .
-                    ' used server ' . $serverAlias .
-                    ' which is not defined in the servers section';
-                throw new InvalidConfigurationException($message);
-            } else {
-                $serverConfig = $servers[$serverAlias];
+        if ($config['servers'][0] == 'all') {
+            // use all servers
+            foreach ($servers as $server) {
                 $usedServers[] = array(
-                    'address' => $serverConfig['address'],
-                    'port'   => $serverConfig['port']
+                    'address' => $server['address'],
+                    'port'    => $server['port']
                 );
+            }
+        } else {
+            // configure only declared servers
+            foreach ($config['servers'] as $serverAlias) {
+                if (!isset($servers[$serverAlias])) {
+                    $message = 'M6WebStatsd client ' . $alias .
+                        ' used server ' . $serverAlias .
+                        ' which is not defined in the servers section';
+                    throw new InvalidConfigurationException($message);
+                } else {
+                    $serverConfig = $servers[$serverAlias];
+                    $usedServers[] = array(
+                        'address' => $serverConfig['address'],
+                        'port'    => $serverConfig['port']
+                    );
+                }
             }
         }
         // Add the statsd client configured
