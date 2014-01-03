@@ -3,8 +3,46 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "59677c5368240a85e7222a1549b9f240",
+    "hash": "008a0cdaffefc0be440151c3f5e37c7e",
     "packages": [
+        {
+            "name": "m6web/statsd",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/M6Web/Statsd.git",
+                "reference": "5d2542cce5a58c6566a10100f8ec67ce8f303a34"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/M6Web/Statsd/zipball/5d2542cce5a58c6566a10100f8ec67ce8f303a34",
+                "reference": "5d2542cce5a58c6566a10100f8ec67ce8f303a34",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "atoum/atoum": "master-dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Component easing the statsd usage",
+            "keywords": [
+                "m6web",
+                "php",
+                "statsd"
+            ],
+            "time": "2014-01-03 10:16:27"
+        },
         {
             "name": "symfony/property-access",
             "version": "dev-master",
