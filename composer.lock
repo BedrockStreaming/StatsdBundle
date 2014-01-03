@@ -71,12 +71,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/atoum/atoum.git",
-                "reference": "89ff5d4d62cc51520247749cf4b3a9d82e07ec77"
+                "reference": "45dbd79ab818c31886b31607688f6f54a4acbe9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atoum/atoum/zipball/89ff5d4d62cc51520247749cf4b3a9d82e07ec77",
-                "reference": "89ff5d4d62cc51520247749cf4b3a9d82e07ec77",
+                "url": "https://api.github.com/repos/atoum/atoum/zipball/45dbd79ab818c31886b31607688f6f54a4acbe9f",
+                "reference": "45dbd79ab818c31886b31607688f6f54a4acbe9f",
                 "shasum": ""
             },
             "require": {
@@ -137,7 +137,7 @@
                 "test",
                 "unit testing"
             ],
-            "time": "2013-08-16 11:37:39"
+            "time": "2013-12-17 13:08:00"
         },
         {
             "name": "doctrine/annotations",

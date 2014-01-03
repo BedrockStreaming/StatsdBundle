@@ -46,8 +46,9 @@ class Client extends atoum\test
             ->then
             ->mock($client)
                 ->call('increment')
+                    ->withArguments('stats.test')
                     ->once()
-                    ->withArguments('stats.test');
+                    ;
 
     }
 
@@ -125,8 +126,8 @@ class Client extends atoum\test
             ->then
             ->mock($client)
                 ->call('timing')
-                    ->once()
-                    ->withArguments('stats.test', 101);
+                    ->withArguments('stats.test', 101)
+                    ->once();
 
     }
 
@@ -152,8 +153,8 @@ class Client extends atoum\test
             ->then
             ->mock($client)
                 ->call('timing')
-                    ->once()
-                    ->withArguments('stats.test', 102);
+                    ->withArguments('stats.test', 102)
+                    ->once();
     }
 
 }
