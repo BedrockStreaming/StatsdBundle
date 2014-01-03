@@ -1,6 +1,6 @@
 {
     "name": "m6web/statsd-bundle",
-    "description" : "Bundle easing the statsd usage",
+    "description" : "bundle permettant d'utiliser Statsd",
     "type": "symfony-bundle",
     "license": "MIT",
     "keywords": ["symfony", "bundle", "statsd", "m6web"],
