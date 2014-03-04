@@ -43,6 +43,7 @@ class Client extends BaseClient
         }
 
         $config = $this->listenedEvents[$name];
+        $immediateSend = false;
 
         foreach ($config as $conf => $confValue) {
             // increment
@@ -52,9 +53,15 @@ class Client extends BaseClient
                 $this->addTiming($event, 'getTiming', self::replaceInNodeFormMethod($event, $confValue));
             } elseif (('custom_timing' === $conf) and is_array($confValue)) {
                 $this->addTiming($event, $confValue['method'], self::replaceInNodeFormMethod($event, $confValue['node']));
+            } elseif ('immediate_send' === $conf) {
+                $immediateSend = $confValue;
             } else {
                 throw new Exception("configuration : ".$conf." not handled by the StatsdBundle or its value is in a wrong format.");
             }
+        }
+
+        if ($immediateSend) {
+            $this->send();
         }
     }
 

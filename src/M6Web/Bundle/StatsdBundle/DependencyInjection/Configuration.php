@@ -76,6 +76,7 @@ class Configuration implements ConfigurationInterface
                                                 ->scalarNode('method')->end()
                                             ->end()
                                         ->end()
+                                        ->booleanNode('immediate_send')->defaultFalse()->end()
                                     ->end()
                                 ->end()
                             ->end()
