@@ -48,10 +48,37 @@ class Client extends atoum\test
                 ->call('increment')
                     ->withArguments('stats.test')
                     ->once()
-                    ;
+                ->call('send')
+                    ->never();
 
     }
 
+    /**
+     * testHandleEventWithImmediateSend
+     */
+    public function testHandleEventWithImmediateSend()
+    {
+
+        $client = $this->getMockedClient();
+
+        $event = new \Symfony\Component\EventDispatcher\Event();
+        $event->setName('test');
+
+        $client->addEventToListen('test', array(
+            'increment'      => 'stats.<name>',
+            'immediate_send' => true,
+        ));
+
+        $this->if($client->handleEvent($event))
+            ->then
+                ->mock($client)
+                    ->call('increment')
+                        ->withArguments('stats.test')
+                        ->once()
+                    ->call('send')
+                        ->once();
+
+    }
     /**
     * test handle event with an invalid stats
     */

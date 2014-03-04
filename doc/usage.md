@@ -119,6 +119,18 @@ clients:
             # ...
 ```
 
+### Immediate send
+
+In basic usage, the data is really sent to the StatsD servers during the `kernel.terminate` event. But if you want to use this bundle in commands, you may want to send data immediately.
+
+```yaml
+clients:
+    event:
+        console.exception:
+            increment: mysite.command.<command.name>.exception
+            immediate_send: true
+```
+
 ## Collect basics metrics on your Symfony application
 
 Comparing to others bundle related to statsd, we choose not to implement the collect of those metrics natively in the bundle. But please find below some hints to do it on your own.
