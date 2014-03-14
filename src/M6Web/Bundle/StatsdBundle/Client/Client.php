@@ -49,6 +49,15 @@ class Client extends BaseClient
             // increment
             if ('increment' === $conf) {
                 $this->increment(self::replaceInNodeFormMethod($event, $confValue));
+            } elseif ('count' === $conf) {
+                $value = $this->getEventValue($event, 'getValue');
+                $this->count(self::replaceInNodeFormMethod($event, $confValue), $value);
+            } elseif ('gauge' === $conf) {
+                $value = $this->getEventValue($event, 'getValue');
+                $this->gauge(self::replaceInNodeFormMethod($event, $confValue), $value);
+            } elseif ('set' === $conf) {
+                $value = $this->getEventValue($event, 'getValue');
+                $this->set(self::replaceInNodeFormMethod($event, $confValue), $value);
             } elseif ('timing' === $conf) {
                 $this->addTiming($event, 'getTiming', self::replaceInNodeFormMethod($event, $confValue));
             } elseif (('custom_timing' === $conf) and is_array($confValue)) {
@@ -65,6 +74,23 @@ class Client extends BaseClient
         }
     }
 
+    /**
+     * getEventValue
+     *
+     * @param Event $event
+     * @param string $method
+     * @access private
+     * @return mixed
+     */
+    private function getEventValue($event, $method)
+    {
+        if (!method_exists($event, $method)) {
+            throw new Exception("The event class ".get_class($event)." must have a ".$method." method in order to mesure value");
+        }
+
+        return call_user_func(array($event,$method));
+    }
+
 
     /**
      * factorisation of the timing method
@@ -78,10 +104,7 @@ class Client extends BaseClient
      */
     private function addTiming($event, $timingMethod, $node)
     {
-        if (!method_exists($event, $timingMethod)) {
-            throw new Exception("The event class ".get_class($event)." must have a ".$timingMethod." method in order to mesure timer");
-        }
-        $timing = call_user_func(array($event,$timingMethod));
+        $timing = $this->getEventValue($event, $timingMethod);
         if ($timing > 0) {
             $this->timing($node, $timing);
         }
