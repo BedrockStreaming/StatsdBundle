@@ -150,7 +150,7 @@ In basic usage, the data is really sent to the StatsD servers during the `kernel
 
 ```yaml
 clients:
-    event:
+    events:
         console.exception:
             increment: mysite.command.<command.name>.exception
             immediate_send: true
