@@ -85,6 +85,22 @@ clients:
 
 The event dispatched must have a getName method implemented or a $name public propertie.
 
+### Count, Set and Gauge
+You can also send count, set and gauge using this configuration:
+```yaml
+clients:
+    events:
+        forum.read:
+            count: mysite.forum.read
+        memory.used:
+            set: mysite.memory
+        gauge.event:
+            gauge: mysite.cusom_gauge
+```
+
+The sent event must implements a ```getValue``` method
+
+
 ### Timers
 
 ```yaml
@@ -118,6 +134,15 @@ clients:
             increment : mysite.forum.<name>.read2
             # ...
 ```
+
+### Generic Event
+You can use the [StatsdEvent](src/M6Web/Bundle/StatsdBundle/Statsd/StatsdEvent.php) class to trigger your basic events.
+
+```php
+$this->get('event_dispatcher')
+    ->dispatch('forum.read', new M6Web\Bundle\StatsdBundle\Statsd\StatsdEvent($valueOrTiming));
+```
+
 
 ### Immediate send
 
