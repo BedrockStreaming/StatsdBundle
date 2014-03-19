@@ -98,7 +98,7 @@ m6_statsd:
             memory.used:
                 set: mysite.memory
             gauge.event:
-                gauge: mysite.cusom_gauge
+                gauge: mysite.custom_gauge
 ```
 
 The sent event must implements a ```getValue``` method
