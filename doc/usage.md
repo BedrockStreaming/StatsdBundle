@@ -165,19 +165,43 @@ m6_statsd:
 
 ## Collect basics metrics on your Symfony application
 
-Comparing to others bundle related to statsd, we choose not to implement the collect of those metrics natively in the bundle. But please find below some hints to do it on your own.
-
 Basics metrics can be http code, memory consumption, execution time. Thoses metrics can be collected when the `kernel.terminate` event.
 
-At m6web we extend the HttpKernel. In this class we can easily add a value to store, when the constructor is called, the current timestamp.
+Some basic collectors are already implemented in the bundle, but not activated by default.
 
-[example](https://gist.github.com/omansour/6412271#file-m6kernel-php)
+To activate them, you have to set the ```base_collectors``` option to ```true```:
+```yaml
+m6_statsd:
+    servers:
+        # ...
+    base_collectors: true
+```
 
-You can custom an event to return the amount of memory consumed :
+Those collectors just send events. You have to catch them as explained previously:
+```yaml
+m6_statsd:
+    servers:
+        # ...
+    base_collectors: true
+    clients:
+        default:
+            servers: ['default']
+            events: 
+                statsd.memory_usage:
+                    gauge: "website.memory"
+                statsd.time:
+                    timing: "website.time"
+                statsd.exception:
+                    increment: "website.exception.<value>"
 
-[example](https://gist.github.com/omansour/6412271#file-kernelterminateevent-php)
+                kernel.terminate: # this event is a symfony basic, you just have to listen to it to have the number of page view
+                    increment: "website.page_view"
+```
 
-And so on ...
+For now, those events are trigger:
+* statsd.memory_usage
+* statsd.time
+* statsd.exception
 
 ## DATA collector
 
