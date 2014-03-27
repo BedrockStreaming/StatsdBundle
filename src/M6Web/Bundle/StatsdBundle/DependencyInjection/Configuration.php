@@ -23,6 +23,7 @@ class Configuration implements ConfigurationInterface
 
         $this->addServersSection($rootNode);
         $this->addClientsSection($rootNode);
+        $this->addDefaultEventSection($rootNode);
 
         return $treeBuilder;
     }
@@ -86,6 +87,22 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+            ->end();
+    }
+
+    /**
+     * addDefaultEventSection
+     *
+     * @param mixed $rootNode
+     * @access private
+     * @return void
+     */
+    private function addDefaultEventSection($rootNode)
+    {
+        $rootNode
+            ->children()
+                ->booleanNode('base_collectors')
+                    ->defaultFalse()
             ->end();
     }
 }

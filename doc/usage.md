@@ -5,7 +5,7 @@
 
 You have to configure the m6_statsd extension with the list of all the servers that will be available.
 
-```json
+```yaml
 m6_statsd:
     servers:
         default:
@@ -58,10 +58,11 @@ At each client level, you can specify events listened in order to build statsd i
 For example, with the following configuration :
 
 ```yaml
-clients:
-    events:
-        forum.read:
-            increment : mysite.forum.read
+m6_statsd:
+    clients:
+        events:
+            forum.read:
+                increment : mysite.forum.read
 ```
 
 On the Symfony event dispatcher, when the ```forum.read``` event is fired, our statds client catch this event and add to this queue the increment on the ```mysite.forum.read``` node.
@@ -77,30 +78,50 @@ The resolution of the token will be based on a method or a propertie of the even
 
 
 ```yaml
-clients:
-    events:
-        forum.read:
-            increment : mysite.forum.<name>.read
+m6_statsd:
+    clients:
+        events:
+            forum.read:
+                increment : mysite.forum.<name>.read
 ```
 
 The event dispatched must have a getName method implemented or a $name public propertie.
 
+### Count, Set and Gauge
+You can also send count, set and gauge using this configuration:
+```yaml
+m6_statsd:
+    clients:
+        events:
+            forum.read:
+                count: mysite.forum.read
+            memory.used:
+                set: mysite.memory
+            gauge.event:
+                gauge: mysite.custom_gauge
+```
+
+The sent event must implements a ```getValue``` method
+
+
 ### Timers
 
 ```yaml
-clients:
-    events:
-        action.longaction:
-            timing : timer.mysite.action
+m6_statsd:
+    clients:
+        events:
+            action.longaction:
+                timing : timer.mysite.action
 ```
 
 In this case, we will add a timer on timer.mysite.action node (of course you can still use this notation : `timer.<site>.action`). The timer value will be the output of the `getTiming` method of the event.
 
 ```yaml
-clients:
-    events:
-        action.longaction:
-            custom_timing : { node : timer.mysite.action, method : getRaoul }
+m6_statsd:
+    clients:
+        events:
+            action.longaction:
+                custom_timing : { node : timer.mysite.action, method : getRaoul }
 ```
 
 The `custom_timing` allow you to set a custom method to collect the timer (here `getRaoul`).
@@ -108,44 +129,79 @@ The `custom_timing` allow you to set a custom method to collect the timer (here 
 **You can add multiple timing and increments under an event**
 
 ```yaml
-clients:
-    events:
-        action.longaction:
-            custom_timing : { node : timer.mysite.action, method : getRaoul }
-            timing : timer.mysite.action
-            timing : timer.mysite.action2
-            increment : mysite.forum.<name>.read
-            increment : mysite.forum.<name>.read2
-            # ...
+m6_statsd:
+    clients:
+        events:
+            action.longaction:
+                custom_timing : { node : timer.mysite.action, method : getRaoul }
+                timing : timer.mysite.action
+                timing : timer.mysite.action2
+                increment : mysite.forum.<name>.read
+                increment : mysite.forum.<name>.read2
+                # ...
 ```
+
+### Generic Event
+You can use the [StatsdEvent](src/M6Web/Bundle/StatsdBundle/Statsd/StatsdEvent.php) class to trigger your basic events.
+
+```php
+$this->get('event_dispatcher')
+    ->dispatch('forum.read', new M6Web\Bundle\StatsdBundle\Statsd\StatsdEvent($valueOrTiming));
+```
+
 
 ### Immediate send
 
 In basic usage, the data is really sent to the StatsD servers during the `kernel.terminate` event. But if you want to use this bundle in commands, you may want to send data immediately.
 
 ```yaml
-clients:
-    event:
-        console.exception:
-            increment: mysite.command.<command.name>.exception
-            immediate_send: true
+m6_statsd:
+    clients:
+        events:
+            console.exception:
+                increment: mysite.command.<command.name>.exception
+                immediate_send: true
 ```
 
 ## Collect basics metrics on your Symfony application
 
-Comparing to others bundle related to statsd, we choose not to implement the collect of those metrics natively in the bundle. But please find below some hints to do it on your own.
-
 Basics metrics can be http code, memory consumption, execution time. Thoses metrics can be collected when the `kernel.terminate` event.
 
-At m6web we extend the HttpKernel. In this class we can easily add a value to store, when the constructor is called, the current timestamp.
+Some basic collectors are already implemented in the bundle, but not activated by default.
 
-[example](https://gist.github.com/omansour/6412271#file-m6kernel-php)
+To activate them, you have to set the ```base_collectors``` option to ```true```:
+```yaml
+m6_statsd:
+    servers:
+        # ...
+    base_collectors: true
+```
 
-You can custom an event to return the amount of memory consumed :
+Those collectors just send events. You have to catch them as explained previously:
+```yaml
+m6_statsd:
+    servers:
+        # ...
+    base_collectors: true
+    clients:
+        default:
+            servers: ['default']
+            events: 
+                statsd.memory_usage:
+                    gauge: "website.memory"
+                statsd.time:
+                    timing: "website.time"
+                statsd.exception:
+                    increment: "website.exception.<value>"
 
-[example](https://gist.github.com/omansour/6412271#file-kernelterminateevent-php)
+                kernel.terminate: # this event is a symfony basic, you just have to listen to it to have the number of page view
+                    increment: "website.page_view"
+```
 
-And so on ...
+For now, those events are trigger:
+* statsd.memory_usage
+* statsd.time
+* statsd.exception
 
 ## DATA collector
 
