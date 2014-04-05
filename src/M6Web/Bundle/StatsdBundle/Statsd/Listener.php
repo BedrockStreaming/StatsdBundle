@@ -4,6 +4,8 @@ namespace M6Web\Bundle\StatsdBundle\Statsd;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+
 
 use M6Web\Component\Statsd\Client;
 
@@ -33,7 +35,12 @@ class Listener
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        $code = $event->getException()->getStatusCode();
+        $exception = $event->getException();
+        if ($exception instanceof HttpExceptionInterface) {
+            $code = $event->getException()->getStatusCode();
+        } else {
+            $code = 'unknown';
+        }
         $this->eventDispatcher->dispatch(
             'statsd.exception',
             new StatsdEvent($code)
