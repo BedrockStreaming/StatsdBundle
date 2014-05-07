@@ -32,4 +32,4 @@ class AppKernel extends \Symfony\Component\HttpKernel\Kernel
 
 For the configuration read the [usage part](usage.md) of the documentation.
 
-[TOC](toc.md)
+[TOC](../README.md)

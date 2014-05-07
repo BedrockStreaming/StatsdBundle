@@ -210,6 +210,8 @@ TODO
 
 ## Using the component only
 
+use directly [the component on packagist](https://packagist.org/packages/m6web/statsd).
+
 (if you working with Zend Framework or whatever !)
 
 ```php
@@ -226,4 +228,4 @@ $statsd->decrement('service.coucougraphite')->increment('service.test')->timing(
 $statsd->send();
 ```
 
-[TOC](toc.md)
+[TOC](../README.md)
