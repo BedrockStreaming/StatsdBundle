@@ -1,4 +1,5 @@
 <?php
+
 namespace M6Web\Bundle\StatsdBundle\DataCollector;
 
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
@@ -25,6 +26,7 @@ class StatsdDataCollector extends DataCollector
 
     /**
      * Kernel event
+     *
      * @param EventInterface $event The received event
      */
     public function onKernelResponse($event)
@@ -55,6 +57,7 @@ class StatsdDataCollector extends DataCollector
 
     /**
      * Add a statsd client to monitor
+     *
      * @param string $clientAlias  The client alias
      * @param object $statsdClient A statsd client instance
      */
@@ -65,17 +68,18 @@ class StatsdDataCollector extends DataCollector
 
     /**
      * Collect the data
+     *
      * @param Request    $request   The request object
      * @param Response   $response  The response object
      * @param \Exception $exception An exception
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-
     }
 
     /**
      * Return the list of statsd operations
+     *
      * @return array operations list
      */
     public function getClients()
@@ -85,6 +89,7 @@ class StatsdDataCollector extends DataCollector
 
     /**
      * Return the number of statsd operations
+     *
      * @return integer the number of operations
      */
     public function getOperations()
@@ -94,6 +99,7 @@ class StatsdDataCollector extends DataCollector
 
     /**
      * Return the name of the collector
+     *
      * @return string data collector name
      */
     public function getName()

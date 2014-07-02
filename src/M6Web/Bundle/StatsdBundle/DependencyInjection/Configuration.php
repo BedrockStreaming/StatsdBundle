@@ -94,8 +94,6 @@ class Configuration implements ConfigurationInterface
      * addDefaultEventSection
      *
      * @param mixed $rootNode
-     * @access private
-     * @return void
      */
     private function addDefaultEventSection($rootNode)
     {

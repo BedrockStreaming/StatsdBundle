@@ -11,18 +11,16 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  * is the value suitable for graphite
  *
  * @Annotation
- *
  */
 class NodeValidator extends ConstraintValidator
 {
 
-     /**
+    /**
      * {@inheritDoc}
      */
     public function validate($value, Constraint $constraint)
     {
         if (!is_scalar($value) && !(is_object($value) && method_exists($value, '__toString'))) {
-            // throw new UnexpectedTypeException($value, 'string');
             $this->context->addViolation('node is not given or wrong datatype');
 
             return;
@@ -42,7 +40,8 @@ class NodeValidator extends ConstraintValidator
     }
 
     /**
-     * validate against the node patern
+     * Validate against the node patern
+     *
      * @param string $value
      *
      * @return boolean
