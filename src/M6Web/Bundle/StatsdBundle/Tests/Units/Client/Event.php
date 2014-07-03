@@ -6,7 +6,6 @@ require_once __DIR__.'/../../../../../../../vendor/autoload.php';
 
 class Event
 {
-
     private $name = '';
 
     public function setName($v)

@@ -13,6 +13,7 @@ class Node extends Constraint
 {
     /**
      * constraint constructor
+     *
      * @param array $options options
      */
     public function __construct($options = null)

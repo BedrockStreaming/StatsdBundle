@@ -9,7 +9,6 @@ class StatsdEvent extends GenericEvent
     /**
      * getTiming
      *
-     * @access public
      * @return mixed
      */
     public function getTiming()
@@ -20,7 +19,6 @@ class StatsdEvent extends GenericEvent
     /**
      * getValue
      *
-     * @access public
      * @return mixed
      */
     public function getValue()

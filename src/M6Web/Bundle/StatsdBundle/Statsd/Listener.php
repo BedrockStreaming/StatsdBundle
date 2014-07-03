@@ -1,11 +1,11 @@
 <?php
+
 namespace M6Web\Bundle\StatsdBundle\Statsd;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-
 
 use M6Web\Component\Statsd\Client;
 
@@ -18,11 +18,12 @@ class Listener
 
     /**
      * Construct the listener, injecting the statsd client service
+     *
      * @param Client $statsdClient The statsd client service
      */
     public function __construct(Client $statsdClient, EventDispatcherInterface $eventDispatcher)
     {
-        $this->statsdClient = $statsdClient;
+        $this->statsdClient    = $statsdClient;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -30,8 +31,6 @@ class Listener
      * onKernelException
      *
      * @param GetResponseForExceptionEvent $event
-     * @access private
-     * @return void
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
@@ -49,6 +48,7 @@ class Listener
 
     /**
      * method called on the kernel.terminate event
+     *
      * @param PostResponseEvent $event event
      *
      * @return void
@@ -62,8 +62,6 @@ class Listener
      * onKernelTerminateEvents
      *
      * @param PostResponseEvent $event
-     * @access public
-     * @return void
      */
     public function onKernelTerminateEvents(PostResponseEvent $event)
     {
@@ -71,12 +69,8 @@ class Listener
         $this->dispatchRequestTime($event);
     }
 
-
     /**
      * dispatchMemory dispatch a memory event
-     *
-     * @access private
-     * @return void
      */
     private function dispatchMemory()
     {
@@ -94,18 +88,14 @@ class Listener
      * This time is a "fake" one, because some actions are performed before the initialization of the request
      * It is ~100ms smaller than the real kernel time.
      *
-     * @access private
-     * @return void
+     * @param PostResponseEvent $event
      */
     private function dispatchRequestTime(PostResponseEvent $event)
     {
-        $request = $event->getRequest();
-        $startTime = $request->server->get(
-            'REQUEST_TIME_FLOAT',
-            $request->server->get('REQUEST_TIME')
-        );
-        $time = microtime(true) - $startTime;
-        $time = round($time * 1000);
+        $request   = $event->getRequest();
+        $startTime = $request->server->get('REQUEST_TIME_FLOAT', $request->server->get('REQUEST_TIME'));
+        $time      = microtime(true) - $startTime;
+        $time      = round($time * 1000);
 
         $this->eventDispatcher->dispatch(
             'statsd.time',

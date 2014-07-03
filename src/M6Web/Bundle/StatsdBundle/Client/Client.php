@@ -1,4 +1,5 @@
 <?php
+
 namespace M6Web\Bundle\StatsdBundle\Client;
 
 use M6Web\Component\Statsd\Client as BaseClient;
@@ -14,6 +15,7 @@ class Client extends BaseClient
 
     /**
      * getter for listenedEvents
+     *
      * @return array
      */
     public function getListenedEvents()
@@ -23,6 +25,7 @@ class Client extends BaseClient
 
     /**
      * Add an event to listen
+     *
      * @param string $eventName   The event name to listen
      * @param array  $eventConfig The event handler configuration
      */
@@ -33,6 +36,7 @@ class Client extends BaseClient
 
     /**
      * Handle an event
+     *
      * @param EventInterface $event an event
      */
     public function handleEvent($event)
@@ -42,7 +46,7 @@ class Client extends BaseClient
             return;
         }
 
-        $config = $this->listenedEvents[$name];
+        $config        = $this->listenedEvents[$name];
         $immediateSend = false;
 
         foreach ($config as $conf => $confValue) {
@@ -79,7 +83,7 @@ class Client extends BaseClient
      *
      * @param Event $event
      * @param string $method
-     * @access private
+     *
      * @return mixed
      */
     private function getEventValue($event, $method)
@@ -91,14 +95,13 @@ class Client extends BaseClient
         return call_user_func(array($event,$method));
     }
 
-
     /**
-     * factorisation of the timing method
+     * Factorisation of the timing method
      * find the value timed
      *
      * @param object $event        Event
-     * @param string $timingMethod method callable in the event
-     * @param string $node         node
+     * @param string $timingMethod Callable method in the event
+     * @param string $node         Node
      *
      * @return void
      */
@@ -111,9 +114,10 @@ class Client extends BaseClient
     }
 
     /**
-     * remplace une chaine par un nom de méthode
-     * @param EventInterface $event an event
-     * @param string         $node  le node ds lequel faire le remplacement
+     * Replaces a string with a method name
+     *
+     * @param EventInterface $event An event
+     * @param string         $node  The node in which the replacing will happen
      *
      * @return string
      */

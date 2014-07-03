@@ -22,24 +22,23 @@ class M6WebStatsdExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
-        $servers = isset($config['servers']) ? $config['servers'] : array();
-        $clients = isset($config['clients']) ? $config['clients'] : array();
+        $config        = $this->processConfiguration($configuration, $configs);
+        $servers       = isset($config['servers']) ? $config['servers'] : array();
+        $clients       = isset($config['clients']) ? $config['clients'] : array();
 
-        $serviceId = 'm6.data_collector.statsd';
+        $serviceId  = 'm6.data_collector.statsd';
         $definition = new Definition('M6Web\Bundle\StatsdBundle\DataCollector\StatsdDataCollector');
+
         $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
-        $definition->addTag(
-            'data_collector',
-            array(
-                'template' => 'M6WebStatsdBundle:Collector:statsd',
-                'id' => 'statsd'
-            )
-        );
-        $definition->addTag(
-            'kernel.event_listener',
-            array('event' => 'kernel.response', 'method' => 'onKernelResponse')
-        );
+        $definition->addTag('data_collector', array(
+            'template' => 'M6WebStatsdBundle:Collector:statsd',
+            'id'       => 'statsd'
+        ));
+
+        $definition->addTag('kernel.event_listener', array(
+            'event'  => 'kernel.response',
+            'method' => 'onKernelResponse'
+        ));
 
         foreach ($clients as $alias => $clientConfig) {
             $serviceName = $this->loadClient($container, $alias, $clientConfig, $servers, $config['base_collectors']);
@@ -50,6 +49,7 @@ class M6WebStatsdExtension extends Extension
 
     /**
      * Load a client configuration as a service in the container. A client can use multiple servers
+     *
      * @param ContainerInterface $container The container
      * @param string             $alias     Alias of the client
      * @param array              $config    Base config of the client
@@ -62,6 +62,7 @@ class M6WebStatsdExtension extends Extension
     {
         $usedServers = array();
         $events      = $config['events'];
+
         if ($config['servers'][0] == 'all') {
             // use all servers
             foreach ($servers as $server) {
@@ -95,9 +96,9 @@ class M6WebStatsdExtension extends Extension
 
         foreach ($events as $eventName => $eventConfig) {
             $definition->addTag('kernel.event_listener', array('event' => $eventName, 'method' => 'handleEvent'));
-
             $definition->addMethodCall('addEventToListen', array($eventName, $eventConfig));
         }
+
         $container->setDefinition($serviceId, $definition);
 
         // Add the statsd client listener
@@ -105,20 +106,23 @@ class M6WebStatsdExtension extends Extension
         $definition = new Definition('M6Web\Bundle\StatsdBundle\Statsd\Listener');
         $definition->addArgument(new Reference($serviceId));
         $definition->addArgument(new Reference('event_dispatcher'));
-        $definition->addTag(
-            'kernel.event_listener',
-            array('event' => 'kernel.terminate', 'method' => 'onKernelTerminate', 'priority' => -100)
-        );
+        $definition->addTag('kernel.event_listener', array(
+            'event'    => 'kernel.terminate',
+            'method'   => 'onKernelTerminate',
+            'priority' => -100
+        ));
 
         if ($baseEvents) {
-            $definition->addTag(
-                'kernel.event_listener',
-                array('event' => 'kernel.terminate', 'method' => 'onKernelTerminateEvents', 'priority' => 0)
-            );
-            $definition->addTag(
-                'kernel.event_listener',
-                array('event' => 'kernel.exception', 'method' => 'onKernelException', 'priority' => 0)
-            );
+            $definition->addTag('kernel.event_listener', array(
+                'event' => 'kernel.terminate',
+                'method' => 'onKernelTerminateEvents',
+                'priority' => 0
+            ));
+            $definition->addTag('kernel.event_listener', array(
+                'event' => 'kernel.exception',
+                'method' => 'onKernelException',
+                'priority' => 0
+            ));
         }
         $container->setDefinition($serviceListenerId, $definition);
 

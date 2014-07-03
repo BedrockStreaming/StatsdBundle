@@ -11,12 +11,11 @@ use mageekguy\atoum;
 */
 class Client extends atoum\test
 {
-
     /**
-    * return a mocked client
-    *
-    * @return Clienct
-    */
+     * return a mocked client
+     *
+     * @return Clienct
+     */
     protected function getMockedClient()
     {
         $this->mockGenerator->orphanize('__construct');
@@ -28,8 +27,8 @@ class Client extends atoum\test
     }
 
     /**
-    * testHandleEventWithValidConfig
-    */
+     * testHandleEventWithValidConfig
+     */
     public function testHandleEventWithValidConfigIncrement()
     {
 
@@ -79,9 +78,10 @@ class Client extends atoum\test
                         ->once();
 
     }
+
     /**
-    * test handle event with an invalid stats
-    */
+     * test handle event with an invalid stats
+     */
     public function testHandleEventWithInvalidConfigIncrement()
     {
         $client = $this->getMockedClient();
@@ -90,7 +90,7 @@ class Client extends atoum\test
             'increment' => 'stats.<toto>'
         ));
 
-        $this->exception( function() use ($client) {
+        $this->exception(function() use ($client) {
             $event = new \Symfony\Component\EventDispatcher\Event();
             $event->setName('test');
 
@@ -99,8 +99,8 @@ class Client extends atoum\test
     }
 
     /**
-    * test handleEvent method with event without getTimingMethod
-    */
+     * test handleEvent method with event without getTimingMethod
+     */
     public function testHandleEventWithInvalidEventTiming()
     {
         $client = $this->getMockedClient();
@@ -109,7 +109,7 @@ class Client extends atoum\test
             'timing' => 'stats.<name>'
         ));
 
-        $this->exception( function() use ($client) {
+        $this->exception(function() use ($client) {
             $event = new \Symfony\Component\EventDispatcher\Event();
             $event->setName('test');
 
@@ -122,7 +122,7 @@ class Client extends atoum\test
             'timingMemory' => 'stats.raoul'
         ));
 
-        $this->exception( function() use ($client) {
+        $this->exception(function() use ($client) {
             $event = new \Symfony\Component\EventDispatcher\Event();
             $event->setName('test');
 
@@ -163,7 +163,7 @@ class Client extends atoum\test
      */
     public function testHandleEventWithValidCustomEventTiming()
     {
-         $client = $this->getMockedClient();
+        $client = $this->getMockedClient();
 
         $client->addEventToListen('test', array(
             'timing' => 'stats.<name>'
@@ -183,5 +183,4 @@ class Client extends atoum\test
                     ->withArguments('stats.test', 102)
                     ->once();
     }
-
 }
