@@ -88,7 +88,7 @@ class Client extends atoum\test
             'increment' => 'stats.<toto>'
         ));
 
-        $this->exception(function() use ($client) {
+        $this->exception(function () use ($client) {
             $event = new \Symfony\Component\EventDispatcher\Event();
             $event->setName('test');
 
@@ -107,7 +107,7 @@ class Client extends atoum\test
             'timing' => 'stats.<name>'
         ));
 
-        $this->exception(function() use ($client) {
+        $this->exception(function () use ($client) {
             $event = new \Symfony\Component\EventDispatcher\Event();
             $event->setName('test');
 
@@ -120,7 +120,7 @@ class Client extends atoum\test
             'timingMemory' => 'stats.raoul'
         ));
 
-        $this->exception(function() use ($client) {
+        $this->exception(function () use ($client) {
             $event = new \Symfony\Component\EventDispatcher\Event();
             $event->setName('test');
 
