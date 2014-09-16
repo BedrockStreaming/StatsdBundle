@@ -22,7 +22,7 @@ class Client extends atoum\test
         $this->mockGenerator->orphanize('increment');
         $this->mockGenerator->orphanize('timing');
         $client = new \mock\M6Web\Bundle\StatsdBundle\Client\Client();
-
+        $client->clearToSend();
         return $client;
     }
 
