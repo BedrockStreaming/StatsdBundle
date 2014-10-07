@@ -163,6 +163,37 @@ m6_statsd:
                 immediate_send: true
 ```
 
+## Console custom events
+
+This bundle can trigger custom console events that allow to get command start time and execution duration.
+
+Use the following configuration to enable these events:
+
+```yml
+m6_statsd:
+    console_events: true
+```
+
+Now, each time a command start, ends or throw ecxeption, one of the following events is triggered:
+* `m6web.console.command`
+* `m6web.console.terminate`
+* `m6web.console.exception`
+
+For instance, if you want to monitor the execution duration or your commands, use the following configuration:
+
+```yml
+m6_statsd:
+    console_events: true
+    clients:
+        events:
+            m6web.console.terminate:
+                custom_timing :
+                    node : timer.mysite.command.<command.name>.duration
+                    method : getExecutionTime
+```
+
+These events also provide a `getTiming` method (which is an alias of `getExecutionTime`) that allow to use simple `timer` entry.
+
 ## Collect basics metrics on your Symfony application
 
 Basics metrics can be http code, memory consumption, execution time. Thoses metrics can be collected when the `kernel.terminate` event.
@@ -186,7 +217,7 @@ m6_statsd:
     clients:
         default:
             servers: ['default']
-            events: 
+            events:
                 statsd.memory_usage:
                     gauge: "website.memory"
                 statsd.time:
