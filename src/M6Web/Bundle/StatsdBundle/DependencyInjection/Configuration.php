@@ -101,6 +101,9 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->booleanNode('base_collectors')
                     ->defaultFalse()
-            ->end();
+                ->end()
+                ->booleanNode('console_events')
+                    ->defaultFalse()
+                ->end();
     }
 }
