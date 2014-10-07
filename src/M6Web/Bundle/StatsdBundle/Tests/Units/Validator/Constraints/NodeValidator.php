@@ -6,8 +6,6 @@ use mageekguy\atoum;
 
 use M6Web\Bundle\StatsdBundle\Validator\Constraints\NodeValidator as TestedClass;
 
-require_once __DIR__.'/../../../../../../../../vendor/autoload.php';
-
 /**
  * Nodevalidator test class
  */
