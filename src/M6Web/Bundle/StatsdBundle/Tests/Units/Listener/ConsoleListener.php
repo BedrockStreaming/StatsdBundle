@@ -2,8 +2,6 @@
 
 namespace M6Web\Bundle\StatsdBundle\Tests\Units\Listener;
 
-require_once __DIR__.'/../../../../../../../vendor/autoload.php';
-
 use M6Web\Bundle\StatsdBundle\Listener\ConsoleListener as Base;
 
 use mageekguy\atoum;
