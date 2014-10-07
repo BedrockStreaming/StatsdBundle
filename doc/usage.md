@@ -188,9 +188,11 @@ m6_statsd:
         events:
             m6web.console.terminate:
                 custom_timing :
-                    node : timer.mysite.command.<command.name>.duration
+                    node : timer.mysite.command.<underscoredCommandName>.duration
                     method : getExecutionTime
 ```
+
+As you can see in the previous exemple, the event object also provide a `getUnderscoredCommandName`. This method return the command name with colons replaced by underscores. This can be usefull because statsd use colon as separator.
 
 These events also provide a `getTiming` method (which is an alias of `getExecutionTime`) that allow to use simple `timer` entry.
 

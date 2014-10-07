@@ -102,6 +102,20 @@ abstract class ConsoleEvent extends Event
     }
 
     /**
+     * Get an underscored command name, if available
+     *
+     * @return string|null
+     */
+    public function getUnderscoredCommandName()
+    {
+        if (!is_null($command = $this->getCommand())) {
+            return str_replace(':', '_', $command->getName());
+        }
+
+        return null;
+    }
+
+    /**
      * Create new event object
      *
      * @param BaseConsoleEvent $e
