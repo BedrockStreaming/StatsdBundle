@@ -75,11 +75,11 @@ abstract class ConsoleEvent extends Event
     /**
      * Get command execution time
      *
-     * @return float Time ellapsed since command start
+     * @return float Time ellapsed since command start (ms)
      */
     public function getExecutionTime()
     {
-        return $this->executionTime;
+        return $this->executionTime * 1000;
     }
 
     /**
