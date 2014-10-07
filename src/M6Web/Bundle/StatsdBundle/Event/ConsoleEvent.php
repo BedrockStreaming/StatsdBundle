@@ -126,5 +126,8 @@ abstract class ConsoleEvent extends Event
      *
      * @return boolean
      */
-    abstract protected static function support(BaseConsoleEvent $e);
+    protected static function support(BaseConsoleEvent $e)
+    {
+        return true;
+    }
 }
