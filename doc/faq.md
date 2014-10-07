@@ -19,8 +19,8 @@ powered by [Atoum](http://docs.atoum.org/)
 
 ```sh
 $ php composer.phar install --dev
-$ ./vendor/bin/atoum -d src/M6Web/Component/Tests -d src/M6Web/Bundle/StatsdBundle/Tests
+$ ./vendor/bin/atoum
 ```
 
 
-[TOC](../README.md))
+[TOC](../README.md)

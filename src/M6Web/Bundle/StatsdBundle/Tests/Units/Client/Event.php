@@ -2,8 +2,6 @@
 
 namespace M6Web\Bundle\StatsdBundle\Tests\Units\Client;
 
-require_once __DIR__.'/../../../../../../../vendor/autoload.php';
-
 class Event
 {
     private $name = '';
