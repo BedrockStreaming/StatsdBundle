@@ -31,7 +31,7 @@
     "require-dev": {
         "atoum/atoum": "master-dev",
         "symfony/event-dispatcher": "@stable",
-        "symfony/symfony": "@stable"
+        "symfony/symfony": "~2.3.0"
     },
 	"autoload": {
         "psr-0": { "M6Web\\Bundle\\StatsdBundle\\": "src/" }
