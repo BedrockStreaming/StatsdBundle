@@ -45,16 +45,37 @@ class M6WebStatsdExtension extends Extension
             $definition->addMethodCall('addStatsdClient', array($serviceName, new Reference($serviceName)));
         }
         $container->setDefinition($serviceId, $definition);
+
+        if ($config['console_events']) {
+            $container
+                ->register(
+                    'm6.listener.statsd.console',
+                    'M6Web\Bundle\StatsdBundle\Listener\ConsoleListener'
+                )
+                ->addTag(
+                    'kernel.event_listener',
+                    ['event' => 'console.command', 'method' => 'onCommand']
+                )
+                ->addTag(
+                    'kernel.event_listener',
+                    ['event' => 'console.exception', 'method' => 'onException']
+                )
+                ->addTag(
+                    'kernel.event_listener',
+                    ['event' => 'console.terminate', 'method' => 'onTerminate']
+                )
+                ->addMethodCall('setEventDispatcher', [new Reference('event_dispatcher')]);
+        }
     }
 
     /**
      * Load a client configuration as a service in the container. A client can use multiple servers
      *
-     * @param ContainerInterface $container The container
-     * @param string             $alias     Alias of the client
-     * @param array              $config    Base config of the client
-     * @param array              $servers   List of available servers as describe in the config file
-     * @param boolean            $baseEvent Register base events
+     * @param ContainerInterface $container  The container
+     * @param string             $alias      Alias of the client
+     * @param array              $config     Base config of the client
+     * @param array              $servers    List of available servers as describe in the config file
+     * @param boolean            $baseEvents Register base events
      *
      * @return string the service name
      */

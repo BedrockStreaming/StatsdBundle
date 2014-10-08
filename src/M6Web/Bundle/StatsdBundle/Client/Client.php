@@ -3,6 +3,7 @@
 namespace M6Web\Bundle\StatsdBundle\Client;
 
 use M6Web\Component\Statsd\Client as BaseClient;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Class that extends base statsd client, to handle auto-increment from event dispatcher notifications
@@ -123,7 +124,9 @@ class Client extends BaseClient
      */
     private static function replaceInNodeFormMethod($event, $node)
     {
-        $propertyAccessor = \Symfony\Component\PropertyAccess\PropertyAccess::getPropertyAccessor();
+        $propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
+            ->enableMagicCall()
+            ->getPropertyAccessor();
 
         if (preg_match_all('/<([^>]*)>/', $node, $matches) > 0) {
             $tokens = $matches[1];
