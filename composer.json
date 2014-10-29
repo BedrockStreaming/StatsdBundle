@@ -34,6 +34,6 @@
         "symfony/symfony": "~2.3.0"
     },
 	"autoload": {
-        "psr-0": { "M6Web\\Bundle\\StatsdBundle\\": "src/" }
+        "psr-4": { "M6Web\\Bundle\\StatsdBundle\\": "src/" }
     }
 }
