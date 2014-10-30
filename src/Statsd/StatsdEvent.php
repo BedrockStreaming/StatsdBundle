@@ -4,6 +4,9 @@ namespace M6Web\Bundle\StatsdBundle\Statsd;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
+/**
+ * Event for this bundle event dispatching
+ */
 class StatsdEvent extends GenericEvent
 {
     /**
