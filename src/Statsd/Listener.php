@@ -19,7 +19,8 @@ class Listener
     /**
      * Construct the listener, injecting the statsd client service
      *
-     * @param Client $statsdClient The statsd client service
+     * @param Client                   $statsdClient    The statsd client service
+     * @param EventDispatcherInterface $eventDispatcher Event dispatcher to use
      */
     public function __construct(Client $statsdClient, EventDispatcherInterface $eventDispatcher)
     {

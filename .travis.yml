@@ -10,4 +10,5 @@ before_script:
   - php composer.phar install --dev
 
 script:
+  - vendor/bin/coke
   - vendor/bin/atoum

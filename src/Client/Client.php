@@ -82,7 +82,7 @@ class Client extends BaseClient
     /**
      * getEventValue
      *
-     * @param Event $event
+     * @param Event  $event
      * @param string $method
      *
      * @return mixed
