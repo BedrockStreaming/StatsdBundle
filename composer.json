@@ -1,18 +1,10 @@
 {
     "name": "m6web/statsd-bundle",
-    "description" : "bundle permettant d'utiliser Statsd",
+    "description" : "Add statds metrics in your sf2 app. Allow you to bind metrics on any sf2 event.",
     "type": "symfony-bundle",
     "license": "MIT",
     "keywords": ["symfony", "bundle", "statsd", "m6web"],
     "authors": [
-        {
-            "name": "Olivier Mansour",
-            "email": "olivier.mansour@m6.fr"
-        },
-        {
-            "name": "Vincent Bouzeran",
-            "email": "vincent.bouzeran@elao.com"
-        },
         {
             "name": "M6Web",
             "email": "opensource@m6web.fr",
