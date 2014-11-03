@@ -7,3 +7,8 @@ StatsdBundle [![Build Status](https://travis-ci.org/M6Web/StatsdBundle.png?branc
  * [installation] (doc/installation.md)
  * [usage] (doc/usage.md)
  * [faq](doc/faq.md)
+ * [contributing](CONTRIBUTING.md)
+
+## License
+
+M6WebStatsdBundle is licensed under the [MIT license](LICENSE).
