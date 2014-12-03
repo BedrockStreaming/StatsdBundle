@@ -26,25 +26,44 @@ class M6WebStatsdExtension extends Extension
         $servers       = isset($config['servers']) ? $config['servers'] : array();
         $clients       = isset($config['clients']) ? $config['clients'] : array();
 
-        $serviceId  = 'm6.data_collector.statsd';
-        $definition = new Definition('M6Web\Bundle\StatsdBundle\DataCollector\StatsdDataCollector');
-
-        $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
-        $definition->addTag('data_collector', array(
-            'template' => 'M6WebStatsdBundle:Collector:statsd',
-            'id'       => 'statsd'
-        ));
-
-        $definition->addTag('kernel.event_listener', array(
-            'event'  => 'kernel.response',
-            'method' => 'onKernelResponse'
-        ));
-
+        $clientServiceNames = [];
         foreach ($clients as $alias => $clientConfig) {
-            $serviceName = $this->loadClient($container, $alias, $clientConfig, $servers, $config['base_collectors']);
-            $definition->addMethodCall('addStatsdClient', array($serviceName, new Reference($serviceName)));
+            // load client in the container
+            $clientServiceNames[] = $this->loadClient(
+                $container,
+                $alias,
+                $clientConfig,
+                $servers,
+                $config['base_collectors']
+            );
         }
-        $container->setDefinition($serviceId, $definition);
+        if ($container->getParameter('kernel.debug')) {
+            $serviceId = 'm6.data_collector.statsd';
+            $definition = new Definition('M6Web\Bundle\StatsdBundle\DataCollector\StatsdDataCollector');
+
+            $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
+            $definition->addTag(
+                'data_collector',
+                array(
+                    'template' => 'M6WebStatsdBundle:Collector:statsd',
+                    'id' => 'statsd'
+                )
+            );
+
+            $definition->addTag(
+                'kernel.event_listener',
+                array(
+                    'event' => 'kernel.response',
+                    'method' => 'onKernelResponse'
+                )
+            );
+
+            foreach ($clientServiceNames as $serviceName) {
+                $definition->addMethodCall('addStatsdClient', array($serviceName, new Reference($serviceName)));
+            }
+
+            $container->setDefinition($serviceId, $definition);
+        }
 
         if ($config['console_events']) {
             $container
@@ -77,6 +96,7 @@ class M6WebStatsdExtension extends Extension
      * @param array              $servers    List of available servers as describe in the config file
      * @param boolean            $baseEvents Register base events
      *
+     * @throws InvalidConfigurationException
      * @return string the service name
      */
     protected function loadClient($container, $alias, array $config, array $servers, $baseEvents)
