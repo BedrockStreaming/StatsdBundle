@@ -60,9 +60,10 @@ For example, with the following configuration :
 ```yaml
 m6_statsd:
     clients:
-        events:
-            forum.read:
-                increment : mysite.forum.read
+        default:
+            events:
+                forum.read:
+                    increment : mysite.forum.read
 ```
 
 On the Symfony event dispatcher, when the ```forum.read``` event is fired, our statds client catch this event and add to this queue the increment on the ```mysite.forum.read``` node.
@@ -80,9 +81,10 @@ The resolution of the token will be based on a method or a propertie of the even
 ```yaml
 m6_statsd:
     clients:
-        events:
-            forum.read:
-                increment : mysite.forum.<name>.read
+        default:
+            events:
+                forum.read:
+                    increment : mysite.forum.<name>.read
 ```
 
 The event dispatched must have a getName method implemented or a $name public propertie.
@@ -92,13 +94,14 @@ You can also send count, set and gauge using this configuration:
 ```yaml
 m6_statsd:
     clients:
-        events:
-            forum.read:
-                count: mysite.forum.read
-            memory.used:
-                set: mysite.memory
-            gauge.event:
-                gauge: mysite.custom_gauge
+        default:
+            events:
+                forum.read:
+                    count: mysite.forum.read
+                memory.used:
+                    set: mysite.memory
+                gauge.event:
+                    gauge: mysite.custom_gauge
 ```
 
 The sent event must implements a ```getValue``` method
@@ -109,9 +112,10 @@ The sent event must implements a ```getValue``` method
 ```yaml
 m6_statsd:
     clients:
-        events:
-            action.longaction:
-                timing : timer.mysite.action
+        default:
+            events:
+                action.longaction:
+                    timing : timer.mysite.action
 ```
 
 In this case, we will add a timer on timer.mysite.action node (of course you can still use this notation : `timer.<site>.action`). The timer value will be the output of the `getTiming` method of the event.
@@ -119,9 +123,10 @@ In this case, we will add a timer on timer.mysite.action node (of course you can
 ```yaml
 m6_statsd:
     clients:
-        events:
-            action.longaction:
-                custom_timing : { node : timer.mysite.action, method : getRaoul }
+        default:
+            events:
+                action.longaction:
+                    custom_timing : { node : timer.mysite.action, method : getRaoul }
 ```
 
 The `custom_timing` allow you to set a custom method to collect the timer (here `getRaoul`).
@@ -131,14 +136,15 @@ The `custom_timing` allow you to set a custom method to collect the timer (here 
 ```yaml
 m6_statsd:
     clients:
-        events:
-            action.longaction:
-                custom_timing : { node : timer.mysite.action, method : getRaoul }
-                timing : timer.mysite.action
-                timing : timer.mysite.action2
-                increment : mysite.forum.<name>.read
-                increment : mysite.forum.<name>.read2
-                # ...
+        default:
+            events:
+                action.longaction:
+                    custom_timing : { node : timer.mysite.action, method : getRaoul }
+                    timing : timer.mysite.action
+                    timing : timer.mysite.action2
+                    increment : mysite.forum.<name>.read
+                    increment : mysite.forum.<name>.read2
+                    # ...
 ```
 
 ### Generic Event
@@ -157,10 +163,11 @@ In basic usage, the data is really sent to the StatsD servers during the `kernel
 ```yaml
 m6_statsd:
     clients:
-        events:
-            console.exception:
-                increment: mysite.command.<command.name>.exception
-                immediate_send: true
+        default:
+            events:
+                console.exception:
+                    increment: mysite.command.<command.name>.exception
+                    immediate_send: true
 ```
 
 ## Console custom events
@@ -185,11 +192,12 @@ For instance, if you want to monitor the execution duration or your commands, us
 m6_statsd:
     console_events: true
     clients:
-        events:
-            m6web.console.terminate:
-                custom_timing :
-                    node : timer.mysite.command.<underscoredCommandName>.duration
-                    method : getExecutionTime
+        default:
+            events:
+                m6web.console.terminate:
+                    custom_timing :
+                        node : timer.mysite.command.<underscoredCommandName>.duration
+                        method : getExecutionTime
 ```
 
 As you can see in the previous exemple, the event object also provide a `getUnderscoredCommandName`. This method return the command name with colons replaced by underscores. This can be usefull because statsd use colon as separator.
