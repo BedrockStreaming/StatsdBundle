@@ -60,9 +60,10 @@ For example, with the following configuration :
 ```yaml
 m6_statsd:
     clients:
-        events:
-            forum.read:
-                increment : mysite.forum.read
+        default:
+            events:
+                forum.read:
+                    increment : mysite.forum.read
 ```
 
 On the Symfony event dispatcher, when the ```forum.read``` event is fired, our statds client catch this event and add to this queue the increment on the ```mysite.forum.read``` node.
