@@ -17,13 +17,13 @@ m6_statsd:
         serv2:
             address: 'udp://lolcaThost'
             port:     1236
-        clients:
-            default:
-                servers:   ["default"]        # the 'default' client will use only the default server
-            swag:
-                servers:   ["serv1", "serv2"] # the 'swag' client will use serv1 OR serv2 to send the datas
-            mighty:
-                servers: ['all'] # use all servers configured
+    clients:
+        default:
+            servers:   ["default"]        # the 'default' client will use only the default server
+        swag:
+            servers:   ["serv1", "serv2"] # the 'swag' client will use serv1 OR serv2 to send the datas
+        mighty:
+            servers: ['all'] # use all servers configured
 ```
 
 
