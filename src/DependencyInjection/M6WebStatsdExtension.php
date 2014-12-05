@@ -38,7 +38,6 @@ class M6WebStatsdExtension extends Extension
             );
         }
         if ($container->getParameter('kernel.debug')) {
-            $serviceId = 'm6.data_collector.statsd';
             $definition = new Definition('M6Web\Bundle\StatsdBundle\DataCollector\StatsdDataCollector');
 
             $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
@@ -62,7 +61,7 @@ class M6WebStatsdExtension extends Extension
                 $definition->addMethodCall('addStatsdClient', array($serviceName, new Reference($serviceName)));
             }
 
-            $container->setDefinition($serviceId, $definition);
+            $container->setDefinition('m6.data_collector.statsd', $definition);
         }
 
         if ($config['console_events']) {
