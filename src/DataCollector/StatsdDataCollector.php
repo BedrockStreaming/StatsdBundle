@@ -19,8 +19,8 @@ class StatsdDataCollector extends DataCollector
      */
     public function __construct()
     {
-        $this->statsdClients      = array();
-        $this->data['clients']    = array();
+        $this->statsdClients      = [];
+        $this->data['clients']    = [];
         $this->data['operations'] = 0;
     }
 
@@ -33,22 +33,22 @@ class StatsdDataCollector extends DataCollector
     {
         if (HttpKernelInterface::MASTER_REQUEST == $event->getRequestType()) {
             foreach ($this->statsdClients as $clientName => $client) {
-                $clientInfo = array(
+                $clientInfo = [
                     'name'       => $clientName,
-                    'operations' => array()
-                );
+                    'operations' => []
+                ];
                 foreach ($client->getToSend() as $serverKey => $operation) {
                     $this->data['operations']++;
                     $message = $operation['message'];
 
                     if ($operation) {
-                        $clientInfo['operations'][] = array(
+                        $clientInfo['operations'][] = [
                             'server' => $serverKey,
                             'node'   => $message->getNode(),
                             'value'  => $message->getValue(),
                             'sample' => $message->getSampleRate(),
                             'unit'   => $message->getUnit()
-                        );
+                        ];
                     }
                 }
                 $this->data['clients'][] = $clientInfo;
