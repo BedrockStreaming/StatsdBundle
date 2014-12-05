@@ -1,0 +1,8 @@
+m6_statsd:
+    servers:
+        default:
+            address: 'udp://localhost'
+            port:     1234
+    clients:
+        default:
+            servers:   ["default"]
