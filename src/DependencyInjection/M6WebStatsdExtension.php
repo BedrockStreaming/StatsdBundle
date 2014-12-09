@@ -23,8 +23,8 @@ class M6WebStatsdExtension extends Extension
     {
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
-        $servers       = isset($config['servers']) ? $config['servers'] : array();
-        $clients       = isset($config['clients']) ? $config['clients'] : array();
+        $servers       = isset($config['servers']) ? $config['servers'] : [];
+        $clients       = isset($config['clients']) ? $config['clients'] : [];
 
         $clientServiceNames = [];
         foreach ($clients as $alias => $clientConfig) {
@@ -100,9 +100,9 @@ class M6WebStatsdExtension extends Extension
      */
     protected function loadClient($container, $alias, array $config, array $servers, $baseEvents)
     {
-        $usedServers    = array();
+        $usedServers    = [];
         $events         = $config['events'];
-        $matchedServers = array();
+        $matchedServers = [];
 
         if ($config['servers'][0] == 'all') {
             // Use all servers
