@@ -23,7 +23,9 @@ m6_statsd:
         swag:
             servers:   ["serv1", "serv2"] # the 'swag' client will use serv1 OR serv2 to send the datas
         mighty:
-            servers: ['all'] # use all servers configured
+            servers: ["all"] # use all servers configured
+        shell_patern:
+            servers: ["s?rv*"] # use servers aliases matching given pattern, here "serv1" and "serv2"
 ```
 
 
