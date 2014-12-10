@@ -84,7 +84,8 @@ class M6WebStatsdExtension extends atoum\test
                 ->container
                 ->getDefinition(sprintf('m6_statsd.%s', $service))
             )
-            ->array($servers = array_pop($definition->getArguments()))
+            ->array($arguments = $definition->getArguments())
+            ->array($servers = array_pop($arguments))
         ;
 
         foreach ($expectedServers as $key => $expectedServer) {
