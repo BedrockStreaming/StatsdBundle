@@ -1,0 +1,33 @@
+m6_statsd:
+    servers:
+        bar:
+            address: 'udp://bar'
+            port:     1234
+        barfoo:
+            address: 'udp://barfoo'
+            port:     1234
+        foo:
+            address: 'udp://foo'
+            port:     1234
+        foobar:
+            address: 'udp://foobar'
+            port:     1234
+        fooa:
+            address: 'udp://fooa'
+            port:     1234
+        foob:
+            address: 'udp://foob'
+            port:     1234
+    clients:
+        wildcard_foo:
+            servers: ["foo*"]
+        all:
+            servers: ["foo*", "bar*"]
+        all_bis:
+            servers: ["all"]
+        foo_plusonechar:
+            servers: ["foo?"]
+        foo_ab:
+            servers: ["foo[ab]"]
+        complex_ab:
+            servers: ["f[oe]?[ab]"]

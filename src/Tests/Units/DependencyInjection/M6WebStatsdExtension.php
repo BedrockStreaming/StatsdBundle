@@ -21,10 +21,7 @@ class M6WebStatsdExtension extends atoum\test
      */
     protected $container;
 
-    /**
-     *
-     */
-    protected function initContainer()
+    protected function initContainer($resource, $debug = false)
     {
         $this->extension = new BaseM6WebStatsdExtension();
 
@@ -32,6 +29,10 @@ class M6WebStatsdExtension extends atoum\test
         $this->container->register('event_dispatcher', new EventDispatcher());
         $this->container->registerExtension($this->extension);
 
+        $this->loadConfiguration($this->container, $resource);
+
+        $this->container->setParameter('kernel.debug', $debug);
+        $this->container->compile();
     }
 
     /**
@@ -46,10 +47,7 @@ class M6WebStatsdExtension extends atoum\test
 
     public function testBasicConfiguration()
     {
-        $this->initContainer();
-        $this->loadConfiguration($this->container, 'basic_config');
-        $this->container->setParameter('kernel.debug', true);
-        $this->container->compile();
+        $this->initContainer('basic_config', true);
 
         $this->assert
             ->boolean($this->container->has('m6_statsd'))
@@ -67,14 +65,45 @@ class M6WebStatsdExtension extends atoum\test
 
     public function testBasicConfigurationWithoutKernelDebug()
     {
-        $this->initContainer();
-        $this->loadConfiguration($this->container, 'basic_config');
-        $this->container->setParameter('kernel.debug', false);
-        $this->container->compile();
+        $this->initContainer('basic_config');
 
         $this->assert
             ->boolean($this->container->has('m6.data_collector.statsd'))
                 ->isIdenticalTo(false);
     }
 
+    /**
+     * @dataProvider shellPatternConfigDataProvider
+     */
+    public function testShellPatternConfig($service, $expectedServers)
+    {
+        $this->initContainer('shell_pattern');
+
+        $this
+            ->object($definition = $this
+                ->container
+                ->getDefinition(sprintf('m6_statsd.%s', $service))
+            )
+            ->array($servers = array_pop($definition->getArguments()))
+        ;
+
+        foreach ($expectedServers as $key => $expectedServer) {
+            $this
+                ->string($servers[$key]['address'])
+                    ->isEqualTo(sprintf('udp://%s', $expectedServer));
+        }
+    }
+
+    public function shellPatternConfigDataProvider()
+    {
+        return [
+            ['wildcard_foo',     ['foo', 'foobar', 'fooa', 'foob']],
+            ['all',              ['foo', 'foobar', 'fooa', 'foob', 'bar', 'barfoo']],
+            ['all_bis',          ['bar', 'barfoo', 'foo', 'foobar', 'fooa', 'foob']],
+            ['foo_plusonechar',  ['fooa', 'foob']],
+            ['foo_ab',           ['fooa', 'foob']],
+            ['complex_ab',       ['fooa', 'foob']]
+
+        ];
+    }
 }
