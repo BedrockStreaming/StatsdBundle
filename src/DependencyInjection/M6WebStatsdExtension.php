@@ -43,22 +43,22 @@ class M6WebStatsdExtension extends Extension
             $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
             $definition->addTag(
                 'data_collector',
-                array(
+                [
                     'template' => 'M6WebStatsdBundle:Collector:statsd',
                     'id' => 'statsd'
-                )
+                ]
             );
 
             $definition->addTag(
                 'kernel.event_listener',
-                array(
+                [
                     'event' => 'kernel.response',
                     'method' => 'onKernelResponse'
-                )
+                ]
             );
 
             foreach ($clientServiceNames as $serviceName) {
-                $definition->addMethodCall('addStatsdClient', array($serviceName, new Reference($serviceName)));
+                $definition->addMethodCall('addStatsdClient', [$serviceName, new Reference($serviceName)]);
             }
 
             $container->setDefinition('m6.data_collector.statsd', $definition);
@@ -139,10 +139,10 @@ class M6WebStatsdExtension extends Extension
 
         // Matched server congurations
         foreach ($matchedServers as $serverAlias) {
-            $usedServers[] = array(
+            $usedServers[] = [
                 'address' => $servers[$serverAlias]['address'],
                 'port'    => $servers[$serverAlias]['port']
-            );
+            ];
         }
 
         // Add the statsd client configured
@@ -152,8 +152,8 @@ class M6WebStatsdExtension extends Extension
         $definition->addArgument($usedServers);
 
         foreach ($events as $eventName => $eventConfig) {
-            $definition->addTag('kernel.event_listener', array('event' => $eventName, 'method' => 'handleEvent'));
-            $definition->addMethodCall('addEventToListen', array($eventName, $eventConfig));
+            $definition->addTag('kernel.event_listener', ['event' => $eventName, 'method' => 'handleEvent']);
+            $definition->addMethodCall('addEventToListen', [$eventName, $eventConfig]);
         }
 
         $container->setDefinition($serviceId, $definition);
@@ -163,23 +163,23 @@ class M6WebStatsdExtension extends Extension
         $definition = new Definition('M6Web\Bundle\StatsdBundle\Statsd\Listener');
         $definition->addArgument(new Reference($serviceId));
         $definition->addArgument(new Reference('event_dispatcher'));
-        $definition->addTag('kernel.event_listener', array(
+        $definition->addTag('kernel.event_listener', [
             'event'    => 'kernel.terminate',
             'method'   => 'onKernelTerminate',
             'priority' => -100
-        ));
+        ]);
 
         if ($baseEvents) {
-            $definition->addTag('kernel.event_listener', array(
+            $definition->addTag('kernel.event_listener', [
                 'event' => 'kernel.terminate',
                 'method' => 'onKernelTerminateEvents',
                 'priority' => 0
-            ));
-            $definition->addTag('kernel.event_listener', array(
+            ]);
+            $definition->addTag('kernel.event_listener', [
                 'event' => 'kernel.exception',
                 'method' => 'onKernelException',
                 'priority' => 0
-            ));
+            ]);
         }
         $container->setDefinition($serviceListenerId, $definition);
 
