@@ -148,7 +148,7 @@ m6_statsd:
 ```
 
 ### Generic Event
-You can use the [StatsdEvent](src/M6Web/Bundle/StatsdBundle/Statsd/StatsdEvent.php) class to trigger your basic events.
+You can use the [StatsdEvent](https://github.com/M6Web/StatsdBundle/blob/master/src/Statsd/StatsdEvent.php) class to trigger your basic events.
 
 ```php
 $this->get('event_dispatcher')
