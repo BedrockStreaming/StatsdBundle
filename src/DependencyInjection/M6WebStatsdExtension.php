@@ -58,7 +58,7 @@ class M6WebStatsdExtension extends Extension
             );
 
             foreach ($clientServiceNames as $serviceName) {
-                $definition->addMethodCall('addStatsdClient', array($serviceName, new Reference($serviceName)));
+                $definition->addMethodCall('addStatsdClient', [$serviceName, new Reference($serviceName)]);
             }
 
             $container->setDefinition('m6.data_collector.statsd', $definition);
@@ -100,34 +100,51 @@ class M6WebStatsdExtension extends Extension
      */
     protected function loadClient($container, $alias, array $config, array $servers, $baseEvents)
     {
-        $usedServers = [];
-        $events      = $config['events'];
+        $usedServers    = [];
+        $events         = $config['events'];
+        $matchedServers = [];
 
         if ($config['servers'][0] == 'all') {
-            // use all servers
-            foreach ($servers as $server) {
-                $usedServers[] = [
-                    'address' => $server['address'],
-                    'port'    => $server['port']
-                ];
-            }
+            // Use all servers
+            $matchedServers = array_keys($servers);
         } else {
-            // configure only declared servers
+            // Use only declared servers
             foreach ($config['servers'] as $serverAlias) {
-                if (!isset($servers[$serverAlias])) {
-                    $message = 'M6WebStatsd client ' . $alias .
-                        ' used server ' . $serverAlias .
-                        ' which is not defined in the servers section';
-                    throw new InvalidConfigurationException($message);
-                } else {
-                    $serverConfig = $servers[$serverAlias];
-                    $usedServers[] = [
-                        'address' => $serverConfig['address'],
-                        'port'    => $serverConfig['port']
-                    ];
+
+                // Named server
+                if (array_key_exists($serverAlias, $servers)) {
+                    $matchedServers[] = $serverAlias;
+                    continue;
+                }
+
+                // Search matchning server config name
+                $found = false;
+                foreach (array_keys($servers) as $key) {
+                    if (fnmatch($serverAlias, $key)) {
+                        $matchedServers[] = $key;
+                        $found            = true;
+                    }
+                }
+
+                // No server found
+                if (!$found) {
+                    throw new InvalidConfigurationException(sprintf(
+                        'M6WebStatsd client %s used server %s which is not defined in the servers section',
+                        $alias,
+                        $serverAlias
+                    ));
                 }
             }
         }
+
+        // Matched server congurations
+        foreach ($matchedServers as $serverAlias) {
+            $usedServers[] = [
+                'address' => $servers[$serverAlias]['address'],
+                'port'    => $servers[$serverAlias]['port']
+            ];
+        }
+
         // Add the statsd client configured
         $serviceId  = ($alias == 'default') ? 'm6_statsd' : 'm6_statsd.'.$alias;
         $definition = new Definition('M6Web\Bundle\StatsdBundle\Client\Client');
@@ -150,19 +167,19 @@ class M6WebStatsdExtension extends Extension
             'event'    => 'kernel.terminate',
             'method'   => 'onKernelTerminate',
             'priority' => -100
-            ]);
+        ]);
 
         if ($baseEvents) {
             $definition->addTag('kernel.event_listener', [
                 'event' => 'kernel.terminate',
                 'method' => 'onKernelTerminateEvents',
                 'priority' => 0
-                ]);
+            ]);
             $definition->addTag('kernel.event_listener', [
                 'event' => 'kernel.exception',
                 'method' => 'onKernelException',
                 'priority' => 0
-                ]);
+            ]);
         }
         $container->setDefinition($serviceListenerId, $definition);
 
