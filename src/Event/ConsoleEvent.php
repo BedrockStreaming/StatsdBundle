@@ -94,6 +94,19 @@ abstract class ConsoleEvent extends Event
     }
 
     /**
+     * Get peak memory usage
+     *
+     * @return int
+     */
+    public function getPeakMemory()
+    {
+        $memory = memory_get_peak_usage(true);
+        $memory = ($memory > 1024 ? intval($memory / 1024) : 0);
+
+        return $memory;
+    }
+
+    /**
      * @return BaseConsoleEvent
      */
     public function getOriginalEvent()
