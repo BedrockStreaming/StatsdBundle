@@ -39,10 +39,10 @@ class Client extends BaseClient
      * Handle an event
      *
      * @param EventInterface $event an event
+     * @param string         $name the event name
      */
-    public function handleEvent($event)
+    public function handleEvent($event, $name)
     {
-        $name = $event->getName();
         if (!isset($this->listenedEvents[$name])) {
             return;
         }
@@ -53,20 +53,20 @@ class Client extends BaseClient
         foreach ($config as $conf => $confValue) {
             // increment
             if ('increment' === $conf) {
-                $this->increment(self::replaceInNodeFormMethod($event, $confValue));
+                $this->increment(self::replaceInNodeFormMethod($event, $name, $confValue));
             } elseif ('count' === $conf) {
                 $value = $this->getEventValue($event, 'getValue');
-                $this->count(self::replaceInNodeFormMethod($event, $confValue), $value);
+                $this->count(self::replaceInNodeFormMethod($event, $name, $confValue), $value);
             } elseif ('gauge' === $conf) {
                 $value = $this->getEventValue($event, 'getValue');
-                $this->gauge(self::replaceInNodeFormMethod($event, $confValue), $value);
+                $this->gauge(self::replaceInNodeFormMethod($event, $name, $confValue), $value);
             } elseif ('set' === $conf) {
                 $value = $this->getEventValue($event, 'getValue');
-                $this->set(self::replaceInNodeFormMethod($event, $confValue), $value);
+                $this->set(self::replaceInNodeFormMethod($event, $name, $confValue), $value);
             } elseif ('timing' === $conf) {
-                $this->addTiming($event, 'getTiming', self::replaceInNodeFormMethod($event, $confValue));
+                $this->addTiming($event, 'getTiming', self::replaceInNodeFormMethod($event, $name, $confValue));
             } elseif (('custom_timing' === $conf) and is_array($confValue)) {
-                $this->addTiming($event, $confValue['method'], self::replaceInNodeFormMethod($event, $confValue['node']));
+                $this->addTiming($event, $confValue['method'], self::replaceInNodeFormMethod($event, $name, $confValue['node']));
             } elseif ('immediate_send' === $conf) {
                 $immediateSend = $confValue;
             } else {
@@ -118,15 +118,19 @@ class Client extends BaseClient
      * Replaces a string with a method name
      *
      * @param EventInterface $event An event
+     * @param string         $eventName The name of the event
      * @param string         $node  The node in which the replacing will happen
      *
      * @return string
      */
-    private static function replaceInNodeFormMethod($event, $node)
+    private static function replaceInNodeFormMethod($event, $eventName, $node)
     {
         $propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
             ->enableMagicCall()
             ->getPropertyAccessor();
+
+        // `event->getName()` is deprecated, we have to replace <name> directly with $eventName
+        $node = str_replace('<name>', $eventName, $node);
 
         if (preg_match_all('/<([^>]*)>/', $node, $matches) > 0) {
             $tokens = $matches[1];

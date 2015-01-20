@@ -33,13 +33,12 @@ class Client extends atoum\test
         $client = $this->getMockedClient();
 
         $event = new \Symfony\Component\EventDispatcher\Event();
-        $event->setName('test');
 
         $client->addEventToListen('test', array(
             'increment' => 'stats.<name>'
         ));
 
-        $this->if($client->handleEvent($event))
+        $this->if($client->handleEvent($event, 'test'))
             ->then
             ->mock($client)
                 ->call('increment')
@@ -59,14 +58,13 @@ class Client extends atoum\test
         $client = $this->getMockedClient();
 
         $event = new \Symfony\Component\EventDispatcher\Event();
-        $event->setName('test');
 
         $client->addEventToListen('test', array(
             'increment'      => 'stats.<name>',
             'immediate_send' => true,
         ));
 
-        $this->if($client->handleEvent($event))
+        $this->if($client->handleEvent($event, 'test'))
             ->then
                 ->mock($client)
                     ->call('increment')
@@ -90,9 +88,8 @@ class Client extends atoum\test
 
         $this->exception(function () use ($client) {
             $event = new \Symfony\Component\EventDispatcher\Event();
-            $event->setName('test');
 
-            $client->handleEvent($event);
+            $client->handleEvent($event, 'test');
         });
     }
 
@@ -109,9 +106,8 @@ class Client extends atoum\test
 
         $this->exception(function () use ($client) {
             $event = new \Symfony\Component\EventDispatcher\Event();
-            $event->setName('test');
 
-            $client->handleEvent($event);
+            $client->handleEvent($event, 'test');
         });
 
         $client = $this->getMockedClient();
@@ -122,9 +118,8 @@ class Client extends atoum\test
 
         $this->exception(function () use ($client) {
             $event = new \Symfony\Component\EventDispatcher\Event();
-            $event->setName('test');
 
-            $client->handleEvent($event);
+            $client->handleEvent($event, 'test');
         });
 
     }
@@ -141,13 +136,12 @@ class Client extends atoum\test
         ));
 
         $event = new Event();
-        $event->setName('test');
 
         $client->addEventToListen('test', array(
             'timing' => 'stats.<name>'
         ));
 
-        $this->if($client->handleEvent($event))
+        $this->if($client->handleEvent($event, 'test'))
             ->then
             ->mock($client)
                 ->call('timing')
@@ -168,13 +162,12 @@ class Client extends atoum\test
         ));
 
         $event = new Event();
-        $event->setName('test');
 
         $client->addEventToListen('test', array(
             'custom_timing' => array('node' => 'stats.<name>', 'method' => 'getMemory')
         ));
 
-        $this->if($client->handleEvent($event))
+        $this->if($client->handleEvent($event, 'test'))
             ->then
             ->mock($client)
                 ->call('timing')
