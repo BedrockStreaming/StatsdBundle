@@ -3,6 +3,7 @@
 namespace M6Web\Bundle\StatsdBundle\Tests\Units\Client;
 
 use mageekguy\atoum;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
 * Client class
@@ -174,4 +175,55 @@ class Client extends atoum\test
                     ->withArguments('stats.test', 102)
                     ->once();
     }
+
+    /**
+     * Test that the handleEvent method sends a timing for a configured event
+     */
+    public function testHandleEventCallsConfiguredTiming()
+    {
+        $client = $this->getMockedClient();
+        $client->addEventToListen('test.event.name', [
+            'timing' => 'my.statsd.node'
+        ]);
+        $client->getMockController()->timing = function() {};
+
+        $event = new Event();
+
+        $dispatcher = new EventDispatcher();
+        $dispatcher->addListener('test.event.name', [$client, 'handleEvent']);
+
+        $this
+            ->if($dispatcher->dispatch('test.event.name', $event))
+                ->mock($client)
+                    ->call('timing')
+                        ->withArguments('my.statsd.node', 101, 1.0)
+                        ->once();
+
+    }
+
+    /**
+     * Test that the handleEvent method don't send a timing for a non-configured event
+     */
+    public function testHandleEventDontCallTimingOnUnconfiguredEvent()
+    {
+        $client = $this->getMockedClient();
+        $client->addEventToListen('test.event.name', [
+            'timing' => 'my.statsd.node'
+        ]);
+        $client->getMockController()->timing = function() {};
+
+        $event = new Event();
+
+        $dispatcher = new EventDispatcher();
+        $dispatcher->addListener('test.event.name', [$client, 'handleEvent']);
+
+        $this
+            ->if($dispatcher->dispatch('test.event.other.name', $event))
+                ->mock($client)
+                    ->call('timing')
+                    ->never();
+
+    }
+
+
 }

@@ -2,7 +2,7 @@
 
 namespace M6Web\Bundle\StatsdBundle\Tests\Units\Client;
 
-class Event
+class Event extends \Symfony\Component\EventDispatcher\Event
 {
     private $name = '';
 
