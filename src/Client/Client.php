@@ -41,8 +41,13 @@ class Client extends BaseClient
      * @param EventInterface $event an event
      * @param string         $name the event name
      */
-    public function handleEvent($event, $name)
+    public function handleEvent($event, $name = null)
     {
+        // this is used to stay compatible with Symfony 2.3
+        if (is_null($name)) {
+            $name = $event->getName();
+        }
+
         if (!isset($this->listenedEvents[$name])) {
             return;
         }
