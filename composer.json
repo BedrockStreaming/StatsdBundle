@@ -22,8 +22,7 @@
     },
     "require-dev": {
         "atoum/atoum": "@stable",
-        "symfony/event-dispatcher": "@stable",
-        "symfony/symfony": "~2.3",
+        "symfony/symfony": "2.3",
         "m6web/coke" : "~1.2",
         "m6web/symfony2-coding-standard" : "~1.2"
     },
