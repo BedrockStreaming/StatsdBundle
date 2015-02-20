@@ -77,6 +77,40 @@ class Client extends atoum\test
     }
 
     /**
+     * Test handleEvent with to send limit
+     */
+    public function testHandleEventWithToSendLimit()
+    {
+        $client = $this->getMockedClient();
+        $client->setToSendLimit(3);
+
+        $event = new \Symfony\Component\EventDispatcher\Event();
+
+        $queue = new \SPLQueue;
+
+        $client->getMockController()->increment = function($value) use ($queue) {
+            $queue->enqueue($value);
+        };
+        $client->getMockController()->getToSend = $queue;
+
+        $client->addEventToListen('test', array(
+            'increment' => 'stats.<name>',
+        ));
+
+        $this
+            ->if($client->handleEvent($event, 'test'))
+            ->then
+                ->mock($client)
+                    ->call('send')->never()
+            ->then($client->handleEvent($event, 'test'))
+                ->mock($client)
+                    ->call('send')->never()
+            ->then($client->handleEvent($event, 'test'))
+                ->mock($client)
+                    ->call('send')->once();
+    }
+
+    /**
      * test handle event with an invalid stats
      */
     public function testHandleEventWithInvalidConfigIncrement()
