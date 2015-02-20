@@ -84,7 +84,7 @@ class Configuration implements ConfigurationInterface
                                     ->end()
                                 ->end()
                             ->end()
-                            ->scalarNode('to_send_limit')->end()
+                            ->integerNode('to_send_limit')->min(1)->end()
                         ->end()
                     ->end()
                 ->end()
