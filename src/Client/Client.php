@@ -96,9 +96,7 @@ class Client extends BaseClient
         }
 
         if (null !== $this->toSendLimit && $this->getToSend()->count() >= $this->toSendLimit) {
-            $this->send();
-
-            return;
+            $immediateSend = true;
         }
 
         if ($immediateSend) {
