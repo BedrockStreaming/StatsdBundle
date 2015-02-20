@@ -92,22 +92,21 @@ class Client extends atoum\test
             $queue->enqueue($value);
         };
         $client->getMockController()->getToSend = $queue;
+        $client->getMockController()->send = function() use ($queue) {
+            while ($queue->count() > 0) {
+                $queue->dequeue();
+            }
+        };
 
         $client->addEventToListen('test', array(
             'increment' => 'stats.<name>',
         ));
 
-        $this
-            ->if($client->handleEvent($event, 'test'))
-            ->then
-                ->mock($client)
-                    ->call('send')->never()
-            ->then($client->handleEvent($event, 'test'))
-                ->mock($client)
-                    ->call('send')->never()
-            ->then($client->handleEvent($event, 'test'))
-                ->mock($client)
-                    ->call('send')->once();
+        for ($i = 1; $i <= 50; $i++) {
+            $this
+                ->if($client->handleEvent($event, 'test'))
+                ->mock($client)->call('send')->exactly(floor($i / 3));
+        }
     }
 
     /**
