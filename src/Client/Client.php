@@ -14,6 +14,8 @@ class Client extends BaseClient
 {
     protected $listenedEvents = array();
 
+    protected $toSendLimit;
+
     /**
      * getter for listenedEvents
      *
@@ -33,6 +35,20 @@ class Client extends BaseClient
     public function addEventToListen($eventName, $eventConfig)
     {
         $this->listenedEvents[$eventName] = $eventConfig;
+    }
+
+    /**
+     * Set toSend limit
+     *
+     * @param int $toSendLimit
+     *
+     * @return $this
+     */
+    public function setToSendLimit($toSendLimit)
+    {
+        $this->toSendLimit = $toSendLimit;
+
+        return $this;
     }
 
     /**
@@ -77,6 +93,10 @@ class Client extends BaseClient
             } else {
                 throw new Exception("configuration : ".$conf." not handled by the StatsdBundle or its value is in a wrong format.");
             }
+        }
+
+        if (null !== $this->toSendLimit && $this->getToSend()->count() >= $this->toSendLimit) {
+            $immediateSend = true;
         }
 
         if ($immediateSend) {

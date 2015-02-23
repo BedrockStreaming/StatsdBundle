@@ -172,6 +172,20 @@ m6_statsd:
                     immediate_send: true
 ```
 
+### To send limit
+
+You can define a limit for the queue size. When this limit is reached, the client automatically send data to the StatsD servers.
+
+```yaml
+m6_statsd:
+    clients:
+        default:
+            to_send_limit: 1000
+            events:
+                console.exception:
+                    increment: mysite.command.<command.name>.exception
+```
+
 ## Console custom events
 
 This bundle can trigger custom console events that allow to get command start time and execution duration.

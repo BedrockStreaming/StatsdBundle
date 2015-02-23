@@ -151,6 +151,10 @@ class M6WebStatsdExtension extends Extension
         $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
         $definition->addArgument($usedServers);
 
+        if (isset($config['to_send_limit'])) {
+            $definition->addMethodCall('setToSendLimit', array($config['to_send_limit']));
+        }
+
         foreach ($events as $eventName => $eventConfig) {
             $definition->addTag('kernel.event_listener', ['event' => $eventName, 'method' => 'handleEvent']);
             $definition->addMethodCall('addEventToListen', [$eventName, $eventConfig]);
