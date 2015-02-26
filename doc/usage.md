@@ -54,7 +54,7 @@ $this->get('m6_statsd')->send();
 
 ### Increments
 
-We don't really like mixing our business code with monitoring stuff. We prefer launch events with significant informations, listen to them, and send our monitoring stuffs in the listeners. The good news is that StastdBundle are doing it for you.
+We don't really like mixing our business code with monitoring stuff. We prefer to launch events with significant informations, listen to them, and send our monitoring stuffs in the listeners. The good news is that StatsdBundle is doing it for you.
 
 At each client level, you can specify events listened in order to build statsd increment or timing based on them.
 For example, with the following configuration :
@@ -68,7 +68,7 @@ m6_statsd:
                     increment : mysite.forum.read
 ```
 
-On the Symfony event dispatcher, when the ```forum.read``` event is fired, our statds client catch this event and add to this queue the increment on the ```mysite.forum.read``` node.
+On the Symfony event dispatcher, when the ```forum.read``` event is fired, our statsd client catches this event and adds to this queue the increment on the ```mysite.forum.read``` node.
 
 So you can now just fire the event from a controller :
 ```php
@@ -77,7 +77,7 @@ $this->get('event_dispatcher')->dispatch('forum.read', new Symfony\Component\Eve
 
 It's also possible to create tokens in the Symfony configuration, allowing you to pass custom value in the node.
 
-The resolution of the token will be based on a method or a propertie of the event given.
+The resolution of the token will be based on a method or a property of the event given.
 
 
 ```yaml
@@ -89,7 +89,7 @@ m6_statsd:
                     increment : mysite.forum.<name>.read
 ```
 
-The event dispatched must have a getName method implemented or a $name public propertie.
+The event dispatched must have a getName method implemented or a $name public property.
 
 ### Count, Set and Gauge
 You can also send count, set and gauge using this configuration:
@@ -106,7 +106,7 @@ m6_statsd:
                     gauge: mysite.custom_gauge
 ```
 
-The sent event must implements a ```getValue``` method
+The sent event must implement a ```getValue``` method
 
 
 ### Timers
@@ -131,7 +131,7 @@ m6_statsd:
                     custom_timing : { node : timer.mysite.action, method : getRaoul }
 ```
 
-The `custom_timing` allow you to set a custom method to collect the timer (here `getRaoul`).
+The `custom_timing` allows you to set a custom method to collect the timer (here `getRaoul`).
 
 **You can add multiple timing and increments under an event**
 
@@ -174,7 +174,7 @@ m6_statsd:
 
 ### To send limit
 
-You can define a limit for the queue size. When this limit is reached, the client automatically send data to the StatsD servers.
+You can define a limit for the queue size. When this limit is reached, the client automatically sends data to the StatsD servers.
 
 ```yaml
 m6_statsd:
@@ -197,7 +197,7 @@ m6_statsd:
     console_events: true
 ```
 
-Now, each time a command start, ends or throw ecxeption, one of the following events is triggered:
+Now, each time a command starts, ends or throws an exception, one of the following events is triggered:
 * `m6web.console.command`
 * `m6web.console.terminate`
 * `m6web.console.exception`
@@ -216,7 +216,7 @@ m6_statsd:
                         method : getExecutionTime
 ```
 
-As you can see in the previous exemple, the event object also provide a `getUnderscoredCommandName`. This method return the command name with colons replaced by underscores. This can be usefull because statsd use colon as separator.
+As you can see in the previous exemple, the event object also provides a `getUnderscoredCommandName` method. This method returns the command name with colons replaced by underscores. This can be useful because statsd uses colon as separator.
 
 These events also provide a `getTiming` method (which is an alias of `getExecutionTime`) that allow to use simple `timer` entry.
 
@@ -255,7 +255,7 @@ m6_statsd:
                     increment: "website.page_view"
 ```
 
-For now, those events are trigger:
+For now, those events are triggered:
 * statsd.memory_usage
 * statsd.time
 * statsd.exception
@@ -269,7 +269,7 @@ TODO
 
 use directly [the component on packagist](https://packagist.org/packages/m6web/statsd).
 
-(if you working with Zend Framework or whatever !)
+(if you are working with Zend Framework or whatever !)
 
 ```php
 use \M6Web\Component\Statsd;
