@@ -14,7 +14,6 @@
     "config": {
         "vendor-dir": "vendor"
     },
-    "minimum-stability" : "dev",
     "require": {
         "php": ">=5.4.0",
         "symfony/property-access" : ">=2.2",
@@ -22,11 +21,11 @@
     },
     "require-dev": {
         "atoum/atoum": "@stable",
-        "symfony/symfony": "2.3",
+        "symfony/symfony": "~2.3",
         "m6web/coke" : "~1.2",
         "m6web/symfony2-coding-standard" : "~1.2"
     },
-	"autoload": {
+    "autoload": {
         "psr-4": { "M6Web\\Bundle\\StatsdBundle\\": "src/" }
     }
 }
