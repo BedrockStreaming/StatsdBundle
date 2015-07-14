@@ -136,13 +136,15 @@ abstract class ConsoleEvent extends Event
      * @param float            $executionTime
      *
      * @return ConsoleEvent
+     *
+     * @throws \InvalidArgumentException
      */
     public static function createFromConsoleEvent(BaseConsoleEvent $e, $startTime = null, $executionTime = null)
     {
         if (static::support($e)) {
             return new static($e, $startTime, $executionTime);
         } else {
-            throw \InvalidArgumentException('Invalid envent type.');
+            throw \InvalidArgumentException('Invalid event type.');
         }
     }
 
