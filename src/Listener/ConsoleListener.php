@@ -6,6 +6,7 @@ use M6Web\Bundle\StatsdBundle\Event\ConsoleEvent;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Event\ConsoleEvent as BaseConsoleEvent;
+use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 
 /**
  * Listen to symfony command events
@@ -46,10 +47,15 @@ class ConsoleListener
     }
 
     /**
-     * @param BaseConsoleEvent $e
+     * @param ConsoleTerminateEvent $e
      */
-    public function onTerminate(BaseConsoleEvent $e)
+    public function onTerminate(ConsoleTerminateEvent $e)
     {
+        // For non-0 exit command, fire an ERROR event
+        if ($e->getExitCode() != 0) {
+            $this->dispatch(ConsoleEvent::ERROR, $e);
+        }
+
         $this->dispatch(ConsoleEvent::TERMINATE, $e);
     }
 

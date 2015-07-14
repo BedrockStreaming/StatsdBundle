@@ -50,6 +50,20 @@ class ConsoleListener extends atoum\test
                 ]
             ],
             [
+                'onTerminate',
+                new \Symfony\Component\Console\Event\ConsoleTerminateEvent($command, $input, $output, -1),
+                [
+                    [
+                        'name'  => ConsoleEvent::TERMINATE,
+                        'class' => 'M6Web\Bundle\StatsdBundle\Event\ConsoleTerminateEvent'
+                    ],
+                    [
+                        'name'  => ConsoleEvent::ERROR,
+                        'class' => 'M6Web\Bundle\StatsdBundle\Event\ConsoleTerminateEvent'
+                    ]
+                ]
+            ],
+            [
                 'onException',
                 new \Symfony\Component\Console\Event\ConsoleExceptionEvent($command, $input, $output, $exception, 0),
                 [
