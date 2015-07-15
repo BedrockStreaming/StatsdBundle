@@ -13,85 +13,107 @@ use M6Web\Bundle\StatsdBundle\Event\ConsoleEvent;
 */
 class ConsoleListener extends atoum\test
 {
-    protected $dispatcher;
-
-    public function getBaseInstance()
+    public function getMockedDispatcher()
     {
-        $listener   = new Base;
-
-        $this->dispatcher = new \mock\Symfony\Component\EventDispatcher\EventDispatcher;
-        $this->dispatcher->addListener(BaseConsoleEvent::COMMAND, [$listener, 'onCommand']);
-        $this->dispatcher->addListener(BaseConsoleEvent::TERMINATE, [$listener, 'onTerminate']);
-        $this->dispatcher->addListener(BaseConsoleEvent::EXCEPTION, [$listener, 'onException']);
-
-        $listener->setEventDispatcher($this->dispatcher);
-
-        return $listener;
-    }
-
-    public function triggerConsoleEvent($eventName, $eventClass)
-    {
-        $eventClass = '\mock\\'.$eventClass;
-
-        $this->mockGenerator->orphanize('__construct');
-        $this->mockGenerator->shuntParentClassCalls();
-
-        $event = new $eventClass;
-
-        $this->dispatcher->dispatch($eventName, $event);
+        return new \mock\Symfony\Component\EventDispatcher\EventDispatcher();
     }
 
     public function eventDataProvider()
     {
+        $this->mockGenerator->orphanize('__construct');
+        $this->mockGenerator->shuntParentClassCalls();
+
+        $command    = new \mock\Symfony\Component\Console\Command\Command;
+        $input      = new \mock\Symfony\Component\Console\Input\InputInterface;
+        $output     = new \mock\Symfony\Component\Console\Output\OutputInterface;
+        $exception  = new \mock\Exception();
+
         return [
             [
-                BaseConsoleEvent::COMMAND,
-                'Symfony\Component\Console\Event\ConsoleCommandEvent',
-                ConsoleEvent::COMMAND,
-                'M6Web\Bundle\StatsdBundle\Event\ConsoleCommandEvent'
+                'onCommand',
+                new \Symfony\Component\Console\Event\ConsoleCommandEvent($command, $input, $output),
+                [
+                    [
+                        'name'  => ConsoleEvent::COMMAND,
+                        'class' => 'M6Web\Bundle\StatsdBundle\Event\ConsoleCommandEvent'
+                    ]
+                ]
             ],
             [
-                BaseConsoleEvent::TERMINATE,
-                'Symfony\Component\Console\Event\ConsoleTerminateEvent',
-                ConsoleEvent::TERMINATE,
-                'M6Web\Bundle\StatsdBundle\Event\ConsoleTerminateEvent'
+                'onTerminate',
+                new \Symfony\Component\Console\Event\ConsoleTerminateEvent($command, $input, $output, 0),
+                [
+                    [
+                        'name'  => ConsoleEvent::TERMINATE,
+                        'class' => 'M6Web\Bundle\StatsdBundle\Event\ConsoleTerminateEvent'
+                    ]
+                ]
             ],
             [
-                BaseConsoleEvent::EXCEPTION,
-                'Symfony\Component\Console\Event\ConsoleExceptionEvent',
-                ConsoleEvent::EXCEPTION,
-                'M6Web\Bundle\StatsdBundle\Event\ConsoleExceptionEvent'
+                'onTerminate',
+                new \Symfony\Component\Console\Event\ConsoleTerminateEvent($command, $input, $output, -1),
+                [
+                    [
+                        'name'  => ConsoleEvent::TERMINATE,
+                        'class' => 'M6Web\Bundle\StatsdBundle\Event\ConsoleTerminateEvent'
+                    ],
+                    [
+                        'name'  => ConsoleEvent::ERROR,
+                        'class' => 'M6Web\Bundle\StatsdBundle\Event\ConsoleTerminateEvent'
+                    ]
+                ]
+            ],
+            [
+                'onException',
+                new \Symfony\Component\Console\Event\ConsoleExceptionEvent($command, $input, $output, $exception, 0),
+                [
+                    [
+                        'name'  => ConsoleEvent::EXCEPTION,
+                        'class' =>'M6Web\Bundle\StatsdBundle\Event\ConsoleExceptionEvent'
+                    ]
+                ]
             ],
         ];
     }
 
     /**
      * @dataProvider eventDataProvider
+     *
+     * @param string           $methodName  Method name to call
+     * @param BaseConsoleEvent $baseEvent   Event fired from Symfony console command
+     * @param array            $firedEvents Array who contains each new events fired from the $baseEvent dispatching
      */
-    public function testEvent($baseEvent, $baseEventClass, $newEvent, $newEventClass)
+    public function testEvent($methodName, $baseEvent, $firedEvents)
     {
-        $self     = $this;
-        $listener = $this->getBaseInstance();
+        $self = $this;
+        $dispatcher = $this->getMockedDispatcher();
 
+        // Check, during the event firing, that the event is created from base event
+        foreach($firedEvents as $firedEvent) {
+            $dispatcher
+                ->addListener(
+                    $firedEvent['name'],
+                    function ($event) use ($self, $baseEvent, $firedEvent) {
+                        $self
+                            ->object($event)
+                                ->isInstanceOf($firedEvent['class'])//
+                            ->object($event->getOriginalEvent())
+                                ->isIdenticalTo($baseEvent);
+                    }
+                );
+        }
+
+        // Here is the code to initialize and fire event, but real test is just above
         $this
-            ->dispatcher
-            ->addListener(
-                $newEvent,
-                function($event) use($self, $newEventClass) {
-                    $self
-                        ->object($event)
-                            ->isInstanceOf($newEventClass)
-                    ;
-                }
+            ->given(
+                $base = new Base(),
+                $base->setEventDispatcher($dispatcher)
             )
-        ;
-
-        $this->triggerConsoleEvent($baseEvent,$baseEventClass);
-
-        $this
-            ->mock($this->dispatcher)
-                ->call('dispatch')
-                    ->twice()
+            ->if($base->{$methodName}($baseEvent))
+            ->then
+                ->mock($dispatcher)
+                    ->call('dispatch')
+                        ->exactly(count($firedEvents))
         ;
     }
 }
