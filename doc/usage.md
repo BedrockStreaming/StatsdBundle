@@ -201,6 +201,7 @@ Now, each time a command starts, ends or throws an exception, one of the followi
 * `m6web.console.command`
 * `m6web.console.terminate`
 * `m6web.console.exception`
+* `m6web.console.error` (triggered when `exitCode != 0`)
 
 For instance, if you want to monitor the execution duration or your commands, use the following configuration:
 
