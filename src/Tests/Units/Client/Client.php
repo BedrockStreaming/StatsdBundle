@@ -4,6 +4,7 @@ namespace M6Web\Bundle\StatsdBundle\Tests\Units\Client;
 
 use mageekguy\atoum;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\PropertyAccess;
 
 /**
 * Client class
@@ -115,6 +116,8 @@ class Client extends atoum\test
     public function testHandleEventWithInvalidConfigIncrement()
     {
         $client = $this->getMockedClient();
+
+        $client->setPropertyAccessor(PropertyAccess\PropertyAccess::createPropertyAccessorBuilder()->enableMagicCall()->getPropertyAccessor());
 
         $client->addEventToListen('test', array(
             'increment' => 'stats.<toto>'

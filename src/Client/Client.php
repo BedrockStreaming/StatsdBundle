@@ -3,16 +3,20 @@
 namespace M6Web\Bundle\StatsdBundle\Client;
 
 use M6Web\Component\Statsd\Client as BaseClient;
-use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess;
 
 /**
  * Class that extends base statsd client, to handle auto-increment from event dispatcher notifications
  *
- * @author: Vincent Bouzeran <vincent.bouzeran@elao.com>
  */
 class Client extends BaseClient
 {
-    protected $listenedEvents = array();
+    protected $listenedEvents = [];
+
+    /**
+     * @var PropertyAccessInterface
+     */
+    protected $propertyAccessor;
 
     protected $toSendLimit;
 
@@ -52,10 +56,25 @@ class Client extends BaseClient
     }
 
     /**
+     * set the property accessor used in replaceInNodeFormMethod
+     * @param PropertyAccess\PropertyAccessorInterface $propertyAccessor
+     *
+     * @return $this
+     */
+    public function setPropertyAccessor(PropertyAccess\PropertyAccessorInterface $propertyAccessor)
+    {
+        $this->propertyAccessor = $propertyAccessor;
+
+        return $this;
+    }
+
+    /**
      * Handle an event
      *
      * @param EventInterface $event an event
-     * @param string         $name the event name
+     * @param string         $name  the event name
+     *
+     * @throws Exception
      */
     public function handleEvent($event, $name = null)
     {
@@ -74,20 +93,20 @@ class Client extends BaseClient
         foreach ($config as $conf => $confValue) {
             // increment
             if ('increment' === $conf) {
-                $this->increment(self::replaceInNodeFormMethod($event, $name, $confValue));
+                $this->increment($this->replaceInNodeFormMethod($event, $name, $confValue));
             } elseif ('count' === $conf) {
                 $value = $this->getEventValue($event, 'getValue');
-                $this->count(self::replaceInNodeFormMethod($event, $name, $confValue), $value);
+                $this->count($this->replaceInNodeFormMethod($event, $name, $confValue), $value);
             } elseif ('gauge' === $conf) {
                 $value = $this->getEventValue($event, 'getValue');
-                $this->gauge(self::replaceInNodeFormMethod($event, $name, $confValue), $value);
+                $this->gauge($this->replaceInNodeFormMethod($event, $name, $confValue), $value);
             } elseif ('set' === $conf) {
                 $value = $this->getEventValue($event, 'getValue');
-                $this->set(self::replaceInNodeFormMethod($event, $name, $confValue), $value);
+                $this->set($this->replaceInNodeFormMethod($event, $name, $confValue), $value);
             } elseif ('timing' === $conf) {
-                $this->addTiming($event, 'getTiming', self::replaceInNodeFormMethod($event, $name, $confValue));
+                $this->addTiming($event, 'getTiming', $this->replaceInNodeFormMethod($event, $name, $confValue));
             } elseif (('custom_timing' === $conf) and is_array($confValue)) {
-                $this->addTiming($event, $confValue['method'], self::replaceInNodeFormMethod($event, $name, $confValue['node']));
+                $this->addTiming($event, $confValue['method'], $this->replaceInNodeFormMethod($event, $name, $confValue['node']));
             } elseif ('immediate_send' === $conf) {
                 $immediateSend = $confValue;
             } else {
@@ -111,6 +130,7 @@ class Client extends BaseClient
      * @param string $method
      *
      * @return mixed
+     * @throws Exception
      */
     private function getEventValue($event, $method)
     {
@@ -148,20 +168,15 @@ class Client extends BaseClient
      *
      * @return string
      */
-    private static function replaceInNodeFormMethod($event, $eventName, $node)
+    private function replaceInNodeFormMethod($event, $eventName, $node)
     {
-        $propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
-            ->enableMagicCall()
-            ->getPropertyAccessor();
-
         // `event->getName()` is deprecated, we have to replace <name> directly with $eventName
         $node = str_replace('<name>', $eventName, $node);
 
-        if (preg_match_all('/<([^>]*)>/', $node, $matches) > 0) {
+        if ((preg_match_all('/<([^>]*)>/', $node, $matches) > 0) and ($this->propertyAccessor !== null)) {
             $tokens = $matches[1];
             foreach ($tokens as $token) {
-                $value = $propertyAccessor->getValue($event, $token);
-
+                $value = $this->propertyAccessor->getValue($event, $token);
                 $node = str_replace('<'.$token.'>', $value, $node);
             }
         }
