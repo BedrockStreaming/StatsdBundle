@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\PropertyAccess;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -152,13 +153,15 @@ class M6WebStatsdExtension extends Extension
         $definition->addArgument($usedServers);
 
         if (isset($config['to_send_limit'])) {
-            $definition->addMethodCall('setToSendLimit', array($config['to_send_limit']));
+            $definition->addMethodCall('setToSendLimit', [$config['to_send_limit']]);
         }
 
         foreach ($events as $eventName => $eventConfig) {
             $definition->addTag('kernel.event_listener', ['event' => $eventName, 'method' => 'handleEvent']);
             $definition->addMethodCall('addEventToListen', [$eventName, $eventConfig]);
         }
+
+        $definition->addMethodCall('setPropertyAccessor', [PropertyAccess\PropertyAccess::createPropertyAccessorBuilder()->enableMagicCall()->getPropertyAccessor()]);
 
         $container->setDefinition($serviceId, $definition);
 
