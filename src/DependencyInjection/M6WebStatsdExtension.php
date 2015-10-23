@@ -8,7 +8,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\PropertyAccess;
+use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\Config\FileLocator;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -26,6 +27,9 @@ class M6WebStatsdExtension extends Extension
         $config        = $this->processConfiguration($configuration, $configs);
         $servers       = isset($config['servers']) ? $config['servers'] : [];
         $clients       = isset($config['clients']) ? $config['clients'] : [];
+
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('services.yml');
 
         $clientServiceNames = [];
         foreach ($clients as $alias => $clientConfig) {
@@ -161,7 +165,7 @@ class M6WebStatsdExtension extends Extension
             $definition->addMethodCall('addEventToListen', [$eventName, $eventConfig]);
         }
 
-        $definition->addMethodCall('setPropertyAccessor', [PropertyAccess\PropertyAccess::createPropertyAccessorBuilder()->enableMagicCall()->getPropertyAccessor()]);
+        $definition->addMethodCall('setPropertyAccessor', [new Reference('property_accessor_statsd')]);
 
         $container->setDefinition($serviceId, $definition);
 

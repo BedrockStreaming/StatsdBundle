@@ -1,0 +1,7 @@
+parameters:
+    property_accessor.class: Symfony\Component\PropertyAccess\PropertyAccessor
+
+services:
+    property_accessor_statsd:
+        class: %property_accessor.class%
+        arguments: [true] # magical => true
