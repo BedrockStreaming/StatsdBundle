@@ -37,13 +37,14 @@ class StatsdDataCollector extends DataCollector
                     'name'       => $clientName,
                     'operations' => []
                 ];
-                foreach ($client->getToSend() as $serverKey => $operation) {
-                    $this->data['operations']++;
-                    $message = $operation['message'];
-
+                foreach ($client->getToSend() as $operation) {
                     if ($operation) {
+                        $this->data['operations']++;
+                        $message = $operation['message'];
+                        $serverKey = $operation['server'];
+
                         $clientInfo['operations'][] = [
-                            'server' => $serverKey,
+                            'server' => $operation['server'],
                             'node'   => $message->getNode(),
                             'value'  => $message->getValue(),
                             'sample' => $message->getSampleRate(),
