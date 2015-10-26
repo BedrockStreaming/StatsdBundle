@@ -165,7 +165,7 @@ class M6WebStatsdExtension extends Extension
             $definition->addMethodCall('addEventToListen', [$eventName, $eventConfig]);
         }
 
-        $definition->addMethodCall('setPropertyAccessor', [new Reference('property_accessor_statsd')]);
+        $definition->addMethodCall('setPropertyAccessor', [new Reference('property_accessor_statsdbundle')]);
 
         $container->setDefinition($serviceId, $definition);
 
