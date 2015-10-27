@@ -1,0 +1,8 @@
+parameters:
+    property_accessor.class_statsdbundle: Symfony\Component\PropertyAccess\PropertyAccessor
+
+services:
+    property_accessor_statsdbundle:
+        public: false
+        class: %property_accessor.class_statsdbundle%
+        arguments: [true] # magical => true

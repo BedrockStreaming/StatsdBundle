@@ -11,10 +11,6 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class M6WebStatsdExtension extends atoum\test
 {
-    /**
-     * @var BaseM6WebStatsdExtension
-     */
-    protected  $extension;
 
     /**
      * @var ContainerBuilder
@@ -23,11 +19,9 @@ class M6WebStatsdExtension extends atoum\test
 
     protected function initContainer($resource, $debug = false)
     {
-        $this->extension = new BaseM6WebStatsdExtension();
-
         $this->container = new ContainerBuilder();
         $this->container->register('event_dispatcher', new EventDispatcher());
-        $this->container->registerExtension($this->extension);
+        $this->container->registerExtension(new BaseM6WebStatsdExtension());
 
         $this->loadConfiguration($this->container, $resource);
 
