@@ -35,7 +35,6 @@
         Client : {{ clientInfo.name }}<br />
         <table class="routing inline">
             <tr>
-                <th>Server</th>
                 <th>Node</th>
                 <th>Value</th>
                 <th>Sample</th>
@@ -43,7 +42,6 @@
             </tr>
             {% for operation in clientInfo.operations %}
             <tr>
-                <td>{{ operation.server }}</td>
                 <td>{{ operation.node }}</td>
                 <td>{{ operation.value }}</td>
                 <td>{{ operation.sample }}</td>
