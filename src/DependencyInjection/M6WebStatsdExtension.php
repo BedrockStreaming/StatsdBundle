@@ -45,7 +45,6 @@ class M6WebStatsdExtension extends Extension
         if ($container->getParameter('kernel.debug')) {
             $definition = new Definition('M6Web\Bundle\StatsdBundle\DataCollector\StatsdDataCollector');
 
-            $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
             $definition->addTag(
                 'data_collector',
                 [
@@ -153,7 +152,6 @@ class M6WebStatsdExtension extends Extension
         // Add the statsd client configured
         $serviceId  = ($alias == 'default') ? 'm6_statsd' : 'm6_statsd.'.$alias;
         $definition = new Definition('M6Web\Bundle\StatsdBundle\Client\Client');
-        $definition->setScope(ContainerInterface::SCOPE_CONTAINER);
         $definition->addArgument($usedServers);
 
         if (isset($config['to_send_limit'])) {
