@@ -68,6 +68,7 @@ class M6WebStatsdExtension extends Extension
             $container->setDefinition('m6.data_collector.statsd', $definition);
         }
 
+        // Listner of console events
         if ($config['console_events']) {
             $container
                 ->register(
@@ -181,7 +182,7 @@ class M6WebStatsdExtension extends Extension
         if ($baseEvents) {
             $definition->addTag('kernel.event_listener', [
                 'event' => 'kernel.terminate',
-                'method' => 'onKernelTerminateEvents',
+                'method' => 'dispatchBaseEvents',
                 'priority' => 0
             ]);
             $definition->addTag('kernel.event_listener', [

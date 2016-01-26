@@ -60,11 +60,12 @@ class Listener
     }
 
     /**
-     * onKernelTerminateEvents
+     * method called if base_collectors = true in config to dispatch base events
+     * (you still have to catch them)
      *
      * @param PostResponseEvent $event
      */
-    public function onKernelTerminateEvents(PostResponseEvent $event)
+    public function dispatchBaseEvents(PostResponseEvent $event)
     {
         $this->dispatchMemory();
         $this->dispatchRequestTime($event);

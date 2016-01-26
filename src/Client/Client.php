@@ -2,7 +2,9 @@
 
 namespace M6Web\Bundle\StatsdBundle\Client;
 
+use M6Web\Bundle\StatsdBundle\Statsd\MonitorableEventInterface;
 use M6Web\Component\Statsd\Client as BaseClient;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\PropertyAccess;
 
 /**
@@ -56,7 +58,7 @@ class Client extends BaseClient
     }
 
     /**
-     * set the property accessor used in replaceInNodeFormMethod
+     * set the property accessor used in replaceConfigPlaceholder
      * @param PropertyAccess\PropertyAccessorInterface $propertyAccessor
      *
      * @return $this
@@ -75,6 +77,7 @@ class Client extends BaseClient
      * @param string         $name  the event name
      *
      * @throws Exception
+     * @return void
      */
     public function handleEvent($event, $name = null)
     {
@@ -89,26 +92,35 @@ class Client extends BaseClient
 
         $config        = $this->listenedEvents[$name];
         $immediateSend = false;
+        $tags          = $this->mergeTags($event, $config);
+
+        // replace placeholders in tags
+        $tags = array_map(function($tag) use ($event, $name) {
+            return $this->replaceConfigPlaceholder($event, $name, $tag);
+        }, $tags);
 
         foreach ($config as $conf => $confValue) {
+
             // increment
             if ('increment' === $conf) {
-                $this->increment($this->replaceInNodeFormMethod($event, $name, $confValue));
+                $this->increment($this->replaceConfigPlaceholder($event, $name, $confValue), 1, $tags);
             } elseif ('count' === $conf) {
                 $value = $this->getEventValue($event, 'getValue');
-                $this->count($this->replaceInNodeFormMethod($event, $name, $confValue), $value);
+                $this->count($this->replaceConfigPlaceholder($event, $name, $confValue), $value, 1, $tags);
             } elseif ('gauge' === $conf) {
                 $value = $this->getEventValue($event, 'getValue');
-                $this->gauge($this->replaceInNodeFormMethod($event, $name, $confValue), $value);
+                $this->gauge($this->replaceConfigPlaceholder($event, $name, $confValue), $value, 1, $tags);
             } elseif ('set' === $conf) {
                 $value = $this->getEventValue($event, 'getValue');
-                $this->set($this->replaceInNodeFormMethod($event, $name, $confValue), $value);
+                $this->set($this->replaceConfigPlaceholder($event, $name, $confValue), $value, 1, $tags);
             } elseif ('timing' === $conf) {
-                $this->addTiming($event, 'getTiming', $this->replaceInNodeFormMethod($event, $name, $confValue));
+                $this->addTiming($event, 'getTiming', $this->replaceConfigPlaceholder($event, $name, $confValue), $tags);
             } elseif (('custom_timing' === $conf) and is_array($confValue)) {
-                $this->addTiming($event, $confValue['method'], $this->replaceInNodeFormMethod($event, $name, $confValue['node']));
+                $this->addTiming($event, $confValue['method'], $this->replaceConfigPlaceholder($event, $name, $confValue['node']), $tags);
             } elseif ('immediate_send' === $conf) {
                 $immediateSend = $confValue;
+            } elseif ('tags' === $conf) {
+                // nothing
             } else {
                 throw new Exception("configuration : ".$conf." not handled by the StatsdBundle or its value is in a wrong format.");
             }
@@ -145,17 +157,18 @@ class Client extends BaseClient
      * Factorisation of the timing method
      * find the value timed
      *
-     * @param object $event        Event
+     * @param object $event Event
      * @param string $timingMethod Callable method in the event
-     * @param string $node         Node
+     * @param string $node Node
+     * @param array  $tags Tags key => value for influxDb
      *
-     * @return void
+     * @throws Exception
      */
-    private function addTiming($event, $timingMethod, $node)
+    private function addTiming($event, $timingMethod, $node, $tags = [])
     {
         $timing = $this->getEventValue($event, $timingMethod);
         if ($timing > 0) {
-            $this->timing($node, $timing);
+            $this->timing($node, $timing, 1, $tags);
         }
     }
 
@@ -164,23 +177,42 @@ class Client extends BaseClient
      *
      * @param EventInterface $event An event
      * @param string         $eventName The name of the event
-     * @param string         $node  The node in which the replacing will happen
+     * @param string         $string  The node in which the replacing will happen
      *
      * @return string
      */
-    private function replaceInNodeFormMethod($event, $eventName, $node)
+    private function replaceConfigPlaceholder($event, $eventName, $string)
     {
         // `event->getName()` is deprecated, we have to replace <name> directly with $eventName
-        $node = str_replace('<name>', $eventName, $node);
+        $string = str_replace('<name>', $eventName, $string);
 
-        if ((preg_match_all('/<([^>]*)>/', $node, $matches) > 0) and ($this->propertyAccessor !== null)) {
+        if ((preg_match_all('/<([^>]*)>/', $string, $matches) > 0) and ($this->propertyAccessor !== null)) {
             $tokens = $matches[1];
             foreach ($tokens as $token) {
                 $value = $this->propertyAccessor->getValue($event, $token);
-                $node = str_replace('<'.$token.'>', $value, $node);
+                $string = str_replace('<'.$token.'>', $value, $string);
             }
         }
 
-        return $node;
+        return $string;
+    }
+
+    /**
+     * Merge config tags with tags manually sent with the event
+     *
+     * @param mixed $event
+     * @param array $config
+     * 
+     * @return array of tags
+     */
+    private function mergeTags($event, $config)
+    {
+        $configTags = isset($config['tags']) ? $config['tags'] : [];
+
+        if ($event instanceof MonitorableEventInterface) {
+            return array_merge($configTags, $event->getTags());
+        }
+
+        return $configTags;
     }
 }
