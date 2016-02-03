@@ -1,12 +1,7 @@
-web/bundles/
 app/bootstrap.php.cache
 app/cache/*
 app/logs/*
 build/
-vendor
-composer.phar
-.DS_Store
-*~
-._.DS_Store
-._README.md
+vendor/
+bin/
 composer.lock

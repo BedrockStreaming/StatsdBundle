@@ -4,5 +4,5 @@ parameters:
 services:
     property_accessor_statsdbundle:
         public: false
-        class: %property_accessor.class_statsdbundle%
+        class: "%property_accessor.class_statsdbundle%"
         arguments: [true] # magical => true
