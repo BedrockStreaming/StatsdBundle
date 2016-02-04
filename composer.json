@@ -12,6 +12,7 @@
         }
     ],
     "config": {
+        "bin-dir": "bin",
         "vendor-dir": "vendor"
     },
     "require": {
@@ -21,7 +22,7 @@
     },
     "require-dev": {
         "atoum/atoum": "@stable",
-        "symfony/symfony": "~2.3",
+        "symfony/symfony": "~2.3|~3.0",
         "m6web/coke" : "~1.2",
         "m6web/symfony2-coding-standard" : "~1.2"
     },

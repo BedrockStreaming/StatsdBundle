@@ -16,5 +16,5 @@ before_script:
   - php composer.phar update --prefer-dist --no-interaction --dev
 
 script:
-  - vendor/bin/coke
-  - vendor/bin/atoum
+  - bin/coke
+  - bin/atoum
