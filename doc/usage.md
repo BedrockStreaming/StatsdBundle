@@ -265,6 +265,25 @@ For now, those events are triggered:
 
 TODO
 
+## Usage with influxDb (version >= 0.9)
+
+You can add tags with yours events, static tags or dynamic tags:
+
+```yaml
+m6_statsd:
+  clients:
+    default:
+      events:
+        statsd.memory_usage:
+          gauge: "memory_peak"
+          tags: {platform: symfony}
+        forum.read:
+          increment: "mysite.forum.read"
+          tags: {topic: <topicSlug>}
+```
+
+The "forum.read" event must have a getTopicSlug method or a $topicSlug public property. 
+
 
 ## Using the component only
 

@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * Event for this bundle event dispatching
  */
-class StatsdEvent extends GenericEvent
+class StatsdEvent extends GenericEvent implements MonitorableEventInterface
 {
     /**
      * getTiming
@@ -27,5 +27,14 @@ class StatsdEvent extends GenericEvent
     public function getValue()
     {
         return $this->getSubject();
+    }
+
+    /**
+     * array of tags [key => value]
+     * @return array
+     */
+    public function getTags()
+    {
+        return $this->hasArgument('tags') ? $this->getArgument('tags') : [];
     }
 }
