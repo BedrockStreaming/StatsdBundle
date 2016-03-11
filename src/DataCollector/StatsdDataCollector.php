@@ -41,7 +41,6 @@ class StatsdDataCollector extends DataCollector
                     if ($operation) {
                         $this->data['operations']++;
                         $message = $operation['message'];
-                        $serverKey = $operation['server'];
 
                         $clientInfo['operations'][] = [
                             'server' => $operation['server'],
