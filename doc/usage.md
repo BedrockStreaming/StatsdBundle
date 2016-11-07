@@ -186,6 +186,20 @@ m6_statsd:
                     increment: mysite.command.<command.name>.exception
 ```
 
+### Names prefix
+
+You can configure a prefix that will be prepended to all stats names added by your client.
+
+```
+m6_statsd:
+    clients:
+        default:
+            prefix: 'my.website.'
+```
+
+With such configuration, `$this->get('m6_statsd')->increment('a.graphite.node');` will result in sending a
+`my.website.a.graphite.node` to StatsD.
+
 ## Console custom events
 
 This bundle can trigger custom console events that allow to get command start time and execution duration.
