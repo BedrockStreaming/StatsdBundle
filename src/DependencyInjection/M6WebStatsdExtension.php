@@ -178,6 +178,11 @@ class M6WebStatsdExtension extends Extension
             'method'   => 'onKernelTerminate',
             'priority' => -100
         ]);
+        $definition->addTag('kernel.event_listener', [
+            'event'    => 'console.terminate',
+            'method'   => 'onConsoleTerminate',
+            'priority' => -100
+        ]);
 
         if ($baseEvents) {
             $definition->addTag('kernel.event_listener', [
