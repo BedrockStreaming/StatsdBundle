@@ -159,6 +159,10 @@ class M6WebStatsdExtension extends Extension
             $definition->addMethodCall('setToSendLimit', [$config['to_send_limit']]);
         }
 
+        if (isset($config['prefix'])) {
+            $definition->addMethodCall('setPrefix', [$config['prefix']]);
+        }
+
         foreach ($events as $eventName => $eventConfig) {
             $definition->addTag('kernel.event_listener', ['event' => $eventName, 'method' => 'handleEvent']);
             $definition->addMethodCall('addEventToListen', [$eventName, $eventConfig]);
