@@ -2,6 +2,7 @@
 
 namespace M6Web\Bundle\StatsdBundle\Statsd;
 
+use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
@@ -55,6 +56,18 @@ class Listener
      * @return void
      */
     public function onKernelTerminate(PostResponseEvent $event)
+    {
+        $this->statsdClient->send();
+    }
+
+    /**
+     * method called on the console.terminate event
+     *
+     * @param ConsoleTerminateEvent $event event
+     *
+     * @return void
+     */
+    public function onConsoleTerminate(ConsoleTerminateEvent $event)
     {
         $this->statsdClient->send();
     }
