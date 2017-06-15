@@ -4,8 +4,8 @@ StatsdBundle [![Build Status](https://travis-ci.org/M6Web/StatsdBundle.png?branc
 ## Bundle easing the [statsd](https://github.com/etsy/statsd/) usage.
 
  * [about](doc/about.md)
- * [installation] (doc/installation.md)
- * [usage] (doc/usage.md)
+ * [installation](doc/installation.md)
+ * [usage](doc/usage.md)
  * [faq](doc/faq.md)
  * [contributing](CONTRIBUTING.md)
 
