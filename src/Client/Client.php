@@ -104,6 +104,8 @@ class Client extends BaseClient
             // increment
             if ('increment' === $conf) {
                 $this->increment($this->replaceConfigPlaceholder($event, $name, $confValue), 1, $tags);
+            } elseif ('decrement' === $conf) {
+                $this->decrement($this->replaceConfigPlaceholder($event, $name, $confValue), 1, $tags);
             } elseif ('count' === $conf) {
                 $value = $this->getEventValue($event, 'getValue');
                 $this->count($this->replaceConfigPlaceholder($event, $name, $confValue), $value, 1, $tags);
@@ -202,7 +204,7 @@ class Client extends BaseClient
      *
      * @param mixed $event
      * @param array $config
-     * 
+     *
      * @return array of tags
      */
     private function mergeTags($event, $config)
