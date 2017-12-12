@@ -70,6 +70,7 @@ class Configuration implements ConfigurationInterface
                                 ->prototype('array')
                                     ->children()
                                         ->scalarNode('increment')->end()
+                                        ->scalarNode('decrement')->end()
                                         ->scalarNode('count')->end()
                                         ->scalarNode('gauge')->end()
                                         ->scalarNode('set')->end()

@@ -20,6 +20,7 @@ class Client extends atoum\test
     {
         $this->mockGenerator->orphanize('__construct');
         $this->mockGenerator->orphanize('increment');
+        $this->mockGenerator->orphanize('decrement');
         $this->mockGenerator->orphanize('timing');
         $client = new \mock\M6Web\Bundle\StatsdBundle\Client\Client();
         $client->clearToSend();
@@ -49,6 +50,29 @@ class Client extends atoum\test
                 ->call('send')
                     ->never();
 
+    }
+
+    /**
+     * testHandleEventWithValidConfig
+     */
+    public function testHandleEventWithValidConfigDecrement()
+    {
+        $client = $this->getMockedClient();
+
+        $event = new \Symfony\Component\EventDispatcher\Event();
+
+        $client->addEventToListen('test', array(
+            'decrement' => 'stats.<name>'
+        ));
+
+        $this->if($client->handleEvent($event, 'test'))
+            ->then
+            ->mock($client)
+                ->call('decrement')
+                    ->withArguments('stats.test')
+                    ->once()
+                ->call('send')
+                    ->never();
     }
 
     /**
