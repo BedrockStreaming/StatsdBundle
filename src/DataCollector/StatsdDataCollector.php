@@ -27,11 +27,13 @@ class StatsdDataCollector extends DataCollector
      */
     public function reset()
     {
-        $this->statsdClients      = [];
-        $this->data['clients']    = [];
-        $this->data['operations'] = 0;
+        $this->statsdClients = [];
+        $this->data = [
+            'clients' => [],
+            'operations' => 0,
+        ];
     }
-    
+
     /**
      * Kernel event
      *
