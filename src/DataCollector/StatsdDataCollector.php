@@ -19,9 +19,19 @@ class StatsdDataCollector extends DataCollector
      */
     public function __construct()
     {
-        $this->statsdClients      = [];
-        $this->data['clients']    = [];
-        $this->data['operations'] = 0;
+        $this->reset();
+    }
+
+    /**
+     * Reset the data collector to initial state
+     */
+    public function reset()
+    {
+        $this->statsdClients = [];
+        $this->data = [
+            'clients' => [],
+            'operations' => 0,
+        ];
     }
 
     /**
