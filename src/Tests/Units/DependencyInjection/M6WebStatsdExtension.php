@@ -1,12 +1,15 @@
 <?php
 namespace M6Web\Bundle\StatsdBundle\DependencyInjection\tests\units;
 
+use M6Web\Bundle\StatsdBundle\Tests\M6WebTestingKernel;
 use mageekguy\atoum;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use M6Web\Bundle\StatsdBundle\DependencyInjection\M6WebStatsdExtension as BaseM6WebStatsdExtension;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 
 
 class M6WebStatsdExtension extends atoum\test
@@ -19,7 +22,12 @@ class M6WebStatsdExtension extends atoum\test
 
     protected function initContainer($resource, $debug = false)
     {
-        $this->container = new ContainerBuilder();
+        $kernel = new M6WebTestingKernel('test', true);
+
+        $kernel->boot();
+
+        $this->container = $kernel->getContainer();
+
         $this->container->register('event_dispatcher', new EventDispatcher());
         $this->container->registerExtension(new BaseM6WebStatsdExtension());
 
