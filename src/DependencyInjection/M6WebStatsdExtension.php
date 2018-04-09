@@ -48,7 +48,7 @@ class M6WebStatsdExtension extends Extension
             $definition->addTag(
                 'data_collector',
                 [
-                    'template' => 'M6WebStatsdBundle:Collector:statsd',
+                    'template' => '@M6WebStatsd/Collector/statsd.html.twig',
                     'id' => 'statsd'
                 ]
             );
