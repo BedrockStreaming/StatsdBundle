@@ -1,8 +1,9 @@
 {
     "name": "m6web/statsd-bundle",
-    "description" : "Add statds metrics in your sf2 app. Allow you to bind metrics on any sf2 event.",
+    "description" : "Add statds metrics in your symfony app. Allow you to bind metrics on any symfony event.",
     "type": "symfony-bundle",
     "license": "MIT",
+    "version": "3.0.0",
     "keywords": ["symfony", "bundle", "statsd", "m6web"],
     "authors": [
         {
@@ -16,13 +17,13 @@
         "vendor-dir": "vendor"
     },
     "require": {
-        "php": ">=5.4.0",
-        "symfony/property-access" : ">=2.2",
+        "php": "^7.1.3",
+        "symfony/property-access": "^4.0",
         "m6web/statsd": "^1.3"
     },
     "require-dev": {
         "atoum/atoum": "^2.8|^3.0",
-        "symfony/symfony": "~2.3|~3.0|~4.0",
+        "symfony/symfony": "~4.0",
         "m6web/coke" : "~1.2",
         "m6web/symfony2-coding-standard" : "~1.2"
     },
