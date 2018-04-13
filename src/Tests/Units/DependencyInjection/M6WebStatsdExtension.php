@@ -17,7 +17,6 @@ class M6WebStatsdExtension extends atoum\test
      */
     protected $container;
 
-
     protected function initContainer($resource, $debug = false)
     {
         $this->container = new ContainerBuilder();
@@ -26,13 +25,6 @@ class M6WebStatsdExtension extends atoum\test
         $this->loadConfiguration($this->container, $resource);
         $this->container->setParameter('kernel.debug', $debug);
         $this->container->compile();
-    }
-
-    protected function initContainer2($resource, $debug = false)
-    {
-        $kernel = new M6WebTestingKernel();
-        $kernel->boot();
-        $this->container = $kernel->getContainer();
     }
 
     /**
