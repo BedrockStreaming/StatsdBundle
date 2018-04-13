@@ -1,7 +1,6 @@
 <?php
 namespace M6Web\Bundle\StatsdBundle\DependencyInjection\tests\units;
 
-use M6Web\Bundle\StatsdBundle\Tests\M6WebTestingKernel;
 use mageekguy\atoum;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
