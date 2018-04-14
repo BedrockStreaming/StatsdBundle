@@ -8,7 +8,6 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use M6Web\Bundle\StatsdBundle\DependencyInjection\M6WebStatsdExtension as BaseM6WebStatsdExtension;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-
 class M6WebStatsdExtension extends atoum\test
 {
 
@@ -22,9 +21,7 @@ class M6WebStatsdExtension extends atoum\test
         $this->container = new ContainerBuilder();
         $this->container->register('event_dispatcher', new EventDispatcher());
         $this->container->registerExtension(new BaseM6WebStatsdExtension());
-
         $this->loadConfiguration($this->container, $resource);
-
         $this->container->setParameter('kernel.debug', $debug);
         $this->container->compile();
     }

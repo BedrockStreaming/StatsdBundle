@@ -44,11 +44,11 @@ class M6WebStatsdExtension extends Extension
         }
         if ($container->getParameter('kernel.debug')) {
             $definition = new Definition('M6Web\Bundle\StatsdBundle\DataCollector\StatsdDataCollector');
-
+            $definition->setPublic(true);
             $definition->addTag(
                 'data_collector',
                 [
-                    'template' => 'M6WebStatsdBundle:Collector:statsd',
+                    'template' => '@M6WebStatsd/Collector/statsd.html.twig',
                     'id' => 'statsd'
                 ]
             );
@@ -153,6 +153,7 @@ class M6WebStatsdExtension extends Extension
         // Add the statsd client configured
         $serviceId  = ($alias == 'default') ? 'm6_statsd' : 'm6_statsd.'.$alias;
         $definition = new Definition('M6Web\Bundle\StatsdBundle\Client\Client');
+        $definition->setPublic(true);
         $definition->addArgument($usedServers);
 
         if (isset($config['to_send_limit'])) {
@@ -171,6 +172,7 @@ class M6WebStatsdExtension extends Extension
         // Add the statsd client listener
         $serviceListenerId = $serviceId.'.listener';
         $definition = new Definition('M6Web\Bundle\StatsdBundle\Statsd\Listener');
+        $definition->setPublic(true);
         $definition->addArgument(new Reference($serviceId));
         $definition->addArgument(new Reference('event_dispatcher'));
         $definition->addTag('kernel.event_listener', [

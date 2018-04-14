@@ -65,11 +65,11 @@ class ConsoleListener extends atoum\test
             ],
             [
                 'onException',
-                new \Symfony\Component\Console\Event\ConsoleExceptionEvent($command, $input, $output, $exception, 0),
+                new \Symfony\Component\Console\Event\ConsoleErrorEvent($input, $output, $exception, $command),
                 [
                     [
                         'name'  => ConsoleEvent::EXCEPTION,
-                        'class' =>'M6Web\Bundle\StatsdBundle\Event\ConsoleExceptionEvent'
+                        'class' => 'M6Web\Bundle\StatsdBundle\Event\ConsoleErrorEvent'
                     ]
                 ]
             ],
