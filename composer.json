@@ -3,7 +3,6 @@
     "description" : "Add statds metrics in your symfony app. Allow you to bind metrics on any symfony event.",
     "type": "symfony-bundle",
     "license": "MIT",
-    "version": "3.0.0",
     "keywords": ["symfony", "bundle", "statsd", "m6web"],
     "authors": [
         {
