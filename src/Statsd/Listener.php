@@ -36,12 +36,18 @@ class Listener
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        $exception = $event->getException();
+        if (method_exists($event, 'getThrowable')) {
+            $exception = $event->getThrowable();
+        } else {
+            $exception = $event->getException();
+        }
+
         if ($exception instanceof HttpExceptionInterface) {
-            $code = $event->getException()->getStatusCode();
+            $code = $exception->getStatusCode();
         } else {
             $code = 'unknown';
         }
+        
         $this->eventDispatcher->dispatch(
             'statsd.exception',
             new StatsdEvent($code)
