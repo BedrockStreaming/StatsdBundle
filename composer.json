@@ -22,7 +22,7 @@
     },
     "require-dev": {
         "atoum/atoum": "^2.8|^3.0",
-        "symfony/symfony": "^3.4 || ^4.0",
+        "symfony/symfony": "^3.4 || ^4.0 || ^5.0",
         "m6web/coke" : "~1.2",
         "m6web/symfony2-coding-standard" : "~1.2"
     },
