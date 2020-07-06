@@ -20,7 +20,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         // symfony/config >= 4.2.0
-        if (\method_exists($treeBuilder, 'getRootNode')) {
+        if (\method_exists(TreeBuilder::class, 'getRootNode')) {
             $treeBuilder = new TreeBuilder('m6_statsd');
             $rootNode = $treeBuilder->getRootNode();
         } else {
