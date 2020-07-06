@@ -19,8 +19,8 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        // >= 4.2.0
-        if ((int) Kernel::VERSION_ID >= 40200) {
+        // symfony/config >= 4.2.0
+        if (\method_exists($treeBuilder, 'getRootNode')) {
             $treeBuilder = new TreeBuilder('m6_statsd');
             $rootNode = $treeBuilder->getRootNode();
         } else {
