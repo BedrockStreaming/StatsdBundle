@@ -18,8 +18,14 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('m6_statsd');
+        // symfony/config >= 4.2.0
+        if (\method_exists(TreeBuilder::class, 'getRootNode')) {
+            $treeBuilder = new TreeBuilder('m6_statsd');
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            $treeBuilder = new TreeBuilder();
+            $rootNode = $treeBuilder->root('m6_statsd');
+        }
 
         $this->addServersSection($rootNode);
         $this->addClientsSection($rootNode);
