@@ -3,7 +3,7 @@
 namespace M6Web\Bundle\StatsdBundle\Statsd;
 
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Event\PostResponseEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
@@ -43,8 +43,8 @@ class Listener
             $code = 'unknown';
         }
         $this->eventDispatcher->dispatch(
-            'statsd.exception',
-            new StatsdEvent($code)
+            new StatsdEvent($code),
+            'statsd.exception'
         );
     }
 
@@ -93,8 +93,8 @@ class Listener
         $memory = ($memory > 1024 ? intval($memory / 1024) : 0);
 
         $this->eventDispatcher->dispatch(
-            'statsd.memory_usage',
-            new StatsdEvent($memory)
+            new StatsdEvent($memory),
+            'statsd.memory_usage'
         );
     }
 
@@ -113,8 +113,8 @@ class Listener
         $time      = round($time * 1000);
 
         $this->eventDispatcher->dispatch(
-            'statsd.time',
-            new StatsdEvent($time)
+            new StatsdEvent($time),
+            'statsd.time'
         );
     }
 }

@@ -2,7 +2,7 @@
 namespace M6Web\Bundle\StatsdBundle\Event;
 
 use Symfony\Component\Console\Event\ConsoleEvent as BaseConsoleEvent;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Base console event
