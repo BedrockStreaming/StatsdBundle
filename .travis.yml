@@ -17,3 +17,8 @@ before_script:
 script:
   - bin/coke
   - bin/atoum
+
+jobs:
+  exclude:
+    - php: 7.1
+      env: SYMFONY_VERSION=5.*.*
