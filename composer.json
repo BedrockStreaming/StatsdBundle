@@ -1,6 +1,6 @@
 {
     "name": "m6web/statsd-bundle",
-    "description" : "Add statds metrics in your symfony app. Allow you to bind metrics on any symfony event.",
+    "description" : "Add statsd metrics in your symfony app. Allow you to bind metrics on any symfony event.",
     "type": "symfony-bundle",
     "license": "MIT",
     "keywords": ["symfony", "bundle", "statsd", "m6web"],
@@ -33,6 +33,16 @@
         "symfony/http-kernel": "^4.4 || ^5.0"
     },
     "autoload": {
-        "psr-4": { "M6Web\\Bundle\\StatsdBundle\\": "src/" }
+        "psr-4": {
+            "M6Web\\Bundle\\StatsdBundle\\": "src/"
+        },
+        "exclude-from-classmap": [
+            "src/Tests/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "M6Web\\Bundle\\StatsdBundle\\Tests\\": "src/Tests/"
+        }
     }
 }
