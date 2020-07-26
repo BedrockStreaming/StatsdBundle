@@ -4,7 +4,7 @@ namespace M6Web\Bundle\StatsdBundle\Listener;
 
 use M6Web\Bundle\StatsdBundle\Event\ConsoleEvent;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Event\ConsoleEvent as BaseConsoleEvent;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
 
@@ -43,7 +43,7 @@ class ConsoleListener
     {
         $this->startTime = microtime(true);
 
-        $this->dispatch(ConsoleEvent::COMMAND, $e);
+        $this->dispatch($e, ConsoleEvent::COMMAND);
     }
 
     /**
@@ -53,10 +53,10 @@ class ConsoleListener
     {
         // For non-0 exit command, fire an ERROR event
         if ($e->getExitCode() != 0) {
-            $this->dispatch(ConsoleEvent::ERROR, $e);
+            $this->dispatch($e, ConsoleEvent::ERROR);
         }
 
-        $this->dispatch(ConsoleEvent::TERMINATE, $e);
+        $this->dispatch($e, ConsoleEvent::TERMINATE);
     }
 
     /**
@@ -64,18 +64,18 @@ class ConsoleListener
      */
     public function onException(BaseConsoleEvent $e)
     {
-        $this->dispatch(ConsoleEvent::EXCEPTION, $e);
+        $this->dispatch($e, ConsoleEvent::EXCEPTION);
     }
 
     /**
      * Dispatch custom event
      *
-     * @param string           $eventName
      * @param BaseConsoleEvent $e
+     * @param string           $eventName
      *
      * @return boolean
      */
-    protected function dispatch($eventName, BaseConsoleEvent $e)
+    protected function dispatch(BaseConsoleEvent $e, $eventName)
     {
         if (!is_null($this->eventDispatcher)) {
             $class = str_replace(
@@ -90,7 +90,7 @@ class ConsoleListener
                 !is_null($this->startTime) ? microtime(true) - $this->startTime : null
             );
 
-            return $this->eventDispatcher->dispatch($eventName, $finaleEvent);
+            return $this->eventDispatcher->dispatch($finaleEvent, $eventName);
         } else {
             return false;
         }

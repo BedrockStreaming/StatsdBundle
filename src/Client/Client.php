@@ -4,7 +4,6 @@ namespace M6Web\Bundle\StatsdBundle\Client;
 
 use M6Web\Bundle\StatsdBundle\Statsd\MonitorableEventInterface;
 use M6Web\Component\Statsd\Client as BaseClient;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\PropertyAccess;
 
 /**
