@@ -48,7 +48,7 @@ class Listener
         } else {
             $code = 'unknown';
         }
-        
+
         $this->eventDispatcher->dispatch(
             new StatsdEvent($code),
             'statsd.exception'
