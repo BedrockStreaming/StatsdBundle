@@ -1,5 +1,5 @@
 <?php
-namespace M6Web\Bundle\StatsdBundle\DependencyInjection\tests\units;
+namespace M6Web\Bundle\StatsdBundle\Tests\Units\DependencyInjection;
 
 use mageekguy\atoum;
 use Symfony\Component\Config\FileLocator;
