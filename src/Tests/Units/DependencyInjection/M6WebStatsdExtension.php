@@ -19,7 +19,7 @@ class M6WebStatsdExtension extends atoum\test
     protected function initContainer($resource, $debug = false)
     {
         $this->container = new ContainerBuilder();
-        $this->container->register('event_dispatcher', new EventDispatcher());
+        $this->container->register('event_dispatcher', EventDispatcher::class);
         $this->container->registerExtension(new BaseM6WebStatsdExtension());
         $this->loadConfiguration($this->container, $resource);
         $this->container->setParameter('kernel.debug', $debug);

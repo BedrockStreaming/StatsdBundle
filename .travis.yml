@@ -7,8 +7,8 @@ php:
   - 7.4
 
 env:
-  - SYMFONY_VERSION=3.4.0
-  - SYMFONY_VERSION=4.0.*
+  - SYMFONY_VERSION=4.4.0
+  - SYMFONY_VERSION=5.*.*
 
 before_script:
   - wget http://getcomposer.org/composer.phar
@@ -18,3 +18,8 @@ before_script:
 script:
   - bin/coke
   - bin/atoum
+
+jobs:
+  exclude:
+    - php: 7.1
+      env: SYMFONY_VERSION=5.*.*

@@ -3,9 +3,9 @@
 namespace M6Web\Bundle\StatsdBundle\Statsd;
 
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 use M6Web\Component\Statsd\Client;
@@ -32,30 +32,30 @@ class Listener
     /**
      * onKernelException
      *
-     * @param GetResponseForExceptionEvent $event
+     * @param ExceptionEvent $event
      */
-    public function onKernelException(GetResponseForExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event)
     {
-        $exception = $event->getException();
+        $exception = $event->getThrowable();
         if ($exception instanceof HttpExceptionInterface) {
-            $code = $event->getException()->getStatusCode();
+            $code = $event->getThrowable()->getStatusCode();
         } else {
             $code = 'unknown';
         }
         $this->eventDispatcher->dispatch(
-            'statsd.exception',
-            new StatsdEvent($code)
+            new StatsdEvent($code),
+            'statsd.exception'
         );
     }
 
     /**
      * method called on the kernel.terminate event
      *
-     * @param PostResponseEvent $event event
+     * @param TerminateEvent $event event
      *
      * @return void
      */
-    public function onKernelTerminate(PostResponseEvent $event)
+    public function onKernelTerminate(TerminateEvent $event)
     {
         $this->statsdClient->send();
     }
@@ -76,9 +76,9 @@ class Listener
      * method called if base_collectors = true in config to dispatch base events
      * (you still have to catch them)
      *
-     * @param PostResponseEvent $event
+     * @param TerminateEvent $event
      */
-    public function dispatchBaseEvents(PostResponseEvent $event)
+    public function dispatchBaseEvents(TerminateEvent $event)
     {
         $this->dispatchMemory();
         $this->dispatchRequestTime($event);
@@ -93,8 +93,8 @@ class Listener
         $memory = ($memory > 1024 ? intval($memory / 1024) : 0);
 
         $this->eventDispatcher->dispatch(
-            'statsd.memory_usage',
-            new StatsdEvent($memory)
+            new StatsdEvent($memory),
+            'statsd.memory_usage'
         );
     }
 
@@ -103,9 +103,9 @@ class Listener
      * This time is a "fake" one, because some actions are performed before the initialization of the request
      * It is ~100ms smaller than the real kernel time.
      *
-     * @param PostResponseEvent $event
+     * @param TerminateEvent $event
      */
-    private function dispatchRequestTime(PostResponseEvent $event)
+    private function dispatchRequestTime(TerminateEvent $event)
     {
         $request   = $event->getRequest();
         $startTime = $request->server->get('REQUEST_TIME_FLOAT', $request->server->get('REQUEST_TIME'));
@@ -113,8 +113,8 @@ class Listener
         $time      = round($time * 1000);
 
         $this->eventDispatcher->dispatch(
-            'statsd.time',
-            new StatsdEvent($time)
+            new StatsdEvent($time),
+            'statsd.time'
         );
     }
 }
