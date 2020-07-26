@@ -36,12 +36,19 @@ class Listener
      */
     public function onKernelException(ExceptionEvent $event)
     {
-        $exception = $event->getThrowable();
+        // @TODO: remove this backward compatibility layer after symfony 4.4 has been dropped
+        if (method_exists($event, 'getThrowable')) {
+            $exception = $event->getThrowable();
+        } else {
+            $exception = $event->getException();
+        }
+
         if ($exception instanceof HttpExceptionInterface) {
-            $code = $event->getThrowable()->getStatusCode();
+            $code = $exception->getStatusCode();
         } else {
             $code = 'unknown';
         }
+
         $this->eventDispatcher->dispatch(
             new StatsdEvent($code),
             'statsd.exception'
