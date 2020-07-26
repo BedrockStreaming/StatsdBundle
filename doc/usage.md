@@ -72,7 +72,7 @@ On the Symfony event dispatcher, when the ```forum.read``` event is fired, our s
 
 So you can now just fire the event from a controller :
 ```php
-$this->get('event_dispatcher')->dispatch('forum.read', new Symfony\Component\EventDispatcher\Event());
+$this->get('event_dispatcher')->dispatch(new Symfony\Contracts\EventDispatcher\Event(), 'forum.read');
 ```
 
 It's also possible to create tokens in the Symfony configuration, allowing you to pass custom value in the node.
