@@ -12,16 +12,16 @@ m6_statsd:
             address: 'udp://localhost'
             port:     1234
         serv1:
-            address: 'udp://lolcaThost'
+            address: 'udp://localhost'
             port:     1235
         serv2:
-            address: 'udp://lolcaThost'
+            address: 'udp://localhost'
             port:     1236
     clients:
         default:
             servers:   ["default"]        # the 'default' client will use only the default server
         swag:
-            servers:   ["serv1", "serv2"] # the 'swag' client will use serv1 OR serv2 to send the datas
+            servers:   ["serv1", "serv2"] # the 'swag' client will use serv1 OR serv2 to send the data
         mighty:
             servers: ["all"] # use all servers configured
         shell_patern:
@@ -34,7 +34,7 @@ You have to use the same graphite server behind statsd instance in order to see 
 
 ## Basic usage
 
-In a Symfony controller :
+In a Symfony controller:
 
 ```php
 // m6_statsd access to the default client by convention
@@ -44,7 +44,7 @@ $this->get('m6_statsd')->timing('another.graphite.node', (float) $timing);
 $this->get('m6_statsd.swag')->increment('huho');
 ```
 
-By default, the send method of each clients is called on the kernel.terminate event. But you can call it manually in a controller :
+By default, the send method of each clients is called on the kernel.terminate event. But you can call it manually in a controller:
 
 ```php
 $this->get('m6_statsd')->send();
@@ -54,10 +54,10 @@ $this->get('m6_statsd')->send();
 
 ### Increments
 
-We don't really like mixing our business code with monitoring stuff. We prefer to launch events with significant informations, listen to them, and send our monitoring stuffs in the listeners. The good news is that StatsdBundle is doing it for you.
+We don't really like mixing our business code with monitoring stuff. We prefer to launch events with significant information, listen to them, and send our monitoring stuffs in the listeners. The good news is that StatsdBundle is doing it for you.
 
 At each client level, you can specify events listened in order to build statsd increment or timing based on them.
-For example, with the following configuration :
+For example, with the following configuration:
 
 ```yaml
 m6_statsd:
@@ -217,13 +217,13 @@ m6_statsd:
                         method : getExecutionTime
 ```
 
-As you can see in the previous exemple, the event object also provides a `getUnderscoredCommandName` method. This method returns the command name with colons replaced by underscores. This can be useful because statsd uses colon as separator.
+As you can see in the previous example, the event object also provides a `getUnderscoredCommandName` method. This method returns the command name with colons replaced by underscores. This can be useful because statsd uses colon as separator.
 
-These events also provide a `getTiming` method (which is an alias of `getExecutionTime`) that allow to use simple `timer` entry.
+These events also provide a `getTiming` method (which is an alias of `getExecutionTime`) that allows to use simple `timer` entry.
 
 ## Collect basics metrics on your Symfony application
 
-Basics metrics can be http code, memory consumption, execution time. Thoses metrics can be collected when the `kernel.terminate` event.
+Basics metrics can be http code, memory consumption, execution time. Thoses metrics can be collected from the `kernel.terminate` event.
 
 Some basic collectors are already implemented in the bundle, but not activated by default.
 
