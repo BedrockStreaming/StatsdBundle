@@ -1,0 +1,43 @@
+name: Tests
+
+on:
+  pull_request: null
+
+env:
+  # see https://github.com/composer/composer/issues/9368#issuecomment-718112361
+  COMPOSER_ROOT_VERSION: "dev-main"
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version:
+          - 7.2
+          - 7.3
+          - 7.4
+        symfony-version:
+          - 4.4.0
+          - ^5.0
+        include:
+          - php-version: 7.1
+            symfony-version: 4.4.0
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # see https://github.com/shivammathur/setup-php
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+
+      # composer install cache - https://github.com/ramsey/composer-install
+      - uses: "ramsey/composer-install@v1"
+      - name: Install symfony version from matrix
+        env:
+          SYMFONY_VERSION: ${{ matrix.symfony-version }}
+        run: composer require symfony/symfony:$SYMFONY_VERSION --no-update --dev
+      - run: composer update --prefer-dist --no-interaction --dev
+      - run: bin/coke
+      - run: bin/atoum
