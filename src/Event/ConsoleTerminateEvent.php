@@ -8,7 +8,7 @@ use Symfony\Component\Console\Event\ConsoleEvent as BaseConsoleEvent;
 /**
  * Triggered when console terminate
  */
-class ConsoleTerminateEvent extends ConsoleEvent
+class ConsoleTerminateEvent extends AbstractConsoleEvent
 {
     /**
      * {@inheritDoc}

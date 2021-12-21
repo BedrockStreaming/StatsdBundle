@@ -6,7 +6,7 @@ use M6Web\Bundle\StatsdBundle\Listener\ConsoleListener as Base;
 
 use mageekguy\atoum;
 use Symfony\Component\Console\ConsoleEvents as BaseConsoleEvent;
-use M6Web\Bundle\StatsdBundle\Event\ConsoleEvent;
+use M6Web\Bundle\StatsdBundle\Event\AbstractConsoleEvent;
 
 /**
 * Console listener tests
@@ -34,7 +34,7 @@ class ConsoleListener extends atoum\test
                 new \Symfony\Component\Console\Event\ConsoleCommandEvent($command, $input, $output),
                 [
                     [
-                        'name'  => ConsoleEvent::COMMAND,
+                        'name'  => AbstractConsoleEvent::COMMAND,
                         'class' => 'M6Web\Bundle\StatsdBundle\Event\ConsoleCommandEvent'
                     ]
                 ]
@@ -44,7 +44,7 @@ class ConsoleListener extends atoum\test
                 new \Symfony\Component\Console\Event\ConsoleTerminateEvent($command, $input, $output, 0),
                 [
                     [
-                        'name'  => ConsoleEvent::TERMINATE,
+                        'name'  => AbstractConsoleEvent::TERMINATE,
                         'class' => 'M6Web\Bundle\StatsdBundle\Event\ConsoleTerminateEvent'
                     ]
                 ]
@@ -54,11 +54,11 @@ class ConsoleListener extends atoum\test
                 new \Symfony\Component\Console\Event\ConsoleTerminateEvent($command, $input, $output, -1),
                 [
                     [
-                        'name'  => ConsoleEvent::TERMINATE,
+                        'name'  => AbstractConsoleEvent::TERMINATE,
                         'class' => 'M6Web\Bundle\StatsdBundle\Event\ConsoleTerminateEvent'
                     ],
                     [
-                        'name'  => ConsoleEvent::ERROR,
+                        'name'  => AbstractConsoleEvent::ERROR,
                         'class' => 'M6Web\Bundle\StatsdBundle\Event\ConsoleTerminateEvent'
                     ]
                 ]
@@ -68,7 +68,7 @@ class ConsoleListener extends atoum\test
                 new \Symfony\Component\Console\Event\ConsoleErrorEvent($input, $output, $exception, $command),
                 [
                     [
-                        'name'  => ConsoleEvent::EXCEPTION,
+                        'name'  => AbstractConsoleEvent::EXCEPTION,
                         'class' => 'M6Web\Bundle\StatsdBundle\Event\ConsoleErrorEvent'
                     ]
                 ]

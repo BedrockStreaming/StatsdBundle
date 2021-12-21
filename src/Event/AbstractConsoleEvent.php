@@ -1,4 +1,5 @@
 <?php
+
 namespace M6Web\Bundle\StatsdBundle\Event;
 
 use Symfony\Component\Console\Event\ConsoleEvent as BaseConsoleEvent;
@@ -7,7 +8,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 /**
  * Base console event
  */
-abstract class ConsoleEvent extends Event
+abstract class AbstractConsoleEvent extends Event
 {
     const COMMAND   = 'm6web.console.command';
     const TERMINATE = 'm6web.console.terminate';
@@ -136,17 +137,18 @@ abstract class ConsoleEvent extends Event
      * @param float            $startTime
      * @param float            $executionTime
      *
-     * @return ConsoleEvent
+     * @return AbstractConsoleEvent
      *
      * @throws \InvalidArgumentException
      */
     public static function createFromConsoleEvent(BaseConsoleEvent $e, $startTime = null, $executionTime = null)
     {
         if (static::support($e)) {
-            return new static($e, $startTime, $executionTime);
-        } else {
-            throw \InvalidArgumentException('Invalid event type.');
+            $event = static::class;
+
+            return new $event($e, $startTime, $executionTime);
         }
+        throw \InvalidArgumentException('Invalid event type.');
     }
 
     /**

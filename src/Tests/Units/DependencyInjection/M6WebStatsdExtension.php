@@ -1,4 +1,5 @@
 <?php
+
 namespace M6Web\Bundle\StatsdBundle\Tests\Units\DependencyInjection;
 
 use mageekguy\atoum;
@@ -7,10 +8,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use M6Web\Bundle\StatsdBundle\DependencyInjection\M6WebStatsdExtension as BaseM6WebStatsdExtension;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use M6Web\Bundle\StatsdBundle\DataCollector\StatsdDataCollector;
+use M6Web\Bundle\StatsdBundle\Client\Client;
 
 class M6WebStatsdExtension extends atoum\test
 {
-
     /**
      * @var ContainerBuilder
      */
@@ -44,14 +46,14 @@ class M6WebStatsdExtension extends atoum\test
             ->boolean($this->container->has('m6_statsd'))
                 ->isIdenticalTo(true)
             ->and()
-                ->object($serviceStatsd = $this->container->get('m6_statsd'))
-                    ->isInstanceOf('M6Web\Bundle\StatsdBundle\Client\Client');
+                ->object($this->container->get('m6_statsd'))
+                    ->isInstanceOf(Client::class);
         // @TODO : check the client more
 
         // check datacollector
         $this->assert
-            ->object($dataCollector = $this->container->get('m6.data_collector.statsd'))
-                ->isInstanceOf('M6Web\Bundle\StatsdBundle\DataCollector\StatsdDataCollector');
+            ->object($this->container->get('m6.data_collector.statsd'))
+                ->isInstanceOf(StatsdDataCollector::class);
     }
 
     public function testBasicConfigurationWithoutKernelDebug()
@@ -95,7 +97,6 @@ class M6WebStatsdExtension extends atoum\test
             ['foo_plusonechar',  ['fooa', 'foob']],
             ['foo_ab',           ['fooa', 'foob']],
             ['complex_ab',       ['fooa', 'foob']]
-
         ];
     }
 }

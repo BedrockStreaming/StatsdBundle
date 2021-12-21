@@ -45,7 +45,7 @@ class StatsdDataCollector extends DataCollector
             foreach ($this->statsdClients as $clientName => $client) {
                 $clientInfo = [
                     'name'       => $clientName,
-                    'operations' => []
+                    'operations' => [],
                 ];
                 foreach ($client->getToSend() as $operation) {
                     if ($operation) {
@@ -57,7 +57,7 @@ class StatsdDataCollector extends DataCollector
                             'node'   => $message->getNode(),
                             'value'  => $message->getValue(),
                             'sample' => $message->getSampleRate(),
-                            'unit'   => $message->getUnit()
+                            'unit'   => $message->getUnit(),
                         ];
                     }
                 }

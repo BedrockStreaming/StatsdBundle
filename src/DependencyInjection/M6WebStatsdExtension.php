@@ -49,7 +49,7 @@ class M6WebStatsdExtension extends Extension
                 'data_collector',
                 [
                     'template' => '@M6WebStatsd/Collector/statsd.html.twig',
-                    'id' => 'statsd'
+                    'id' => 'statsd',
                 ]
             );
 
@@ -57,7 +57,7 @@ class M6WebStatsdExtension extends Extension
                 'kernel.event_listener',
                 [
                     'event' => 'kernel.response',
-                    'method' => 'onKernelResponse'
+                    'method' => 'onKernelResponse',
                 ]
             );
 
@@ -92,6 +92,19 @@ class M6WebStatsdExtension extends Extension
     }
 
     /**
+     * select an alias for the extension
+     *
+     * trick allowing bypassing the Bundle::getContainerExtension check on getAlias
+     * not very clean, to investigate
+     *
+     * @return string
+     */
+    public function getAlias()
+    {
+        return 'm6_statsd';
+    }
+
+    /**
      * Load a client configuration as a service in the container. A client can use multiple servers
      *
      * @param ContainerInterface $container  The container
@@ -115,7 +128,6 @@ class M6WebStatsdExtension extends Extension
         } else {
             // Use only declared servers
             foreach ($config['servers'] as $serverAlias) {
-
                 // Named server
                 if (array_key_exists($serverAlias, $servers)) {
                     $matchedServers[] = $serverAlias;
@@ -146,7 +158,7 @@ class M6WebStatsdExtension extends Extension
         foreach ($matchedServers as $serverAlias) {
             $usedServers[] = [
                 'address' => $servers[$serverAlias]['address'],
-                'port'    => $servers[$serverAlias]['port']
+                'port'    => $servers[$serverAlias]['port'],
             ];
         }
 
@@ -178,41 +190,28 @@ class M6WebStatsdExtension extends Extension
         $definition->addTag('kernel.event_listener', [
             'event'    => 'kernel.terminate',
             'method'   => 'onKernelTerminate',
-            'priority' => -100
+            'priority' => -100,
         ]);
         $definition->addTag('kernel.event_listener', [
             'event'    => 'console.terminate',
             'method'   => 'onConsoleTerminate',
-            'priority' => -100
+            'priority' => -100,
         ]);
 
         if ($baseEvents) {
             $definition->addTag('kernel.event_listener', [
                 'event' => 'kernel.terminate',
                 'method' => 'dispatchBaseEvents',
-                'priority' => 0
+                'priority' => 0,
             ]);
             $definition->addTag('kernel.event_listener', [
                 'event' => 'kernel.exception',
                 'method' => 'onKernelException',
-                'priority' => 0
+                'priority' => 0,
             ]);
         }
         $container->setDefinition($serviceListenerId, $definition);
 
         return $serviceId;
-    }
-
-    /**
-     * select an alias for the extension
-     *
-     * trick allowing bypassing the Bundle::getContainerExtension check on getAlias
-     * not very clean, to investigate
-     *
-     * @return string
-     */
-    public function getAlias()
-    {
-        return 'm6_statsd';
     }
 }

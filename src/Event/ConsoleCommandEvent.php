@@ -8,7 +8,7 @@ use Symfony\Component\Console\Event\ConsoleEvent as BaseConsoleEvent;
 /**
  * Triggered when command start
  */
-class ConsoleCommandEvent extends ConsoleEvent
+class ConsoleCommandEvent extends AbstractConsoleEvent
 {
     /**
      * {@inheritDoc}

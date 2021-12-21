@@ -8,7 +8,7 @@ use Symfony\Component\Console\Event\ConsoleEvent as BaseConsoleEvent;
 /**
  * Triggered on console exception
  */
-class ConsoleErrorEvent extends ConsoleEvent
+class ConsoleErrorEvent extends AbstractConsoleEvent
 {
     /**
      * {@inheritDoc}

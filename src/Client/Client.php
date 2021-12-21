@@ -94,12 +94,11 @@ class Client extends BaseClient
         $tags          = $this->mergeTags($event, $config);
 
         // replace placeholders in tags
-        $tags = array_map(function($tag) use ($event, $name) {
+        $tags = array_map(function ($tag) use ($event, $name) {
             return $this->replaceConfigPlaceholder($event, $name, $tag);
         }, $tags);
 
         foreach ($config as $conf => $confValue) {
-
             // increment
             if ('increment' === $conf) {
                 $this->increment($this->replaceConfigPlaceholder($event, $name, $confValue), 1, $tags);
@@ -151,7 +150,7 @@ class Client extends BaseClient
             throw new Exception("The event class ".get_class($event)." must have a ".$method." method in order to mesure value");
         }
 
-        return call_user_func(array($event,$method));
+        return call_user_func([$event, $method]);
     }
 
     /**

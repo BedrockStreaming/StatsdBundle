@@ -2,7 +2,7 @@
 
 namespace M6Web\Bundle\StatsdBundle\Listener;
 
-use M6Web\Bundle\StatsdBundle\Event\ConsoleEvent;
+use M6Web\Bundle\StatsdBundle\Event\AbstractConsoleEvent;
 
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Event\ConsoleEvent as BaseConsoleEvent;
@@ -43,7 +43,7 @@ class ConsoleListener
     {
         $this->startTime = microtime(true);
 
-        $this->dispatch($e, ConsoleEvent::COMMAND);
+        $this->dispatch($e, AbstractConsoleEvent::COMMAND);
     }
 
     /**
@@ -53,10 +53,10 @@ class ConsoleListener
     {
         // For non-0 exit command, fire an ERROR event
         if ($e->getExitCode() != 0) {
-            $this->dispatch($e, ConsoleEvent::ERROR);
+            $this->dispatch($e, AbstractConsoleEvent::ERROR);
         }
 
-        $this->dispatch($e, ConsoleEvent::TERMINATE);
+        $this->dispatch($e, AbstractConsoleEvent::TERMINATE);
     }
 
     /**
@@ -64,7 +64,7 @@ class ConsoleListener
      */
     public function onException(BaseConsoleEvent $e)
     {
-        $this->dispatch($e, ConsoleEvent::EXCEPTION);
+        $this->dispatch($e, AbstractConsoleEvent::EXCEPTION);
     }
 
     /**
