@@ -5,6 +5,7 @@ on: [push]
 jobs:
   tests:
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
         php-version:
@@ -14,9 +15,11 @@ jobs:
         symfony-version:
           - 4.4.0
           - ^5.0
+        experimental: [false]
         include:
           - php-version: 7.1
             symfony-version: 4.4.0
+            experimental: false
           - php-version: 8.0
             symfony-version: ^5.0
             experimental: true
@@ -32,7 +35,7 @@ jobs:
       - name: Install symfony version from matrix
         env:
           SYMFONY_VERSION: ${{ matrix.symfony-version }}
-        run: composer require symfony/symfony:$SYMFONY_VERSION symfony/yaml --no-update --dev
+        run: composer require symfony/symfony:$SYMFONY_VERSION symfony/yaml:$SYMFONY_VERSION --no-update --dev
       - name: Install dependencies
         run: composer update --prefer-dist --no-interaction --dev
       - name: Code style check
