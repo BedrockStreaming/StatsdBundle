@@ -32,7 +32,7 @@ jobs:
       - name: Install symfony version from matrix
         env:
           SYMFONY_VERSION: ${{ matrix.symfony-version }}
-        run: composer require symfony/symfony:$SYMFONY_VERSION symfony/yaml --no-update --dev
+        run: composer require symfony/symfony:$SYMFONY_VERSION symfony/yaml:$SYMFONY_VERSION --no-update --dev
       - name: Install dependencies
         run: composer update --prefer-dist --no-interaction --dev
       - name: Code style check
