@@ -1,4 +1,4 @@
-StatsdBundle [![Build Status](https://travis-ci.org/M6Web/StatsdBundle.png?branch=master)](https://travis-ci.org/M6Web/StatsdBundle)
+StatsdBundle [![Build Status](https://github.com/BedrockStreaming/StatsdBundle/actions/workflows/tests.yml/badge.svg)](https://github.com/BedrockStreaming/StatsdBundle/actions/workflows/tests.yml)
 =======
 
 ## Bundle easing the [statsd](https://github.com/etsy/statsd/) usage.
