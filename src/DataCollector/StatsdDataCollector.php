@@ -2,9 +2,9 @@
 
 namespace M6Web\Bundle\StatsdBundle\DataCollector;
 
-use Symfony\Component\HttpKernel\DataCollector\DataCollector;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
@@ -44,8 +44,8 @@ class StatsdDataCollector extends DataCollector
         if (HttpKernelInterface::MASTER_REQUEST == $event->getRequestType()) {
             foreach ($this->statsdClients as $clientName => $client) {
                 $clientInfo = [
-                    'name'       => $clientName,
-                    'operations' => []
+                    'name' => $clientName,
+                    'operations' => [],
                 ];
                 foreach ($client->getToSend() as $operation) {
                     if ($operation) {
@@ -54,10 +54,10 @@ class StatsdDataCollector extends DataCollector
 
                         $clientInfo['operations'][] = [
                             'server' => $operation['server'],
-                            'node'   => $message->getNode(),
-                            'value'  => $message->getValue(),
+                            'node' => $message->getNode(),
+                            'value' => $message->getValue(),
                             'sample' => $message->getSampleRate(),
-                            'unit'   => $message->getUnit()
+                            'unit' => $message->getUnit(),
                         ];
                     }
                 }
@@ -101,7 +101,7 @@ class StatsdDataCollector extends DataCollector
     /**
      * Return the number of statsd operations
      *
-     * @return integer the number of operations
+     * @return int the number of operations
      */
     public function getOperations()
     {

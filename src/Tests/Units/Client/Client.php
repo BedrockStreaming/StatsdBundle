@@ -7,8 +7,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\PropertyAccess;
 
 /**
-* Client class
-*/
+ * Client class
+ */
 class Client extends atoum\test
 {
     /**
@@ -24,6 +24,7 @@ class Client extends atoum\test
         $this->mockGenerator->orphanize('timing');
         $client = new \mock\M6Web\Bundle\StatsdBundle\Client\Client();
         $client->clearToSend();
+
         return $client;
     }
 
@@ -32,14 +33,13 @@ class Client extends atoum\test
      */
     public function testHandleEventWithValidConfigIncrement()
     {
-
         $client = $this->getMockedClient();
 
         $event = new \Symfony\Contracts\EventDispatcher\Event();
 
-        $client->addEventToListen('test', array(
-            'increment' => 'stats.<name>'
-        ));
+        $client->addEventToListen('test', [
+            'increment' => 'stats.<name>',
+        ]);
 
         $this->if($client->handleEvent($event, 'test'))
             ->then
@@ -49,7 +49,6 @@ class Client extends atoum\test
                     ->once()
                 ->call('send')
                     ->never();
-
     }
 
     /**
@@ -61,9 +60,9 @@ class Client extends atoum\test
 
         $event = new \Symfony\Contracts\EventDispatcher\Event();
 
-        $client->addEventToListen('test', array(
-            'decrement' => 'stats.<name>'
-        ));
+        $client->addEventToListen('test', [
+            'decrement' => 'stats.<name>',
+        ]);
 
         $this->if($client->handleEvent($event, 'test'))
             ->then
@@ -80,15 +79,14 @@ class Client extends atoum\test
      */
     public function testHandleEventWithImmediateSend()
     {
-
         $client = $this->getMockedClient();
 
         $event = new \Symfony\Contracts\EventDispatcher\Event();
 
-        $client->addEventToListen('test', array(
-            'increment'      => 'stats.<name>',
+        $client->addEventToListen('test', [
+            'increment' => 'stats.<name>',
             'immediate_send' => true,
-        ));
+        ]);
 
         $this->if($client->handleEvent($event, 'test'))
             ->then
@@ -98,7 +96,6 @@ class Client extends atoum\test
                         ->once()
                     ->call('send')
                         ->once();
-
     }
 
     /**
@@ -111,21 +108,21 @@ class Client extends atoum\test
 
         $event = new \Symfony\Contracts\EventDispatcher\Event();
 
-        $queue = new \SPLQueue;
+        $queue = new \SPLQueue();
 
-        $client->getMockController()->increment = function($value) use ($queue) {
+        $client->getMockController()->increment = function ($value) use ($queue) {
             $queue->enqueue($value);
         };
         $client->getMockController()->getToSend = $queue;
-        $client->getMockController()->send = function() use ($queue) {
+        $client->getMockController()->send = function () use ($queue) {
             while ($queue->count() > 0) {
                 $queue->dequeue();
             }
         };
 
-        $client->addEventToListen('test', array(
+        $client->addEventToListen('test', [
             'increment' => 'stats.<name>',
-        ));
+        ]);
 
         for ($i = 1; $i <= 50; $i++) {
             $this
@@ -143,9 +140,9 @@ class Client extends atoum\test
 
         $client->setPropertyAccessor(PropertyAccess\PropertyAccess::createPropertyAccessorBuilder()->enableMagicCall()->getPropertyAccessor());
 
-        $client->addEventToListen('test', array(
-            'increment' => 'stats.<toto>'
-        ));
+        $client->addEventToListen('test', [
+            'increment' => 'stats.<toto>',
+        ]);
 
         $this->exception(function () use ($client) {
             $event = new \Symfony\Contracts\EventDispatcher\Event();
@@ -161,9 +158,9 @@ class Client extends atoum\test
     {
         $client = $this->getMockedClient();
 
-        $client->addEventToListen('test', array(
-            'timing' => 'stats.<name>'
-        ));
+        $client->addEventToListen('test', [
+            'timing' => 'stats.<name>',
+        ]);
 
         $this->exception(function () use ($client) {
             $event = new \Symfony\Contracts\EventDispatcher\Event();
@@ -173,16 +170,15 @@ class Client extends atoum\test
 
         $client = $this->getMockedClient();
 
-        $client->addEventToListen('test', array(
-            'timingMemory' => 'stats.raoul'
-        ));
+        $client->addEventToListen('test', [
+            'timingMemory' => 'stats.raoul',
+        ]);
 
         $this->exception(function () use ($client) {
             $event = new \Symfony\Contracts\EventDispatcher\Event();
 
             $client->handleEvent($event, 'test');
         });
-
     }
 
     /**
@@ -192,15 +188,15 @@ class Client extends atoum\test
     {
         $client = $this->getMockedClient();
 
-        $client->addEventToListen('test', array(
-            'timing' => 'stats.<name>'
-        ));
+        $client->addEventToListen('test', [
+            'timing' => 'stats.<name>',
+        ]);
 
         $event = new Event();
 
-        $client->addEventToListen('test', array(
-            'timing' => 'stats.<name>'
-        ));
+        $client->addEventToListen('test', [
+            'timing' => 'stats.<name>',
+        ]);
 
         $this->if($client->handleEvent($event, 'test'))
             ->then
@@ -208,7 +204,6 @@ class Client extends atoum\test
                 ->call('timing')
                     ->withArguments('stats.test', 101)
                     ->once();
-
     }
 
     /**
@@ -218,15 +213,15 @@ class Client extends atoum\test
     {
         $client = $this->getMockedClient();
 
-        $client->addEventToListen('test', array(
-            'timing' => 'stats.<name>'
-        ));
+        $client->addEventToListen('test', [
+            'timing' => 'stats.<name>',
+        ]);
 
         $event = new Event();
 
-        $client->addEventToListen('test', array(
-            'custom_timing' => array('node' => 'stats.<name>', 'method' => 'getMemory')
-        ));
+        $client->addEventToListen('test', [
+            'custom_timing' => ['node' => 'stats.<name>', 'method' => 'getMemory'],
+        ]);
 
         $this->if($client->handleEvent($event, 'test'))
             ->then
@@ -243,9 +238,9 @@ class Client extends atoum\test
     {
         $client = $this->getMockedClient();
         $client->addEventToListen('test.event.name', [
-            'timing' => 'my.statsd.node'
+            'timing' => 'my.statsd.node',
         ]);
-        $client->getMockController()->timing = function() {};
+        $client->getMockController()->timing = function () {};
 
         $event = new Event();
 
@@ -258,7 +253,6 @@ class Client extends atoum\test
                     ->call('timing')
                         ->withArguments('my.statsd.node', 101, 1.0)
                         ->once();
-
     }
 
     /**
@@ -268,9 +262,9 @@ class Client extends atoum\test
     {
         $client = $this->getMockedClient();
         $client->addEventToListen('test.event.name', [
-            'timing' => 'my.statsd.node'
+            'timing' => 'my.statsd.node',
         ]);
-        $client->getMockController()->timing = function() {};
+        $client->getMockController()->timing = function () {};
 
         $event = new Event();
 
@@ -282,8 +276,5 @@ class Client extends atoum\test
                 ->mock($client)
                     ->call('timing')
                     ->never();
-
     }
-
-
 }

@@ -1,19 +1,17 @@
 <?php
+
 namespace M6Web\Bundle\StatsdBundle\Tests\Units\DependencyInjection;
 
+use M6Web\Bundle\StatsdBundle\DependencyInjection\M6WebStatsdExtension as BaseM6WebStatsdExtension;
 use mageekguy\atoum;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use M6Web\Bundle\StatsdBundle\DependencyInjection\M6WebStatsdExtension as BaseM6WebStatsdExtension;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class M6WebStatsdExtension extends atoum\test
 {
-
-    /**
-     * @var ContainerBuilder
-     */
+    /** @var ContainerBuilder */
     protected $container;
 
     protected function initContainer($resource, $debug = false)
@@ -27,8 +25,7 @@ class M6WebStatsdExtension extends atoum\test
     }
 
     /**
-     * @param ContainerBuilder $container
-     * @param                  $resource
+     * @param $resource
      */
     protected function loadConfiguration(ContainerBuilder $container, $resource)
     {
@@ -94,8 +91,7 @@ class M6WebStatsdExtension extends atoum\test
             ['all_bis',          ['bar', 'barfoo', 'foo', 'foobar', 'fooa', 'foob']],
             ['foo_plusonechar',  ['fooa', 'foob']],
             ['foo_ab',           ['fooa', 'foob']],
-            ['complex_ab',       ['fooa', 'foob']]
-
+            ['complex_ab',       ['fooa', 'foob']],
         ];
     }
 }
