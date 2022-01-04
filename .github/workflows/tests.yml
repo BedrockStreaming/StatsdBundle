@@ -11,12 +11,14 @@ jobs:
           - 7.2
           - 7.3
           - 7.4
+          - 8.0
+          - 8.1
         symfony-version:
-          - 4.4.0
+          - ^4.4
           - ^5.0
         include:
           - php-version: 7.1
-            symfony-version: 4.4.0
+            symfony-version: ^4.4
 
     steps:
       - uses: actions/checkout@v2
