@@ -2,7 +2,13 @@ parameters:
     property_accessor.class_statsdbundle: Symfony\Component\PropertyAccess\PropertyAccessor
 
 services:
+    property_accessor_statsdbundle.factory:
+        public: false
+        class: Symfony\Component\PropertyAccess\PropertyAccessorBuilder
+        calls:
+            - enableMagicCall: []
+
     property_accessor_statsdbundle:
         public: false
         class: "%property_accessor.class_statsdbundle%"
-        arguments: [true] # magical => true
+        factory: ['@property_accessor_statsdbundle.factory', 'getPropertyAccessor']
