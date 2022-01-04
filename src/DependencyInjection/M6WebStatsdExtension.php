@@ -209,7 +209,7 @@ class M6WebStatsdExtension extends Extension
      * trick allowing bypassing the Bundle::getContainerExtension check on getAlias
      * not very clean, to investigate
      */
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'm6_statsd';
     }

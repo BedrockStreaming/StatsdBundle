@@ -18,20 +18,20 @@
     },
     "require": {
         "php": "^7.1.3 || ^8.0",
-        "symfony/config": "^4.4 || ^5.0",
-        "symfony/dependency-injection": "^4.4 || ^5.0",
+        "symfony/config": "^4.4 || ^5.0 || ^6.0",
+        "symfony/dependency-injection": "^4.4 || ^5.0 || ^6.0",
         "symfony/event-dispatcher-contracts": "^1.1 || ^2.1",
-        "symfony/http-kernel": "^4.4 || ^5.0",
-        "symfony/property-access": "^4.4 || ^5.0",
-        "symfony/validator": "^4.4 || ^5.0",
-        "symfony/yaml": "^4.4 || ^5.0",
+        "symfony/http-kernel": "^4.4 || ^5.0 || ^6.0",
+        "symfony/property-access": "^4.4 || ^5.0 || ^6.0",
+        "symfony/validator": "^4.4 || ^5.0 || ^6.0",
+        "symfony/yaml": "^4.4 || ^5.0 || ^6.0",
         "m6web/statsd": "^1.3"
     },
     "require-dev": {
         "atoum/atoum": "^3.4 || ^4.0",
         "m6web/php-cs-fixer-config": "^2.0",
-        "symfony/console": "^4.4 || ^5.0",
-        "symfony/http-foundation": "^4.4 || ^5.0"
+        "symfony/console": "^4.4 || ^5.0 || ^6.0",
+        "symfony/http-foundation": "^4.4 || ^5.0 || ^6.0"
     },
     "autoload": {
         "psr-4": {

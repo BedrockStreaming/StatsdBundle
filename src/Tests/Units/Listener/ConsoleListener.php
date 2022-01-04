@@ -21,7 +21,7 @@ class ConsoleListener extends \atoum
         $this->mockGenerator->orphanize('__construct');
         $this->mockGenerator->shuntParentClassCalls();
 
-        $command = new \mock\Symfony\Component\Console\Command\Command();
+        $command = new \Symfony\Component\Console\Command\Command();
         $input = new \mock\Symfony\Component\Console\Input\InputInterface();
         $output = new \mock\Symfony\Component\Console\Output\OutputInterface();
         $exception = new \mock\Exception();
