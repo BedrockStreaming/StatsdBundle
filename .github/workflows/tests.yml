@@ -32,7 +32,5 @@ jobs:
         run: composer require symfony/symfony:$SYMFONY_VERSION --no-update
       - name: Install dependencies
         run: composer update --prefer-dist --no-interaction
-      - name: Code style check
-        run: bin/coke
       - name: Unit tests
         run: bin/atoum
