@@ -2,19 +2,19 @@
 
 namespace M6Web\Bundle\StatsdBundle\Tests\Units\Client;
 
-use mageekguy\atoum;
+use atoum;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\PropertyAccess;
 
 /**
 * Client class
 */
-class Client extends atoum\test
+class Client extends atoum
 {
     /**
      * return a mocked client
      *
-     * @return Clienct
+     * @return Client
      */
     protected function getMockedClient()
     {

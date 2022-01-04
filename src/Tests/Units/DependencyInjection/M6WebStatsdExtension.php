@@ -1,14 +1,14 @@
 <?php
 namespace M6Web\Bundle\StatsdBundle\Tests\Units\DependencyInjection;
 
-use mageekguy\atoum;
+use atoum;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use M6Web\Bundle\StatsdBundle\DependencyInjection\M6WebStatsdExtension as BaseM6WebStatsdExtension;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-class M6WebStatsdExtension extends atoum\test
+class M6WebStatsdExtension extends atoum
 {
 
     /**

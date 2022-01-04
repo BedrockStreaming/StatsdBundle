@@ -4,14 +4,14 @@ namespace M6Web\Bundle\StatsdBundle\Tests\Units\Listener;
 
 use M6Web\Bundle\StatsdBundle\Listener\ConsoleListener as Base;
 
-use mageekguy\atoum;
+use atoum;
 use Symfony\Component\Console\ConsoleEvents as BaseConsoleEvent;
 use M6Web\Bundle\StatsdBundle\Event\ConsoleEvent;
 
 /**
 * Console listener tests
 */
-class ConsoleListener extends atoum\test
+class ConsoleListener extends atoum
 {
     public function getMockedDispatcher()
     {
