@@ -1,4 +1,5 @@
 <?php
+
 namespace M6Web\Bundle\StatsdBundle\Event;
 
 use Symfony\Component\Console\Event\ConsoleEvent as BaseConsoleEvent;
@@ -9,10 +10,10 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 abstract class ConsoleEvent extends Event
 {
-    const COMMAND   = 'm6web.console.command';
-    const TERMINATE = 'm6web.console.terminate';
-    const ERROR     = 'm6web.console.error';
-    const EXCEPTION = 'm6web.console.exception';
+    public const COMMAND = 'm6web.console.command';
+    public const TERMINATE = 'm6web.console.terminate';
+    public const ERROR = 'm6web.console.error';
+    public const EXCEPTION = 'm6web.console.exception';
 
     /**
      * Original triggered console event
@@ -36,14 +37,13 @@ abstract class ConsoleEvent extends Event
     protected $executionTime;
 
     /**
-     * @param BaseConsoleEvent $originalEvent
-     * @param float            $startTime
-     * @param float            $executionTime
+     * @param float $startTime
+     * @param float $executionTime
      */
     public function __construct(BaseConsoleEvent $originalEvent, $startTime = null, $executionTime = null)
     {
         $this->originalEvent = $originalEvent;
-        $this->startTime     = $startTime;
+        $this->startTime = $startTime;
         $this->executionTime = $executionTime;
     }
 
@@ -132,9 +132,8 @@ abstract class ConsoleEvent extends Event
     /**
      * Create new event object
      *
-     * @param BaseConsoleEvent $e
-     * @param float            $startTime
-     * @param float            $executionTime
+     * @param float $startTime
+     * @param float $executionTime
      *
      * @return ConsoleEvent
      *
@@ -152,9 +151,7 @@ abstract class ConsoleEvent extends Event
     /**
      * Check if given event is supported by current class
      *
-     * @param BaseConsoleEvent $e
-     *
-     * @return boolean
+     * @return bool
      */
     protected static function support(BaseConsoleEvent $e)
     {

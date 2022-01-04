@@ -4,7 +4,6 @@ namespace M6Web\Bundle\StatsdBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 /**
  * validate a graphite node
@@ -14,7 +13,6 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
  */
 class NodeValidator extends ConstraintValidator
 {
-
     /**
      * {@inheritDoc}
      */
@@ -44,12 +42,12 @@ class NodeValidator extends ConstraintValidator
      *
      * @param string $value
      *
-     * @return boolean
+     * @return bool
      */
     public static function validatePattern($value)
     {
         $pattern = "#^[a-z0-9\.]+$#i";
 
-        return (boolean) preg_match($pattern, $value);
+        return (bool) preg_match($pattern, $value);
     }
 }
