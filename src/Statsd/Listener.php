@@ -2,13 +2,12 @@
 
 namespace M6Web\Bundle\StatsdBundle\Statsd;
 
+use M6Web\Component\Statsd\Client;
 use Symfony\Component\Console\Event\ConsoleTerminateEvent;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-
-use M6Web\Component\Statsd\Client;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * classe pour le service statsd
@@ -25,14 +24,12 @@ class Listener
      */
     public function __construct(Client $statsdClient, EventDispatcherInterface $eventDispatcher)
     {
-        $this->statsdClient    = $statsdClient;
+        $this->statsdClient = $statsdClient;
         $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * onKernelException
-     *
-     * @param ExceptionEvent $event
      */
     public function onKernelException(ExceptionEvent $event)
     {
@@ -82,8 +79,6 @@ class Listener
     /**
      * method called if base_collectors = true in config to dispatch base events
      * (you still have to catch them)
-     *
-     * @param TerminateEvent $event
      */
     public function dispatchBaseEvents(TerminateEvent $event)
     {
@@ -109,15 +104,13 @@ class Listener
      * dispatchRequestTime dispatch the request time.
      * This time is a "fake" one, because some actions are performed before the initialization of the request
      * It is ~100ms smaller than the real kernel time.
-     *
-     * @param TerminateEvent $event
      */
     private function dispatchRequestTime(TerminateEvent $event)
     {
-        $request   = $event->getRequest();
+        $request = $event->getRequest();
         $startTime = $request->server->get('REQUEST_TIME_FLOAT', $request->server->get('REQUEST_TIME'));
-        $time      = microtime(true) - $startTime;
-        $time      = round($time * 1000);
+        $time = microtime(true) - $startTime;
+        $time = round($time * 1000);
 
         $this->eventDispatcher->dispatch(
             new StatsdEvent($time),

@@ -2,14 +2,14 @@
 
 namespace M6Web\Bundle\StatsdBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -24,9 +24,9 @@ class M6WebStatsdExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
-        $config        = $this->processConfiguration($configuration, $configs);
-        $servers       = isset($config['servers']) ? $config['servers'] : [];
-        $clients       = isset($config['clients']) ? $config['clients'] : [];
+        $config = $this->processConfiguration($configuration, $configs);
+        $servers = isset($config['servers']) ? $config['servers'] : [];
+        $clients = isset($config['clients']) ? $config['clients'] : [];
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
@@ -49,7 +49,7 @@ class M6WebStatsdExtension extends Extension
                 'data_collector',
                 [
                     'template' => '@M6WebStatsd/Collector/statsd.html.twig',
-                    'id' => 'statsd'
+                    'id' => 'statsd',
                 ]
             );
 
@@ -57,7 +57,7 @@ class M6WebStatsdExtension extends Extension
                 'kernel.event_listener',
                 [
                     'event' => 'kernel.response',
-                    'method' => 'onKernelResponse'
+                    'method' => 'onKernelResponse',
                 ]
             );
 
@@ -98,15 +98,16 @@ class M6WebStatsdExtension extends Extension
      * @param string             $alias      Alias of the client
      * @param array              $config     Base config of the client
      * @param array              $servers    List of available servers as describe in the config file
-     * @param boolean            $baseEvents Register base events
+     * @param bool               $baseEvents Register base events
      *
      * @throws InvalidConfigurationException
+     *
      * @return string the service name
      */
     protected function loadClient($container, $alias, array $config, array $servers, $baseEvents)
     {
-        $usedServers    = [];
-        $events         = $config['events'];
+        $usedServers = [];
+        $events = $config['events'];
         $matchedServers = [];
 
         if ($config['servers'][0] == 'all') {
@@ -115,7 +116,6 @@ class M6WebStatsdExtension extends Extension
         } else {
             // Use only declared servers
             foreach ($config['servers'] as $serverAlias) {
-
                 // Named server
                 if (array_key_exists($serverAlias, $servers)) {
                     $matchedServers[] = $serverAlias;
@@ -127,7 +127,7 @@ class M6WebStatsdExtension extends Extension
                 foreach (array_keys($servers) as $key) {
                     if (fnmatch($serverAlias, $key)) {
                         $matchedServers[] = $key;
-                        $found            = true;
+                        $found = true;
                     }
                 }
 
@@ -146,12 +146,12 @@ class M6WebStatsdExtension extends Extension
         foreach ($matchedServers as $serverAlias) {
             $usedServers[] = [
                 'address' => $servers[$serverAlias]['address'],
-                'port'    => $servers[$serverAlias]['port']
+                'port' => $servers[$serverAlias]['port'],
             ];
         }
 
         // Add the statsd client configured
-        $serviceId  = ($alias == 'default') ? 'm6_statsd' : 'm6_statsd.'.$alias;
+        $serviceId = ($alias == 'default') ? 'm6_statsd' : 'm6_statsd.'.$alias;
         $definition = new Definition('M6Web\Bundle\StatsdBundle\Client\Client');
         $definition->setPublic(true);
         $definition->addArgument($usedServers);
@@ -176,26 +176,26 @@ class M6WebStatsdExtension extends Extension
         $definition->addArgument(new Reference($serviceId));
         $definition->addArgument(new Reference('event_dispatcher'));
         $definition->addTag('kernel.event_listener', [
-            'event'    => 'kernel.terminate',
-            'method'   => 'onKernelTerminate',
-            'priority' => -100
+            'event' => 'kernel.terminate',
+            'method' => 'onKernelTerminate',
+            'priority' => -100,
         ]);
         $definition->addTag('kernel.event_listener', [
-            'event'    => 'console.terminate',
-            'method'   => 'onConsoleTerminate',
-            'priority' => -100
+            'event' => 'console.terminate',
+            'method' => 'onConsoleTerminate',
+            'priority' => -100,
         ]);
 
         if ($baseEvents) {
             $definition->addTag('kernel.event_listener', [
                 'event' => 'kernel.terminate',
                 'method' => 'dispatchBaseEvents',
-                'priority' => 0
+                'priority' => 0,
             ]);
             $definition->addTag('kernel.event_listener', [
                 'event' => 'kernel.exception',
                 'method' => 'onKernelException',
-                'priority' => 0
+                'priority' => 0,
             ]);
         }
         $container->setDefinition($serviceListenerId, $definition);
@@ -208,10 +208,8 @@ class M6WebStatsdExtension extends Extension
      *
      * trick allowing bypassing the Bundle::getContainerExtension check on getAlias
      * not very clean, to investigate
-     *
-     * @return string
      */
-    public function getAlias()
+    public function getAlias(): string
     {
         return 'm6_statsd';
     }

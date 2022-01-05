@@ -2,8 +2,8 @@
 
 namespace M6Web\Bundle\StatsdBundle\Event;
 
-use Symfony\Component\Console\Event\ConsoleTerminateEvent as BaseEvent;
 use Symfony\Component\Console\Event\ConsoleEvent as BaseConsoleEvent;
+use Symfony\Component\Console\Event\ConsoleTerminateEvent as BaseEvent;
 
 /**
  * Triggered when console terminate
