@@ -39,5 +39,7 @@ jobs:
         run: composer update --prefer-dist --no-interaction
       - name: Code style check
         run: bin/php-cs-fixer fix --dry-run --using-cache=no --verbose
+      - name: Static analysis
+        run: bin/phpstan analyse src
       - name: Unit tests
         run: bin/atoum

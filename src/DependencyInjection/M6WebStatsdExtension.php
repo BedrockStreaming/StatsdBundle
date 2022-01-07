@@ -7,7 +7,6 @@ namespace M6Web\Bundle\StatsdBundle\DependencyInjection;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
@@ -96,11 +95,11 @@ class M6WebStatsdExtension extends Extension
     /**
      * Load a client configuration as a service in the container. A client can use multiple servers
      *
-     * @param ContainerInterface $container  The container
-     * @param string             $alias      Alias of the client
-     * @param array              $config     Base config of the client
-     * @param array              $servers    List of available servers as describe in the config file
-     * @param bool               $baseEvents Register base events
+     * @param ContainerBuilder $container  The container
+     * @param string           $alias      Alias of the client
+     * @param array            $config     Base config of the client
+     * @param array            $servers    List of available servers as describe in the config file
+     * @param bool             $baseEvents Register base events
      *
      * @throws InvalidConfigurationException
      *
