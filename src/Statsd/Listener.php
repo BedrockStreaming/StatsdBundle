@@ -38,13 +38,12 @@ class Listener
     {
         $exception = $event->getThrowable();
 
-        $code = 'unknown';
         if ($exception instanceof HttpExceptionInterface) {
             $code = $exception->getStatusCode();
         }
 
         $this->eventDispatcher->dispatch(
-            new StatsdEvent($code),
+            new StatsdEvent($code ?? 'unknown'),
             'statsd.exception'
         );
     }
