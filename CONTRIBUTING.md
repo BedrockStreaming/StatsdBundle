@@ -17,7 +17,7 @@ composer install
 
 And you can launch php-cs-fixer
 ```bash
-./bin/php-cs-fixer --dry-run --using-cache=no --verbose --diff
+./bin/php-cs-fixer fix --dry-run --using-cache=no --verbose --diff
 ```
 
 ## Testing
