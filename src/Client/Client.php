@@ -11,11 +11,13 @@ use Symfony\Component\PropertyAccess;
  */
 class Client extends BaseClient
 {
+    /** @var array */
     protected $listenedEvents = [];
 
-    /** @var PropertyAccessInterface */
+    /** @var PropertyAccess\PropertyAccessorInterface */
     protected $propertyAccessor;
 
+    /** @var int|null */
     protected $toSendLimit;
 
     /**

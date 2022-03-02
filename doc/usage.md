@@ -19,9 +19,10 @@ m6_statsd:
             port:     1236
     clients:
         default:
-            servers:   ["default"]        # the 'default' client will use only the default server
+            servers:          ["default"] # the 'default' client will use only the default server
+            message_formatter: "dogstatsd"  # format to transmit metrics to the server in 'influxdbstatsd' (default), 'dogstatsd' or a custom service ID which implements \M6Web\Component\Statsd\MessageFormatterMessageFormatterInterface can be used.
         swag:
-            servers:   ["serv1", "serv2"] # the 'swag' client will use serv1 OR serv2 to send the data
+            servers: ["serv1", "serv2"] # the 'swag' client will use serv1 OR serv2 to send the data
         mighty:
             servers: ["all"] # use all servers configured
         shell_patern:
@@ -296,7 +297,8 @@ use \M6Web\Component\Statsd;
 $statsd = new Statsd\Client(
     array(
         'serv1' => array('address' => 'udp://xx.xx.xx.xx', 'port' => 'xx'),
-        'serv2' => array('address' => 'udp://xx.xx.xx.xx', 'port' => 'xx'))
+        'serv2' => array('address' => 'udp://xx.xx.xx.xx', 'port' => 'xx')),
+    new Statsd\MessageFormatter\InfluxDBStatsDMessageFormatter()
 );
 $statsd->increment('service.coucougraphite');
 // we can also pass a sampling rate, default value is 1
