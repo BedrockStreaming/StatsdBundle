@@ -107,7 +107,7 @@ class Client extends \atoum
 
         $event = new \Symfony\Contracts\EventDispatcher\Event();
 
-        $queue = new \SPLQueue();
+        $queue = new \SplQueue();
 
         $client->getMockController()->increment = function ($value) use ($queue) {
             $queue->enqueue($value);
