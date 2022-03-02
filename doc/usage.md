@@ -19,8 +19,8 @@ m6_statsd:
             port:     1236
     clients:
         default:
-            servers:          ["default"] # the 'default' client will use only the default server
-            message_formatter: "dogstatsd"  # format to transmit metrics to the server in 'influxdbstatsd' (default), 'dogstatsd' or a custom service ID which implements \M6Web\Component\Statsd\MessageFormatterMessageFormatterInterface can be used.
+            servers:           ["default"] # the 'default' client will use only the default server
+            message_formatter: "dogstatsd" # format to transmit metrics to the server in 'influxdbstatsd' (default), 'dogstatsd' or a custom service ID which implements \M6Web\Component\Statsd\MessageFormatterMessageFormatterInterface can be used.
         swag:
             servers: ["serv1", "serv2"] # the 'swag' client will use serv1 OR serv2 to send the data
         mighty:
