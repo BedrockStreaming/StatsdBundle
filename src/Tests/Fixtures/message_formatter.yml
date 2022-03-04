@@ -1,0 +1,17 @@
+m6_statsd:
+    servers:
+        default:
+            address: 'udp://localhost'
+            port:     1234
+    clients:
+        unspecified:
+            servers: ["default"]
+        dogstatsd:
+            servers:           ["default"]
+            message_formatter: dogstatsd
+        influxdbstatsd:
+            servers:           ["default"]
+            message_formatter: influxdbstatsd
+        custom_service:
+            servers:           ["default"]
+            message_formatter: my.custom.message_formatter

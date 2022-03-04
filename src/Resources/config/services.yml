@@ -12,3 +12,11 @@ services:
         public: false
         class: "%property_accessor.class_statsdbundle%"
         factory: ['@property_accessor_statsdbundle.factory', 'getPropertyAccessor']
+
+    statsdbundle.formatter.dogstatsd:
+        public: false
+        class: M6Web\Component\Statsd\MessageFormatter\DogStatsDMessageFormatter
+
+    statsdbundle.formatter.influxdbstatsd:
+        public: false
+        class: M6Web\Component\Statsd\MessageFormatter\InfluxDBStatsDMessageFormatter

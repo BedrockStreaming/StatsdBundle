@@ -155,6 +155,11 @@ class M6WebStatsdExtension extends Extension
         $definition = new Definition('M6Web\Bundle\StatsdBundle\Client\Client');
         $definition->setPublic(true);
         $definition->addArgument($usedServers);
+        $definition->addArgument(new Reference(
+            $container->has('statsdbundle.formatter.'.$config['message_formatter']) ?
+                'statsdbundle.formatter.'.$config['message_formatter'] :
+                $config['message_formatter']
+        ));
 
         if (isset($config['to_send_limit'])) {
             $definition->addMethodCall('setToSendLimit', [$config['to_send_limit']]);

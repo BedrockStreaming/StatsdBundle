@@ -8,17 +8,16 @@ If you want to learn more about our opinion on open source, you can read the [OS
 
 The features available for now are only those we need, but you're welcome to open an issue or pull-request if you need more.
 
-To ensure good code quality, we use our awesome tool "[coke](https://github.com/M6Web/Coke)" to check there is no coding standards violations.
-We use [Symfony2 coding standards](https://github.com/M6Web/Symfony2-coding-standard).
+To ensure good code quality, we use [PHP-CS-Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) to check there is no coding standards violations.
 
-To execute coke, you need to install dependencies in dev mode
+To execute PHP-CS-Fixer, you need to install dependencies in dev mode
 ```bash
 composer install
 ```
 
-And you can launch coke
+And you can launch php-cs-fixer
 ```bash
-./vendor/bin/coke
+./bin/php-cs-fixer fix --dry-run --using-cache=no --verbose --diff
 ```
 
 ## Testing
