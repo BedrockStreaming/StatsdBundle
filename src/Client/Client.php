@@ -17,7 +17,7 @@ class Client extends BaseClient
     /** @var array */
     protected $listenedEvents = [];
 
-    /** @var PropertyAccessInterface */
+    /** @var PropertyAccessorInterface */
     protected $propertyAccessor;
 
     /** @var int|null */
