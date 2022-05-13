@@ -40,6 +40,6 @@ jobs:
       - name: Code style check
         run: bin/php-cs-fixer fix --dry-run --using-cache=no --verbose
       - name: Static analysis
-        run: bin/phpstan analyse src
+        run: bin/phpstan analyse
       - name: Unit tests
         run: bin/atoum
