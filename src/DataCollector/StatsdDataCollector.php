@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\StatsdBundle\DataCollector;
 
 use Symfony\Component\HttpFoundation\Request;
