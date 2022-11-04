@@ -35,9 +35,6 @@ class M6WebStatsdExtension extends \atoum
         $this->container->compile();
     }
 
-    /**
-     * @param $resource
-     */
     protected function loadConfiguration(ContainerBuilder $container, $resource)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../../Fixtures/'));

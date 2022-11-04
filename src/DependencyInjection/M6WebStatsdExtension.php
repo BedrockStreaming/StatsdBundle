@@ -101,9 +101,9 @@ class M6WebStatsdExtension extends Extension
      * @param array            $servers    List of available servers as describe in the config file
      * @param bool             $baseEvents Register base events
      *
-     * @throws InvalidConfigurationException
-     *
      * @return string the service name
+     *
+     * @throws InvalidConfigurationException
      */
     protected function loadClient($container, $alias, array $config, array $servers, $baseEvents)
     {
