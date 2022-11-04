@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\StatsdBundle\Tests\Units\Client;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;

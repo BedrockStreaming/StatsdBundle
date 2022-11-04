@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\StatsdBundle\Tests\Units\Validator\Constraints;
 
 use M6Web\Bundle\StatsdBundle\Validator\Constraints\NodeValidator as TestedClass;

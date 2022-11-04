@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\StatsdBundle;
 
 use M6Web\Bundle\StatsdBundle\DependencyInjection\M6WebStatsdExtension;
@@ -15,9 +17,9 @@ class M6WebStatsdBundle extends Bundle
      * trick allowing bypassing the Bundle::getContainerExtension check on getAlias
      * not very clean, to investigate
      *
-     * @return M6WebStatsdExtension|ExtensionInterface
+     * @return M6WebStatsdExtension|ExtensionInterface|null
      */
-    public function getContainerExtension()
+    public function getContainerExtension(): ?ExtensionInterface
     {
         if (null === $this->extension) {
             $this->extension = new M6WebStatsdExtension();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\StatsdBundle\Statsd;
 
 use Symfony\Component\EventDispatcher\GenericEvent;

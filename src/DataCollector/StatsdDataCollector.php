@@ -1,11 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\StatsdBundle\DataCollector;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Handle datacollector for statsd
@@ -37,11 +41,11 @@ class StatsdDataCollector extends DataCollector
     /**
      * Kernel event
      *
-     * @param EventInterface $event The received event
+     * @param Event $event The received event
      */
     public function onKernelResponse($event)
     {
-        if (HttpKernelInterface::MASTER_REQUEST == $event->getRequestType()) {
+        if ($event instanceof KernelEvent && HttpKernelInterface::MASTER_REQUEST == $event->getRequestType()) {
             foreach ($this->statsdClients as $clientName => $client) {
                 $clientInfo = [
                     'name' => $clientName,

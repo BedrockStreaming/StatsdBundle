@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\StatsdBundle\Statsd;
 
 use M6Web\Component\Statsd\Client;
@@ -15,6 +17,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class Listener
 {
     protected $statsdClient;
+    protected $eventDispatcher;
 
     /**
      * Construct the listener, injecting the statsd client service
@@ -33,21 +36,14 @@ class Listener
      */
     public function onKernelException(ExceptionEvent $event)
     {
-        // @TODO: remove this backward compatibility layer after symfony 4.4 has been dropped
-        if (method_exists($event, 'getThrowable')) {
-            $exception = $event->getThrowable();
-        } else {
-            $exception = $event->getException();
-        }
+        $exception = $event->getThrowable();
 
         if ($exception instanceof HttpExceptionInterface) {
             $code = $exception->getStatusCode();
-        } else {
-            $code = 'unknown';
         }
 
         $this->eventDispatcher->dispatch(
-            new StatsdEvent($code),
+            new StatsdEvent($code ?? 'unknown'),
             'statsd.exception'
         );
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\StatsdBundle\Event;
 
 use Symfony\Component\Console\Event\ConsoleEvent as BaseConsoleEvent;
@@ -40,7 +42,7 @@ abstract class ConsoleEvent extends Event
      * @param float $startTime
      * @param float $executionTime
      */
-    public function __construct(BaseConsoleEvent $originalEvent, $startTime = null, $executionTime = null)
+    final public function __construct(BaseConsoleEvent $originalEvent, $startTime = null, $executionTime = null)
     {
         $this->originalEvent = $originalEvent;
         $this->startTime = $startTime;
@@ -122,7 +124,9 @@ abstract class ConsoleEvent extends Event
      */
     public function getUnderscoredCommandName()
     {
-        if (!is_null($command = $this->getCommand())) {
+        $command = $this->getOriginalEvent()->getCommand();
+
+        if (!is_null($command)) {
             return str_replace(':', '_', $command->getName());
         }
 
@@ -144,7 +148,7 @@ abstract class ConsoleEvent extends Event
         if (static::support($e)) {
             return new static($e, $startTime, $executionTime);
         } else {
-            throw \InvalidArgumentException('Invalid event type.');
+            throw new \InvalidArgumentException('Invalid event type.');
         }
     }
 

@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\StatsdBundle\Client;
 
 use M6Web\Bundle\StatsdBundle\Statsd\MonitorableEventInterface;
 use M6Web\Component\Statsd\Client as BaseClient;
-use Symfony\Component\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class that extends base statsd client, to handle auto-increment from event dispatcher notifications
@@ -14,7 +17,7 @@ class Client extends BaseClient
     /** @var array */
     protected $listenedEvents = [];
 
-    /** @var PropertyAccess\PropertyAccessorInterface */
+    /** @var PropertyAccessorInterface */
     protected $propertyAccessor;
 
     /** @var int|null */
@@ -60,7 +63,7 @@ class Client extends BaseClient
      *
      * @return $this
      */
-    public function setPropertyAccessor(PropertyAccess\PropertyAccessorInterface $propertyAccessor)
+    public function setPropertyAccessor(PropertyAccessorInterface $propertyAccessor)
     {
         $this->propertyAccessor = $propertyAccessor;
 
@@ -70,8 +73,8 @@ class Client extends BaseClient
     /**
      * Handle an event
      *
-     * @param EventInterface $event an event
-     * @param string         $name  the event name
+     * @param Event  $event an event
+     * @param string $name  the event name
      *
      * @throws Exception
      *
@@ -79,11 +82,6 @@ class Client extends BaseClient
      */
     public function handleEvent($event, $name = null)
     {
-        // this is used to stay compatible with Symfony 2.3
-        if (is_null($name)) {
-            $name = $event->getName();
-        }
-
         if (!isset($this->listenedEvents[$name])) {
             return;
         }
@@ -125,7 +123,7 @@ class Client extends BaseClient
             }
         }
 
-        if (null !== $this->toSendLimit && $this->getToSend()->count() >= $this->toSendLimit) {
+        if (null !== $this->toSendLimit && count($this->getToSend()) >= $this->toSendLimit) {
             $immediateSend = true;
         }
 
@@ -175,9 +173,9 @@ class Client extends BaseClient
     /**
      * Replaces a string with a method name
      *
-     * @param EventInterface $event     An event
-     * @param string         $eventName The name of the event
-     * @param string         $string    The node in which the replacing will happen
+     * @param Event  $event     An event
+     * @param string $eventName The name of the event
+     * @param string $string    The node in which the replacing will happen
      *
      * @return string
      */

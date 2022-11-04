@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace M6Web\Bundle\StatsdBundle\Listener;
 
 use M6Web\Bundle\StatsdBundle\Event\ConsoleEvent;
@@ -58,11 +60,11 @@ class ConsoleListener
      *
      * @param string $eventName
      *
-     * @return bool
+     * @return bool|object
      */
     protected function dispatch(BaseConsoleEvent $e, $eventName)
     {
-        if (!is_null($this->eventDispatcher)) {
+        if (null !== $this->eventDispatcher) {
             $class = str_replace(
                 'Symfony\Component\Console\Event',
                 'M6Web\Bundle\StatsdBundle\Event',
@@ -72,10 +74,10 @@ class ConsoleListener
             $finaleEvent = $class::createFromConsoleEvent(
                 $e,
                 $this->startTime,
-                !is_null($this->startTime) ? microtime(true) - $this->startTime : null
+                null !== $this->startTime ? microtime(true) - $this->startTime : null
             );
 
-            return $this->eventDispatcher->dispatch($finaleEvent, $eventName);
+            return $this->eventDispatcher->dispatch($finaleEvent);
         } else {
             return false;
         }
