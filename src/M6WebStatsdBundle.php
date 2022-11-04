@@ -17,7 +17,7 @@ class M6WebStatsdBundle extends Bundle
      *
      * @return M6WebStatsdExtension|ExtensionInterface
      */
-    public function getContainerExtension()
+    public function getContainerExtension(): ?ExtensionInterface
     {
         if (null === $this->extension) {
             $this->extension = new M6WebStatsdExtension();
