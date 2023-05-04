@@ -188,7 +188,7 @@ class Client extends BaseClient
             $tokens = $matches[1];
             foreach ($tokens as $token) {
                 $value = $this->propertyAccessor->getValue($event, $token);
-                $string = str_replace('<'.$token.'>', $value, $string);
+                $string = str_replace('<'.$token.'>', (string) $value, $string);
             }
         }
 
