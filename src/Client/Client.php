@@ -187,7 +187,7 @@ class Client extends BaseClient
         if ((preg_match_all('/<([^>]*)>/', $string, $matches) > 0) and ($this->propertyAccessor !== null)) {
             $tokens = $matches[1];
             foreach ($tokens as $token) {
-                $value = $this->propertyAccessor->getValue($event, $token);
+                $value = (string) $this->propertyAccessor->getValue($event, $token);
                 $string = str_replace('<'.$token.'>', $value, $string);
             }
         }
