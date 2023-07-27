@@ -12,9 +12,6 @@ use Symfony\Component\Console\Event\ConsoleEvent as BaseConsoleEvent;
  */
 class ConsoleCommandEvent extends ConsoleEvent
 {
-    /**
-     * {@inheritDoc}
-     */
     protected static function support(BaseConsoleEvent $e)
     {
         return $e instanceof BaseEvent;

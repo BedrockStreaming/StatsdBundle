@@ -16,14 +16,14 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 class ConsoleListener
 {
     /** @var EventDispatcherInterface */
-    protected $eventDispatcher = null;
+    protected $eventDispatcher;
 
     /**
      * Time when command started
      *
      * @var float
      */
-    protected $startTime = null;
+    protected $startTime;
 
     /**
      * Define event dispatch

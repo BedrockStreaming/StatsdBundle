@@ -15,9 +15,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritDoc}
-     */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('m6_statsd');
@@ -100,8 +97,6 @@ class Configuration implements ConfigurationInterface
 
     /**
      * addDefaultEventSection
-     *
-     * @param mixed $rootNode
      */
     private function addDefaultEventSection($rootNode)
     {

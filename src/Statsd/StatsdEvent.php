@@ -13,8 +13,6 @@ class StatsdEvent extends GenericEvent implements MonitorableEventInterface
 {
     /**
      * getTiming
-     *
-     * @return mixed
      */
     public function getTiming()
     {
@@ -23,8 +21,6 @@ class StatsdEvent extends GenericEvent implements MonitorableEventInterface
 
     /**
      * getValue
-     *
-     * @return mixed
      */
     public function getValue()
     {

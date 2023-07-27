@@ -138,8 +138,6 @@ class Client extends BaseClient
      * @param Event  $event
      * @param string $method
      *
-     * @return mixed
-     *
      * @throws Exception
      */
     private function getEventValue($event, $method)
@@ -198,7 +196,6 @@ class Client extends BaseClient
     /**
      * Merge config tags with tags manually sent with the event
      *
-     * @param mixed $event
      * @param array $config
      *
      * @return array of tags

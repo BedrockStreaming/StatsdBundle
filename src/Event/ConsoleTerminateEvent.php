@@ -12,9 +12,6 @@ use Symfony\Component\Console\Event\ConsoleTerminateEvent as BaseEvent;
  */
 class ConsoleTerminateEvent extends ConsoleEvent
 {
-    /**
-     * {@inheritDoc}
-     */
     protected static function support(BaseConsoleEvent $e)
     {
         return $e instanceof BaseEvent;
