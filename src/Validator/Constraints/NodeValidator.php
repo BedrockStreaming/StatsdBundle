@@ -15,9 +15,6 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class NodeValidator extends ConstraintValidator
 {
-    /**
-     * {@inheritDoc}
-     */
     public function validate($value, Constraint $constraint)
     {
         if (!is_scalar($value) && !(is_object($value) && method_exists($value, '__toString'))) {

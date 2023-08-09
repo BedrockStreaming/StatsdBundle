@@ -11,8 +11,6 @@ interface MonitorableEventInterface
 {
     /**
      * the measured value
-     *
-     * @return mixed
      */
     public function getValue();
 

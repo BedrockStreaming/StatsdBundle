@@ -54,8 +54,6 @@ abstract class ConsoleEvent extends Event
      *
      * @param string $name
      * @param array  $parameters
-     *
-     * @return mixed
      */
     public function __call($name, $parameters)
     {

@@ -138,8 +138,6 @@ class Client extends BaseClient
      * @param Event  $event
      * @param string $method
      *
-     * @return mixed
-     *
      * @throws Exception
      */
     private function getEventValue($event, $method)
@@ -187,7 +185,7 @@ class Client extends BaseClient
         if ((preg_match_all('/<([^>]*)>/', $string, $matches) > 0) and ($this->propertyAccessor !== null)) {
             $tokens = $matches[1];
             foreach ($tokens as $token) {
-                $value = $this->propertyAccessor->getValue($event, $token);
+                $value = (string) $this->propertyAccessor->getValue($event, $token);
                 $string = str_replace('<'.$token.'>', $value, $string);
             }
         }
@@ -198,7 +196,6 @@ class Client extends BaseClient
     /**
      * Merge config tags with tags manually sent with the event
      *
-     * @param mixed $event
      * @param array $config
      *
      * @return array of tags
