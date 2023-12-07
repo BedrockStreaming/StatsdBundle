@@ -6,5 +6,8 @@ parameters:
         - src
     excludePaths:
         - src/Tests
+        # BC changes since symfony v5.0
         - src/Statsd/Listener.php
+        # BC changes since symfony v6.0
+        - src/Validator/Constraints/NodeValidator.php
     treatPhpDocTypesAsCertain: false
