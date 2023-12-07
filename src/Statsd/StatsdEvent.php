@@ -11,17 +11,11 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class StatsdEvent extends GenericEvent implements MonitorableEventInterface
 {
-    /**
-     * getTiming
-     */
     public function getTiming()
     {
         return $this->getSubject();
     }
 
-    /**
-     * getValue
-     */
     public function getValue()
     {
         return $this->getSubject();
@@ -30,7 +24,7 @@ class StatsdEvent extends GenericEvent implements MonitorableEventInterface
     /**
      * array of tags [key => value]
      *
-     * @return array
+     * @return array|mixed
      */
     public function getTags()
     {

@@ -16,6 +16,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class StatsdDataCollector extends DataCollector
 {
+    /** @var array */
     private $statsdClients;
 
     /**
@@ -29,7 +30,7 @@ class StatsdDataCollector extends DataCollector
     /**
      * Reset the data collector to initial state
      */
-    public function reset()
+    public function reset(): void
     {
         $this->statsdClients = [];
         $this->data = [
@@ -43,7 +44,7 @@ class StatsdDataCollector extends DataCollector
      *
      * @param Event $event The received event
      */
-    public function onKernelResponse($event)
+    public function onKernelResponse($event): void
     {
         if ($event instanceof KernelEvent && HttpKernelInterface::MASTER_REQUEST == $event->getRequestType()) {
             foreach ($this->statsdClients as $clientName => $client) {
@@ -76,7 +77,7 @@ class StatsdDataCollector extends DataCollector
      * @param string $clientAlias  The client alias
      * @param object $statsdClient A statsd client instance
      */
-    public function addStatsdClient($clientAlias, $statsdClient)
+    public function addStatsdClient($clientAlias, $statsdClient): void
     {
         $this->statsdClients[$clientAlias] = $statsdClient;
     }
@@ -84,9 +85,11 @@ class StatsdDataCollector extends DataCollector
     /**
      * Collect the data
      *
-     * @param Request    $request   The request object
-     * @param Response   $response  The response object
-     * @param \Throwable $exception An exception
+     * @param Request         $request   The request object
+     * @param Response        $response  The response object
+     * @param \Throwable|null $exception An exception
+     *
+     * @return void
      */
     public function collect(Request $request, Response $response, \Throwable $exception = null)
     {
@@ -97,7 +100,7 @@ class StatsdDataCollector extends DataCollector
      *
      * @return array operations list
      */
-    public function getClients()
+    public function getClients(): array
     {
         return $this->data['clients'];
     }

@@ -34,19 +34,19 @@ class ConsoleListener
     /**
      * Define event dispatch
      */
-    public function setEventDispatcher(EventDispatcherInterface $ev)
+    public function setEventDispatcher(EventDispatcherInterface $ev): void
     {
         $this->eventDispatcher = $ev;
     }
 
-    public function onCommand(BaseConsoleEvent $e)
+    public function onCommand(BaseConsoleEvent $e): void
     {
         $this->startTime = microtime(true);
 
         $this->dispatch($e, ConsoleEvent::COMMAND);
     }
 
-    public function onTerminate(ConsoleTerminateEvent $e)
+    public function onTerminate(ConsoleTerminateEvent $e): void
     {
         // For non-0 exit command, fire an ERROR event
         if ($e->getExitCode() != 0) {
@@ -56,7 +56,7 @@ class ConsoleListener
         $this->dispatch($e, ConsoleEvent::TERMINATE);
     }
 
-    public function onException(BaseConsoleEvent $e)
+    public function onException(BaseConsoleEvent $e): void
     {
         $this->dispatch($e, ConsoleEvent::EXCEPTION);
     }

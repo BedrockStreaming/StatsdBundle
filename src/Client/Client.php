@@ -39,7 +39,7 @@ class Client extends BaseClient
      * @param string $eventName   The event name to listen
      * @param array  $eventConfig The event handler configuration
      */
-    public function addEventToListen($eventName, $eventConfig)
+    public function addEventToListen($eventName, $eventConfig): void
     {
         $this->listenedEvents[$eventName] = $eventConfig;
     }
@@ -160,7 +160,7 @@ class Client extends BaseClient
      *
      * @throws Exception
      */
-    private function addTiming($event, $timingMethod, $node, $tags = [])
+    private function addTiming($event, $timingMethod, $node, $tags = []): void
     {
         $timing = $this->getEventValue($event, $timingMethod);
         if ($timing > 0) {
@@ -200,7 +200,7 @@ class Client extends BaseClient
      *
      * @return array of tags
      */
-    private function mergeTags($event, $config)
+    private function mergeTags($event, $config): array
     {
         $configTags = isset($config['tags']) ? $config['tags'] : [];
 

@@ -1,7 +1,10 @@
+includes:
+    - phpstan-baseline.neon
 parameters:
-    level: 5
+    level: 6
     paths:
         - src
     excludePaths:
         - src/Tests
+        - src/Statsd/Listener.php
     treatPhpDocTypesAsCertain: false

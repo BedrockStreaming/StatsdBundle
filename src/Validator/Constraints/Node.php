@@ -13,13 +13,4 @@ use Symfony\Component\Validator\Constraint;
  */
 class Node extends Constraint
 {
-    /**
-     * constraint constructor
-     *
-     * @param array $options options
-     */
-    public function __construct($options = null)
-    {
-        parent::__construct($options);
-    }
 }

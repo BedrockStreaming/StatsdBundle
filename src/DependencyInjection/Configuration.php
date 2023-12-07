@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace M6Web\Bundle\StatsdBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -15,9 +16,13 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 class Configuration implements ConfigurationInterface
 {
+    /**
+     * @return TreeBuilder
+     */
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('m6_statsd');
+        /** @var ArrayNodeDefinition $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
         $this->addServersSection($rootNode);
@@ -27,7 +32,10 @@ class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    private function addServersSection($rootNode)
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addServersSection($rootNode): void
     {
         $rootNode
             ->children()
@@ -53,7 +61,10 @@ class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    private function addClientsSection($rootNode)
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addClientsSection($rootNode): void
     {
         $rootNode
             ->children()
@@ -97,8 +108,10 @@ class Configuration implements ConfigurationInterface
 
     /**
      * addDefaultEventSection
+     *
+     * @param ArrayNodeDefinition $rootNode
      */
-    private function addDefaultEventSection($rootNode)
+    private function addDefaultEventSection($rootNode): void
     {
         $rootNode
             ->children()

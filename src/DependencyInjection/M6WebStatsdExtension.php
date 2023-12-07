@@ -19,6 +19,11 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class M6WebStatsdExtension extends Extension
 {
+    /**
+     * @return void
+     *
+     * @throws \Exception
+     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $configuration = new Configuration();
