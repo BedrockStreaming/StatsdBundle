@@ -15,6 +15,9 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class NodeValidator extends ConstraintValidator
 {
+    /**
+     * @return void
+     */
     public function validate($value, Constraint $constraint)
     {
         if (!is_scalar($value) && !(is_object($value) && method_exists($value, '__toString'))) {
@@ -31,8 +34,6 @@ class NodeValidator extends ConstraintValidator
 
         if (!self::validatePattern($value)) {
             $this->context->addViolation('the node : '.$value.' isn\'t suitable for graphite');
-
-            return;
         }
     }
 

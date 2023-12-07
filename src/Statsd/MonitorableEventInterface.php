@@ -17,7 +17,7 @@ interface MonitorableEventInterface
     /**
      * array of tags [key => value]
      *
-     * @return array
+     * @return array|mixed
      */
     public function getTags();
 }

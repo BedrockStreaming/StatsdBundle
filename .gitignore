@@ -6,3 +6,4 @@ vendor/
 bin/
 .php-cs-fixer.cache
 composer.lock
+phpstan.neon

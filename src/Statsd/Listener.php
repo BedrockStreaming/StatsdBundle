@@ -16,7 +16,10 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class Listener
 {
+    /** @var Client */
     protected $statsdClient;
+
+    /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /**
@@ -34,7 +37,7 @@ class Listener
     /**
      * onKernelException
      */
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
 
@@ -52,10 +55,8 @@ class Listener
      * method called on the kernel.terminate event
      *
      * @param TerminateEvent $event event
-     *
-     * @return void
      */
-    public function onKernelTerminate(TerminateEvent $event)
+    public function onKernelTerminate(TerminateEvent $event): void
     {
         $this->statsdClient->send();
     }
@@ -64,10 +65,8 @@ class Listener
      * method called on the console.terminate event
      *
      * @param ConsoleTerminateEvent $event event
-     *
-     * @return void
      */
-    public function onConsoleTerminate(ConsoleTerminateEvent $event)
+    public function onConsoleTerminate(ConsoleTerminateEvent $event): void
     {
         $this->statsdClient->send();
     }
@@ -76,7 +75,7 @@ class Listener
      * method called if base_collectors = true in config to dispatch base events
      * (you still have to catch them)
      */
-    public function dispatchBaseEvents(TerminateEvent $event)
+    public function dispatchBaseEvents(TerminateEvent $event): void
     {
         $this->dispatchMemory();
         $this->dispatchRequestTime($event);
@@ -85,7 +84,7 @@ class Listener
     /**
      * dispatchMemory dispatch a memory event
      */
-    private function dispatchMemory()
+    private function dispatchMemory(): void
     {
         $memory = memory_get_peak_usage(true);
         $memory = ($memory > 1024 ? intval($memory / 1024) : 0);
@@ -101,7 +100,7 @@ class Listener
      * This time is a "fake" one, because some actions are performed before the initialization of the request
      * It is ~100ms smaller than the real kernel time.
      */
-    private function dispatchRequestTime(TerminateEvent $event)
+    private function dispatchRequestTime(TerminateEvent $event): void
     {
         $request = $event->getRequest();
         $startTime = $request->server->get('REQUEST_TIME_FLOAT', $request->server->get('REQUEST_TIME'));
